@@ -1,0 +1,49 @@
+vif_framework:
+  gamma_regime:
+    positive_threshold: 0.5
+    negative_threshold: -0.5
+
+  structural_levels:
+    lookback_days: 20
+    support_percentile: 25
+    resistance_percentile: 75
+
+  volume:
+    ma_period: 20
+    strong_threshold: 1.5  # 1.5x average volume
+
+kill_switches:
+  k1:
+    name: "Extreme Volatility"
+    condition: "RSI > 80 or RSI < 20"
+  k2:
+    name: "Gap Risk"
+    condition: "5-day range > 10%"
+  k3:
+    name: "Low Liquidity"
+    condition: "Volume < 1M shares"
+  k4:
+    name: "News Risk"
+    condition: "earnings within 5 days"
+  k5:
+    name: "Correlation Risk"
+    condition: "correlation > 0.8 with major index"
+  k6:
+    name: "Technical Breakdown"
+    condition: "close below 20-day MA and declining volume"
+
+data_fetching:
+  batch_size: 15
+  period_default: "5d"
+  cache_dir: "./data"
+  cache_ttl_hours: 24
+
+api:
+  model: "claude-opus-4-7"
+  max_tokens: 1024
+  temperature: 0  # Deterministic analysis
+
+output:
+  format: "json"
+  save_dir: "./reports"
+  timestamp_format: "%Y-%m-%d_%H-%M-%S"

@@ -1,0 +1,97 @@
+{
+  "analysis_date": "2026-04-28 05:12:06",
+  "watchlist": "test_watchlist",
+  "tickers_analyzed": 8,
+  "signals": {
+    "NVDA": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "positive",
+      "level_type": "support",
+      "volume_signal": "weak",
+      "kill_switch": null,
+      "price": 209.86,
+      "rsi": 73.5,
+      "reasoning": "RSI 74, vol 0.5x, change -6.6%"
+    },
+    "TSLA": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "positive",
+      "level_type": "resistance",
+      "volume_signal": "weak",
+      "kill_switch": null,
+      "price": 155.48,
+      "rsi": 59.0,
+      "reasoning": "RSI 59, vol 0.5x, change 0.7%"
+    },
+    "AMD": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "negative",
+      "level_type": "support",
+      "volume_signal": "weak",
+      "kill_switch": null,
+      "price": 105.11,
+      "rsi": 40.4,
+      "reasoning": "RSI 40, vol 0.8x, change -5.5%"
+    },
+    "MRVL": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "positive",
+      "level_type": "resistance",
+      "volume_signal": "strong",
+      "kill_switch": null,
+      "price": 289.3,
+      "rsi": 68.4,
+      "reasoning": "RSI 68, vol 1.8x, change 3.7%"
+    },
+    "ASML": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "positive",
+      "level_type": "resistance",
+      "volume_signal": "strong",
+      "kill_switch": null,
+      "price": 184.06,
+      "rsi": 71.7,
+      "reasoning": "RSI 72, vol 2.0x, change 1.2%"
+    },
+    "NET": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "negative",
+      "level_type": "support",
+      "volume_signal": "weak",
+      "kill_switch": null,
+      "price": 226.14,
+      "rsi": 26.1,
+      "reasoning": "RSI 26, vol 0.6x, change -3.6%"
+    },
+    "AEHR": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "positive",
+      "level_type": "resistance",
+      "volume_signal": "weak",
+      "kill_switch": null,
+      "price": 208.92,
+      "rsi": 58.9,
+      "reasoning": "RSI 59, vol 1.0x, change 1.7%"
+    },
+    "KLAC": {
+      "signal": "HOLD",
+      "confidence": 50,
+      "gamma_regime": "positive",
+      "level_type": "resistance",
+      "volume_signal": "strong",
+      "kill_switch": null,
+      "price": 92.78,
+      "rsi": 53.4,
+      "reasoning": "RSI 53, vol 2.6x, change 3.0%"
+    }
+  },
+  "summary": "BUY 0, SELL 0, HOLD 8 - test_watchlist shows mixed signals",
+  "note": "MOCK DATA - No Claude API used"
+}
