@@ -1,0 +1,801 @@
+{
+  "analysis_date": "2026-04-28 14:03:07",
+  "market_theme": "AI infrastructure strength + space/defense tailwind, crypto volatility",
+  "tickers_analyzed": 8,
+  "section_1_detailed_analysis": {
+    "UMAC": {
+      "ticker": "UMAC",
+      "price": 14.67,
+      "indicators": {
+        "price": 14.670000076293945,
+        "ma5": 15.343999862670898,
+        "ma20": 14.254999923706055,
+        "ma50": 15.090200004577637,
+        "ma200": 15.090200004577637,
+        "rsi": 58.74999724901679,
+        "mom_5d": -10.820672365290756,
+        "mom_20d": 18.30645586771983,
+        "mom_50d": 20.840194904629822,
+        "volatility": 0.06580040132171712,
+        "atr_pct": 9.632875788216138,
+        "volume_ratio": 0.48347189621992903,
+        "volume_trend": "contraction",
+        "price_vs_ma20": 2.911260293293618,
+        "price_vs_ma50": -2.784588197348104,
+        "price_vs_ma200": -2.784588197348104,
+        "support": 11.050000190734863,
+        "resistance": 17.200000762939453,
+        "midpoint": 14.125000476837158,
+        "pct_range": 58.8617812804759,
+        "high_20d": 17.200000762939453,
+        "low_20d": 11.050000190734863,
+        "range_location": "mid-range",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "above",
+        "price_vs_ma50": "below",
+        "price_vs_ma200": "below",
+        "ma_alignment": "mixed",
+        "support": 11.05,
+        "resistance": 17.2,
+        "midpoint": 14.13,
+        "range_location": "mid-range"
+      },
+      "momentum": {
+        "rsi": 58.7,
+        "rsi_regime": "neutral",
+        "momentum_5d_pct": -10.82,
+        "momentum_20d_pct": 18.31,
+        "momentum_direction": "strong_acceleration",
+        "volume_ratio": 0.48,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": 2.91,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 9.63,
+        "range_position": "mid-range",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "EV Charging / Clean Energy",
+        "catalysts": "EV infrastructure buildout, charging network expansion, IRA subsidies",
+        "sector": "CleanTech",
+        "relative_to_market": "Small-cap EV play, cyclical"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 3
+    },
+    "WULF": {
+      "ticker": "WULF",
+      "price": 20.66,
+      "indicators": {
+        "price": 20.655000686645508,
+        "ma5": 20.603000259399415,
+        "ma20": 18.758250141143797,
+        "ma50": 16.84270009994507,
+        "ma200": 16.84270009994507,
+        "rsi": 62.31679305670913,
+        "mom_5d": 0.5109559780206603,
+        "mom_20d": 43.13929487054086,
+        "mom_50d": 27.65760381375413,
+        "volatility": 0.04808763559086722,
+        "atr_pct": 7.059860403745794,
+        "volume_ratio": 0.5776223077152959,
+        "volume_trend": "contraction",
+        "price_vs_ma20": 10.11155374957621,
+        "price_vs_ma50": 22.634735310123293,
+        "price_vs_ma200": 22.634735310123293,
+        "support": 13.350000381469727,
+        "resistance": 21.600000381469727,
+        "midpoint": 17.475000381469727,
+        "pct_range": 88.54545824455492,
+        "high_20d": 21.600000381469727,
+        "low_20d": 13.350000381469727,
+        "range_location": "premium",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "above",
+        "price_vs_ma50": "above",
+        "price_vs_ma200": "above",
+        "ma_alignment": "mixed",
+        "support": 13.35,
+        "resistance": 21.6,
+        "midpoint": 17.48,
+        "range_location": "premium"
+      },
+      "momentum": {
+        "rsi": 62.3,
+        "rsi_regime": "bullish",
+        "momentum_5d_pct": 0.51,
+        "momentum_20d_pct": 43.14,
+        "momentum_direction": "strong_acceleration",
+        "volume_ratio": 0.58,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": 10.11,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 7.06,
+        "range_position": "premium",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "Crypto Mining / Energy",
+        "catalysts": "Bitcoin halving cycles, energy grid modernization, potential gov support",
+        "sector": "Crypto/Energy",
+        "relative_to_market": "Volatile, correlated to BTC price"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 3
+    },
+    "ASTS": {
+      "ticker": "ASTS",
+      "price": 72.48,
+      "indicators": {
+        "price": 72.4800033569336,
+        "ma5": 77.89800109863282,
+        "ma20": 86.56250076293945,
+        "ma50": 87.20949996948242,
+        "ma200": 87.20949996948242,
+        "rsi": 29.205688041589866,
+        "mom_5d": -14.386959341258676,
+        "mom_20d": -12.53770851368407,
+        "mom_50d": -12.706245426314364,
+        "volatility": 0.058024443304523825,
+        "atr_pct": 10.076571683245467,
+        "volume_ratio": 0.647337691660365,
+        "volume_trend": "contraction",
+        "price_vs_ma20": -16.26858891770267,
+        "price_vs_ma50": -16.889784504788103,
+        "price_vs_ma200": -16.889784504788103,
+        "support": 71.80000305175781,
+        "resistance": 104.1500015258789,
+        "midpoint": 87.97500228881836,
+        "pct_range": 2.1020103160739203,
+        "high_20d": 104.1500015258789,
+        "low_20d": 71.80000305175781,
+        "range_location": "discount",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "below",
+        "price_vs_ma50": "below",
+        "price_vs_ma200": "below",
+        "ma_alignment": "mixed",
+        "support": 71.8,
+        "resistance": 104.15,
+        "midpoint": 87.98,
+        "range_location": "discount"
+      },
+      "momentum": {
+        "rsi": 29.2,
+        "rsi_regime": "oversold",
+        "momentum_5d_pct": -14.39,
+        "momentum_20d_pct": -12.54,
+        "momentum_direction": "strong_deceleration",
+        "volume_ratio": 0.65,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": -16.27,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 10.08,
+        "range_position": "discount",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "Satellite Communications",
+        "catalysts": "Direct-to-device satellite, 3GPP standardization, telecom partnerships",
+        "sector": "Space Tech",
+        "relative_to_market": "High-risk growth, long runway"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 1
+    },
+    "RKLB": {
+      "ticker": "RKLB",
+      "price": 79.0,
+      "indicators": {
+        "price": 79.00199890136719,
+        "ma5": 83.12239990234374,
+        "ma20": 75.56060028076172,
+        "ma50": 72.14204032897949,
+        "ma200": 72.14204032897949,
+        "rsi": 60.435856638412865,
+        "mom_5d": -12.258998114088934,
+        "mom_20d": 23.017747430217533,
+        "mom_50d": 13.037629977527725,
+        "volatility": 0.05174895007835438,
+        "atr_pct": 7.208317209229816,
+        "volume_ratio": 0.47198392570895736,
+        "volume_trend": "contraction",
+        "price_vs_ma20": 4.554488195988663,
+        "price_vs_ma50": 9.508961128774796,
+        "price_vs_ma200": 9.508961128774796,
+        "support": 59.029998779296875,
+        "resistance": 93.0999984741211,
+        "midpoint": 76.06499862670898,
+        "pct_range": 58.62048811554401,
+        "high_20d": 93.0999984741211,
+        "low_20d": 59.029998779296875,
+        "range_location": "mid-range",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "above",
+        "price_vs_ma50": "above",
+        "price_vs_ma200": "above",
+        "ma_alignment": "mixed",
+        "support": 59.03,
+        "resistance": 93.1,
+        "midpoint": 76.06,
+        "range_location": "mid-range"
+      },
+      "momentum": {
+        "rsi": 60.4,
+        "rsi_regime": "bullish",
+        "momentum_5d_pct": -12.26,
+        "momentum_20d_pct": 23.02,
+        "momentum_direction": "strong_acceleration",
+        "volume_ratio": 0.47,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": 4.55,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 7.21,
+        "range_position": "mid-range",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "Commercial Spaceflight",
+        "catalysts": "Rocket launches, payload contracts, space infrastructure demand",
+        "sector": "Space/Defense",
+        "relative_to_market": "Growth-oriented, government contracts"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 3
+    },
+    "GFS": {
+      "ticker": "GFS",
+      "price": 59.67,
+      "indicators": {
+        "price": 59.66999816894531,
+        "ma5": 60.747999572753905,
+        "ma20": 51.90374984741211,
+        "ma50": 48.092100067138674,
+        "ma200": 48.092100067138674,
+        "rsi": 83.81766224473316,
+        "mom_5d": -1.192252405994463,
+        "mom_20d": 34.1501771201351,
+        "mom_50d": 23.745326956412775,
+        "volatility": 0.03894201287875536,
+        "atr_pct": 4.528118582008423,
+        "volume_ratio": 0.55658293895043,
+        "volume_trend": "contraction",
+        "price_vs_ma20": 14.962788515983158,
+        "price_vs_ma50": 24.074428202643237,
+        "price_vs_ma200": 24.074428202643237,
+        "support": 41.88999938964844,
+        "resistance": 65.05000305175781,
+        "midpoint": 53.470001220703125,
+        "pct_range": 76.77027619985057,
+        "high_20d": 65.05000305175781,
+        "low_20d": 41.88999938964844,
+        "range_location": "premium",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "above",
+        "price_vs_ma50": "above",
+        "price_vs_ma200": "above",
+        "ma_alignment": "mixed",
+        "support": 41.89,
+        "resistance": 65.05,
+        "midpoint": 53.47,
+        "range_location": "premium"
+      },
+      "momentum": {
+        "rsi": 83.8,
+        "rsi_regime": "overbought",
+        "momentum_5d_pct": -1.19,
+        "momentum_20d_pct": 34.15,
+        "momentum_direction": "strong_acceleration",
+        "volume_ratio": 0.56,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": 14.96,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 4.53,
+        "range_position": "premium",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "Semiconductor Equipment / AI Infrastructure",
+        "catalysts": "AI chip testing, advanced packaging, foundry capacity expansion",
+        "sector": "Semiconductors",
+        "relative_to_market": "Beneficiary of AI capex cycle"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 3
+    },
+    "NBIS": {
+      "ticker": "NBIS",
+      "price": 136.59,
+      "indicators": {
+        "price": 136.5850067138672,
+        "ma5": 148.38500366210937,
+        "ma20": 140.70775146484374,
+        "ma50": 119.12780105590821,
+        "ma200": 119.12780105590821,
+        "rsi": 57.43820510042192,
+        "mom_5d": -12.524012266057227,
+        "mom_20d": 31.635508772002062,
+        "mom_50d": 40.058461254652094,
+        "volatility": 0.05382572288613094,
+        "atr_pct": 8.70912545268095,
+        "volume_ratio": 0.8003937854991399,
+        "volume_trend": "contraction",
+        "price_vs_ma20": -2.930005424759155,
+        "price_vs_ma50": 14.654182737550983,
+        "price_vs_ma200": 14.654182737550983,
+        "support": 95.7300033569336,
+        "resistance": 168.7100067138672,
+        "midpoint": 132.2200050354004,
+        "pct_range": 55.98109273456493,
+        "high_20d": 168.7100067138672,
+        "low_20d": 95.7300033569336,
+        "range_location": "mid-range",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "below",
+        "price_vs_ma50": "above",
+        "price_vs_ma200": "above",
+        "ma_alignment": "mixed",
+        "support": 95.73,
+        "resistance": 168.71,
+        "midpoint": 132.22,
+        "range_location": "mid-range"
+      },
+      "momentum": {
+        "rsi": 57.4,
+        "rsi_regime": "neutral",
+        "momentum_5d_pct": -12.52,
+        "momentum_20d_pct": 31.64,
+        "momentum_direction": "strong_acceleration",
+        "volume_ratio": 0.8,
+        "volume_trend": "contraction",
+        "volume_signal": "normal",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": -2.93,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 8.71,
+        "range_position": "mid-range",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "Specialty Pharma / Biotech",
+        "catalysts": "FDA approvals, clinical trial readouts, partnership announcements",
+        "sector": "Biotech",
+        "relative_to_market": "Binary event risk, clinical trial dependent"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 3
+    },
+    "NET": {
+      "ticker": "NET",
+      "price": 209.77,
+      "indicators": {
+        "price": 209.77000427246094,
+        "ma5": 208.352001953125,
+        "ma20": 201.4115005493164,
+        "ma50": 198.92640045166016,
+        "ma200": 198.92640045166016,
+        "rsi": 49.316714826484464,
+        "mom_5d": 1.0647556079505673,
+        "mom_20d": 1.6623088084936894,
+        "mom_50d": 8.30752385643376,
+        "volatility": 0.04999569046022218,
+        "atr_pct": 6.251234446391132,
+        "volume_ratio": 0.5299533891767392,
+        "volume_trend": "contraction",
+        "price_vs_ma20": 4.149963482893533,
+        "price_vs_ma50": 5.451063205376712,
+        "price_vs_ma200": 5.451063205376712,
+        "support": 164.0500030517578,
+        "resistance": 225.1300048828125,
+        "midpoint": 194.59000396728516,
+        "pct_range": 74.85265201393277,
+        "high_20d": 225.1300048828125,
+        "low_20d": 164.0500030517578,
+        "range_location": "premium",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "above",
+        "price_vs_ma50": "above",
+        "price_vs_ma200": "above",
+        "ma_alignment": "mixed",
+        "support": 164.05,
+        "resistance": 225.13,
+        "midpoint": 194.59,
+        "range_location": "premium"
+      },
+      "momentum": {
+        "rsi": 49.3,
+        "rsi_regime": "neutral",
+        "momentum_5d_pct": 1.06,
+        "momentum_20d_pct": 1.66,
+        "momentum_direction": "positive_drift",
+        "volume_ratio": 0.53,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": 4.15,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 6.25,
+        "range_position": "premium",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "Cloud Infrastructure / Cybersecurity",
+        "catalysts": "Cloud adoption, DDoS mitigation demand, enterprise IT spending",
+        "sector": "Cloud/Security",
+        "relative_to_market": "SaaS growth beneficiary"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 2
+    },
+    "SMCI": {
+      "ticker": "SMCI",
+      "price": 27.61,
+      "indicators": {
+        "price": 27.614999771118164,
+        "ma5": 28.095000076293946,
+        "ma20": 26.0102499961853,
+        "ma50": 27.97549991607666,
+        "ma200": 27.97549991607666,
+        "rsi": 66.2084709284847,
+        "mom_5d": -5.363264282694426,
+        "mom_20d": 21.277993921614254,
+        "mom_50d": -8.286286245957891,
+        "volatility": 0.04572733843295719,
+        "atr_pct": 6.088823155967423,
+        "volume_ratio": 0.5371520728101599,
+        "volume_trend": "contraction",
+        "price_vs_ma20": 6.169682241301862,
+        "price_vs_ma50": -1.288628071133515,
+        "price_vs_ma200": -1.288628071133515,
+        "support": 21.34000015258789,
+        "resistance": 29.940000534057617,
+        "midpoint": 25.640000343322754,
+        "pct_range": 72.96510860686597,
+        "high_20d": 29.940000534057617,
+        "low_20d": 21.34000015258789,
+        "range_location": "premium",
+        "data_points": 125
+      },
+      "trend": {
+        "trend": "consolidation",
+        "price_vs_ma20": "above",
+        "price_vs_ma50": "below",
+        "price_vs_ma200": "below",
+        "ma_alignment": "mixed",
+        "support": 21.34,
+        "resistance": 29.94,
+        "midpoint": 25.64,
+        "range_location": "premium"
+      },
+      "momentum": {
+        "rsi": 66.2,
+        "rsi_regime": "bullish",
+        "momentum_5d_pct": -5.36,
+        "momentum_20d_pct": 21.28,
+        "momentum_direction": "strong_acceleration",
+        "volume_ratio": 0.54,
+        "volume_trend": "contraction",
+        "volume_signal": "weak",
+        "acceleration_vs_prior": "decelerating"
+      },
+      "technicals": {
+        "ma_structure": "mixed",
+        "price_distance_to_ma20": 6.17,
+        "volatility_regime": "high_expansion",
+        "atr_pct": 6.09,
+        "range_position": "premium",
+        "compression_expansion": "expansion"
+      },
+      "narrative": {
+        "theme": "AI Infrastructure / Data Center",
+        "catalysts": "AI server demand, data center capex, GPU/TPU integration",
+        "sector": "Semiconductors/AI",
+        "relative_to_market": "Direct AI infrastructure play, strong secular tailwind"
+      },
+      "setup": {
+        "direction": "NEUTRAL",
+        "conviction": 3,
+        "entry_zone": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target",
+        "target_2": "Extended move target",
+        "risk_reward": 0
+      },
+      "conviction_score": 3
+    }
+  },
+  "section_2_top_3_setups": {
+    "1": {
+      "ticker": "UMAC",
+      "price": 14.67,
+      "conviction": 3,
+      "setup": "NEUTRAL",
+      "key_level": {
+        "entry": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target"
+      },
+      "narrative": "EV Charging / Clean Energy"
+    },
+    "2": {
+      "ticker": "WULF",
+      "price": 20.66,
+      "conviction": 3,
+      "setup": "NEUTRAL",
+      "key_level": {
+        "entry": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target"
+      },
+      "narrative": "Crypto Mining / Energy"
+    },
+    "3": {
+      "ticker": "RKLB",
+      "price": 79.0,
+      "conviction": 3,
+      "setup": "NEUTRAL",
+      "key_level": {
+        "entry": "Await breakout",
+        "invalidation": "N/A (consolidation)",
+        "target_1": "Range breakout target"
+      },
+      "narrative": "Commercial Spaceflight"
+    }
+  },
+  "section_3_weak_setups": {
+    "1": {
+      "ticker": "SMCI",
+      "price": 27.61,
+      "conviction": 3,
+      "issue": "Weak confluence / choppy structure",
+      "action": "Await clear setup"
+    },
+    "2": {
+      "ticker": "NET",
+      "price": 209.77,
+      "conviction": 2,
+      "issue": "Weak confluence / choppy structure",
+      "action": "Await clear setup"
+    },
+    "3": {
+      "ticker": "ASTS",
+      "price": 72.48,
+      "conviction": 1,
+      "issue": "Weak confluence / choppy structure",
+      "action": "Await clear setup"
+    }
+  },
+  "section_4_industry_alternatives": {
+    "AI Infrastructure / Semiconductors": {
+      "main": [
+        "GFS",
+        "SMCI"
+      ],
+      "theme": "AI infrastructure beneficiaries - chip testing, server design",
+      "alternatives": [
+        {
+          "ticker": "AVGO",
+          "reason": "Data center interconnect leader (optical networking)",
+          "strength": "superior relative strength"
+        },
+        {
+          "ticker": "MRVL",
+          "reason": "Switch-on-package adoption (AI cluster interconnect)",
+          "strength": "cleaner technical structure"
+        },
+        {
+          "ticker": "KLAC",
+          "reason": "Advanced packaging test equipment (AI capex cycle)",
+          "strength": "higher liquidity + institutional"
+        }
+      ]
+    },
+    "Space & Defense Tech": {
+      "main": [
+        "ASTS",
+        "RKLB"
+      ],
+      "theme": "Commercial space, satellite, and aerospace infrastructure",
+      "alternatives": [
+        {
+          "ticker": "MAXR",
+          "reason": "Maxar - EO satellites + government contracts",
+          "strength": "stronger technical + lower volatility"
+        },
+        {
+          "ticker": "ATAT",
+          "reason": "AST SpaceMobile competitor + government backing",
+          "strength": "alternative sat-comms exposure"
+        }
+      ]
+    },
+    "Crypto / Energy Convergence": {
+      "main": [
+        "WULF"
+      ],
+      "theme": "Bitcoin mining, energy arbitrage, grid modernization",
+      "alternatives": [
+        {
+          "ticker": "MARA",
+          "reason": "Marathon Digital - largest US miner, better liquidity",
+          "strength": "superior relative strength vs WULF"
+        },
+        {
+          "ticker": "CLSK",
+          "reason": "Cleanspark - renewable energy mining focus",
+          "strength": "ESG narrative + growth"
+        }
+      ]
+    },
+    "Cloud / Cybersecurity / Infrastructure": {
+      "main": [
+        "NET"
+      ],
+      "theme": "Cloud security, DDoS mitigation, enterprise IT",
+      "alternatives": [
+        {
+          "ticker": "CRWD",
+          "reason": "CrowdStrike - EDR + security platform",
+          "strength": "institutional quality + stronger earnings"
+        },
+        {
+          "ticker": "ZS",
+          "reason": "Zscaler - cloud security leader",
+          "strength": "cleaner technical, higher conviction"
+        }
+      ]
+    },
+    "EV / Clean Energy Infrastructure": {
+      "main": [
+        "UMAC"
+      ],
+      "theme": "EV charging, renewable infrastructure, IRA beneficiaries",
+      "alternatives": [
+        {
+          "ticker": "EVgo",
+          "reason": "EV fast charging network leader",
+          "strength": "higher conviction setup + IRA tailwind"
+        },
+        {
+          "ticker": "SLDP",
+          "reason": "Solaredge - solar + storage inverter",
+          "strength": "better technical + diversified revenue"
+        }
+      ]
+    },
+    "Biotech / Specialty Pharma": {
+      "main": [
+        "NBIS"
+      ],
+      "theme": "Binary event risk, clinical trials, partnership catalysts",
+      "alternatives": [
+        {
+          "ticker": "CRSP",
+          "reason": "CRISPR Therapeutics - gene editing, higher profile",
+          "strength": "better relative strength + lower risk"
+        },
+        {
+          "ticker": "MRNA",
+          "reason": "Moderna - vaccine/cancer platforms, larger cap",
+          "strength": "institutional quality + liquidity"
+        }
+      ]
+    }
+  },
+  "section_5_daily_summary": {
+    "strongest_sector": "AI Infrastructure / Semiconductors (GFS, SMCI clean structure)",
+    "weakest_sector": "Biotech (NBIS - binary risk, choppy)",
+    "market_theme_today": "AI capex strength + space tech tailwind; crypto volatility",
+    "rotation_signals": "Rotation from crypto (WULF weakness) to infrastructure (GFS, SMCI, NET strength)",
+    "key_catalyst_window": "Q2 2026 earnings, CHIPS Act funding, space contract announcements",
+    "risk_management": "Keep position sizes tight on NBIS/ASTS (binary risk); scale into GFS/SMCI weakness"
+  }
+}
