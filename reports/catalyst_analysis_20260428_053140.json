@@ -1,0 +1,380 @@
+{
+  "analysis_date": "2026-04-28 05:31:40",
+  "catalyst_themes": {
+    "AI Chip Demand": [
+      "NASDAQ:MU",
+      "NASDAQ:AVGO",
+      "NASDAQ:MRVL",
+      "NASDAQ:TSEM"
+    ],
+    "Policy Tailwinds (CHIPS Act)": [
+      "NASDAQ:MU",
+      "NASDAQ:AVGO",
+      "NASDAQ:TSEM"
+    ],
+    "Geopolitical Risk (China)": [
+      "NASDAQ:MU",
+      "NASDAQ:AVGO",
+      "NASDAQ:TSEM"
+    ],
+    "Energy/Power Semiconductors": [
+      "NASDAQ:AXTI",
+      "NASDAQ:NVTS"
+    ],
+    "Bitcoin/Crypto Upside": [
+      "NASDAQ:WULF"
+    ],
+    "Data Licensing": [
+      "NYSE:RDDT"
+    ],
+    "Renewable Energy Growth": [
+      "NYSE:FPS",
+      "AMEX:OBE"
+    ],
+    "Advanced Materials": [
+      "NASDAQ:ATOM"
+    ]
+  },
+  "watchlist_analyses": {
+    "VANTAGE_PORTFOLIO": {
+      "watchlist": "VANTAGE_PORTFOLIO",
+      "top_5_catalysts": {
+        "RANK_1": {
+          "rank": 1,
+          "ticker": "NASDAQ:MU",
+          "company": "Micron Technology",
+          "sector": "Semiconductors",
+          "policy_catalysts": [
+            "CHIPS Act funding (up to $5B for advanced packaging)",
+            "Export control relaxation on AI chips to allied nations",
+            "Potential semiconductor supply chain subsidies"
+          ],
+          "government_catalysts": [
+            "Taiwan security initiatives (affects supply chain)",
+            "US-Taiwan semiconductor partnership expansion",
+            "Geopolitical risk premium on chip manufacturing"
+          ],
+          "fundamental_catalysts": [
+            "Data center AI capex cycle (training & inference)",
+            "Memory demand from LLM deployments",
+            "HBM (High Bandwidth Memory) adoption acceleration"
+          ],
+          "near_term_catalyst": "Q3/Q4 2026 - AI capex confirmation",
+          "key_risks": "China trade tensions, oversupply risk"
+        },
+        "RANK_2": {
+          "rank": 2,
+          "ticker": "NASDAQ:CRWV",
+          "company": "Crown Wave Inc",
+          "sector": "Technology",
+          "policy_catalysts": [
+            "Enterprise software modernization push",
+            "Cloud infrastructure investment mandates"
+          ],
+          "government_catalysts": [
+            "Federal cloud adoption initiatives",
+            "GovCloud expansion contracts"
+          ],
+          "fundamental_catalysts": [
+            "Legacy system replacement cycles",
+            "Digital transformation mandates"
+          ],
+          "near_term_catalyst": "Q2 2026 guidance raise expected",
+          "key_risks": "Valuation multiple compression risk"
+        },
+        "RANK_3": {
+          "rank": 3,
+          "ticker": "NASDAQ:AVGO",
+          "company": "Broadcom Inc",
+          "sector": "Semiconductors",
+          "policy_catalysts": [
+            "CHIPS Act advanced packaging subsidies",
+            "5G/6G network equipment funding",
+            "Critical infrastructure chip protection"
+          ],
+          "government_catalysts": [
+            "US-allied nations 5G rollout (market share opportunity)",
+            "Taiwan semiconductor security partnerships",
+            "Defense/aerospace chip demand (classified projects)"
+          ],
+          "fundamental_catalysts": [
+            "AI infrastructure data center switch shipments +40% YoY",
+            "Optical networking for AI cluster interconnect",
+            "Acquisition of infrastructure AI chip vendors"
+          ],
+          "near_term_catalyst": "Q2 2026 data center strength, guidance",
+          "key_risks": "China revenue exposure, tariff risk"
+        },
+        "RANK_4": {
+          "rank": 4,
+          "ticker": "NASDAQ:WULF",
+          "company": "Wulf Crypto Mining",
+          "sector": "Crypto/Energy",
+          "policy_catalysts": [
+            "Bitcoin strategic reserve proposals",
+            "Renewable energy incentive programs"
+          ],
+          "government_catalysts": [
+            "El Salvador/Argentina precedent (Bitcoin adoption)",
+            "Energy grid modernization with mining participants"
+          ],
+          "fundamental_catalysts": [
+            "Hash rate increase from new mining hardware",
+            "Energy arbitrage opportunities (cheap power jurisdictions)",
+            "M&A consolidation in mining industry"
+          ],
+          "near_term_catalyst": "Bitcoin hash rate/difficulty changes",
+          "key_risks": "Regulatory ban, power cost inflation"
+        },
+        "RANK_5": {
+          "rank": 5,
+          "ticker": "NYSE:RDDT",
+          "company": "Reddit Inc",
+          "sector": "Social Media/AI Data",
+          "policy_catalysts": [
+            "Content moderation regulatory frameworks",
+            "AI training data licensing regulations"
+          ],
+          "government_catalysts": [
+            "FTC scrutiny on data usage/privacy",
+            "Potential Section 230 reform (affects moderation liability)"
+          ],
+          "fundamental_catalysts": [
+            "AI training data licensing deals (Google, OpenAI partners)",
+            "Monetization of user-generated content",
+            "Ad platform expansion (competition with Meta)"
+          ],
+          "near_term_catalyst": "Data licensing revenue disclosure (Q2 2026)",
+          "key_risks": "Privacy regulation, content liability"
+        }
+      }
+    },
+    "AI_VERTICALS": {
+      "watchlist": "AI_VERTICALS",
+      "top_5_catalysts": {
+        "RANK_1": {
+          "rank": 1,
+          "ticker": "NASDAQ:MRVL",
+          "company": "Marvell Technology",
+          "sector": "Semiconductors",
+          "policy_catalysts": [
+            "CHIPS Act advanced packaging funding",
+            "AI chip export control relaxation",
+            "5G infrastructure subsidies"
+          ],
+          "government_catalysts": [
+            "US-Taiwan semiconductor cooperation",
+            "Allied nations AI chip supply agreements",
+            "Defense department chip procurement"
+          ],
+          "fundamental_catalysts": [
+            "Data center switch-on-package (SoP) adoption",
+            "CXL (Compute Express Link) memory expansion",
+            "AI accelerator interconnect leadership"
+          ],
+          "near_term_catalyst": "Q3 2026 data center guidance raise",
+          "key_risks": "China revenue exposure, competition from NVIDIA"
+        },
+        "RANK_2": {
+          "rank": 2,
+          "ticker": "NASDAQ:PLAB",
+          "company": "Phaselab Therapeutics",
+          "sector": "AI/Biotech",
+          "policy_catalysts": [
+            "FDA AI/ML-based drug discovery approval streamlining",
+            "NIH AI research funding expansion"
+          ],
+          "government_catalysts": [
+            "Biodefense Act biotech funding",
+            "ARPA-H (Advanced Research Projects Agency for Health) grants"
+          ],
+          "fundamental_catalysts": [
+            "AI-discovered drug candidates entering trials",
+            "Pharma partnership announcements for AI platform",
+            "AI prediction accuracy improvements disclosed"
+          ],
+          "near_term_catalyst": "Clinical trial advancement (late 2026)",
+          "key_risks": "Regulatory setback risk, pharma partnership delays"
+        },
+        "RANK_3": {
+          "rank": 3,
+          "ticker": "NASDAQ:TSEM",
+          "company": "Taiwan Semiconductor Manufacturing",
+          "sector": "Semiconductors",
+          "policy_catalysts": [
+            "US plant capacity subsidies (CHIPS Act payments)",
+            "Strategic chip production reshoring"
+          ],
+          "government_catalysts": [
+            "Taiwan security commitments impact valuations",
+            "US-Taiwan trade normalization",
+            "Defense/critical infrastructure chip priority"
+          ],
+          "fundamental_catalysts": [
+            "Arizona fab ramp (capacity increase 2026)",
+            "3nm/5nm node utilization from AI demand",
+            "Margin expansion from advanced node mix shift"
+          ],
+          "near_term_catalyst": "Arizona plant operational updates (Q2 2026)",
+          "key_risks": "Geopolitical (China), US-Taiwan tensions"
+        },
+        "RANK_4": {
+          "rank": 4,
+          "ticker": "NASDAQ:AXTI",
+          "company": "AXTi Semiconductor",
+          "sector": "Semiconductors",
+          "policy_catalysts": [
+            "Rare earth semiconductor material supply chain support",
+            "GaAs/GaN (power semiconductors) manufacturing subsidies"
+          ],
+          "government_catalysts": [
+            "Defense/aerospace power semiconductor contracts",
+            "5G phased array antenna chip demand"
+          ],
+          "fundamental_catalysts": [
+            "RF semiconductor demand from 5G/6G buildout",
+            "Power management IC adoption in EV platforms",
+            "Military/space program chip orders"
+          ],
+          "near_term_catalyst": "Defense contract wins, guidance (Q3 2026)",
+          "key_risks": "Technology obsolescence, competition risk"
+        },
+        "RANK_5": {
+          "rank": 5,
+          "ticker": "NASDAQ:COHU",
+          "company": "Cohu Inc",
+          "sector": "Semiconductors/Equipment",
+          "policy_catalysts": [
+            "Semiconductor test equipment CHIPS Act subsidies",
+            "Advanced packaging equipment demand"
+          ],
+          "government_catalysts": [
+            "US semiconductor manufacturing expansion contracts",
+            "Critical infrastructure chip testing capacity mandates"
+          ],
+          "fundamental_catalysts": [
+            "AI chip test handler demand surge",
+            "Advanced packaging (chiplet) test requirements",
+            "Capacity utilization from TSMC/Samsung expansion"
+          ],
+          "near_term_catalyst": "Test equipment orders (Q3 2026)",
+          "key_risks": "Capex cycle downturn, competition from Teradyne"
+        }
+      }
+    },
+    "ENERGY_AI": {
+      "watchlist": "ENERGY_AI",
+      "top_5_catalysts": {
+        "RANK_1": {
+          "rank": 1,
+          "ticker": "AMEX:OBE",
+          "company": "Obsidian Energy",
+          "sector": "Oil & Gas",
+          "policy_catalysts": [
+            "Energy independence initiatives (US)",
+            "Data center power contracts (oil revenue diversification)"
+          ],
+          "government_catalysts": [
+            "Oil price floor support proposals",
+            "Pipeline infrastructure investment mandates",
+            "LNG export capacity expansion"
+          ],
+          "fundamental_catalysts": [
+            "AI data center power purchase agreements (PPAs)",
+            "Upstream production optimization (AI-driven efficiency)",
+            "Strategic asset sales (deleveraging)"
+          ],
+          "near_term_catalyst": "Q2 2026 production guidance, PPA deals",
+          "key_risks": "Oil price crash, ESG headwinds"
+        },
+        "RANK_2": {
+          "rank": 2,
+          "ticker": "NASDAQ:ATOM",
+          "company": "Atomera Inc",
+          "sector": "Semiconductors/Materials",
+          "policy_catalysts": [
+            "Critical minerals/materials CHIPS Act support",
+            "Semiconductor manufacturing cost reduction initiatives"
+          ],
+          "government_catalysts": [
+            "SEMI-related materials research funding (NSF/DOD)",
+            "Advanced packaging material specifications mandates"
+          ],
+          "fundamental_catalysts": [
+            "Semiconductor manufacturer adoption of Atomera's SpS (Selective Silicon) process",
+            "Cost/power savings from advanced materials technology",
+            "Licensing revenue scaling from major foundries"
+          ],
+          "near_term_catalyst": "Manufacturing partner adoption announcements",
+          "key_risks": "Process technology risk, fab adoption delays"
+        },
+        "RANK_3": {
+          "rank": 3,
+          "ticker": "NASDAQ:WULF",
+          "company": "Wulf Crypto Mining",
+          "sector": "Crypto/Energy",
+          "policy_catalysts": [
+            "Bitcoin strategic reserve proposals",
+            "Renewable energy incentive programs"
+          ],
+          "government_catalysts": [
+            "El Salvador/Argentina precedent (Bitcoin adoption)",
+            "Energy grid modernization with mining participants"
+          ],
+          "fundamental_catalysts": [
+            "Hash rate increase from new mining hardware",
+            "Energy arbitrage opportunities (cheap power jurisdictions)",
+            "M&A consolidation in mining industry"
+          ],
+          "near_term_catalyst": "Bitcoin hash rate/difficulty changes",
+          "key_risks": "Regulatory ban, power cost inflation"
+        },
+        "RANK_4": {
+          "rank": 4,
+          "ticker": "NASDAQ:NVTS",
+          "company": "Navitas Semiconductor",
+          "sector": "Semiconductors/Power",
+          "policy_catalysts": [
+            "EV charging infrastructure subsidies (charger chip demand)",
+            "Power efficiency standards mandates"
+          ],
+          "government_catalysts": [
+            "Infrastructure bill EV charging funding (ongoing)",
+            "Defense mobile power supply contracts"
+          ],
+          "fundamental_catalysts": [
+            "GaN (Gallium Nitride) chip adoption in fast chargers",
+            "EV on-board charger OEM design wins",
+            "Data center power supply efficiency upgrades"
+          ],
+          "near_term_catalyst": "EV charger chip adoption ramp (Q3-Q4 2026)",
+          "key_risks": "EV adoption slowdown, price competition"
+        },
+        "RANK_5": {
+          "rank": 5,
+          "ticker": "NYSE:FPS",
+          "company": "First Solar",
+          "sector": "Solar/Renewable Energy",
+          "policy_catalysts": [
+            "IRA (Inflation Reduction Act) solar manufacturing tax credits",
+            "US solar manufacturing capacity incentives",
+            "Critical minerals extraction support (lithium, rare earths)"
+          ],
+          "government_catalysts": [
+            "Federal solar procurement mandates",
+            "Energy independence renewable initiatives",
+            "Climate/ESG policy support for renewables"
+          ],
+          "fundamental_catalysts": [
+            "Utility-scale solar capacity growth (gigawatt deployments)",
+            "Advanced module efficiency improvements (next-gen tech)",
+            "Energy storage integration partnerships",
+            "AI data center power contracts (renewable base)"
+          ],
+          "near_term_catalyst": "IRA manufacturing awards (2026), guidance raise",
+          "key_risks": "Supply chain delays, competition from China, tariff risk"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,818 @@
+{
+  "vantage_portfolio": {
+    "watchlist": "vantage_portfolio",
+    "analysis_date": "2026-04-28 05:29:47",
+    "tickers_analyzed": 15,
+    "top_5_ranked": [
+      {
+        "rank": 1,
+        "ticker": "NASDAQ:MU",
+        "composite_score": 50,
+        "price": 524.56,
+        "current_metrics": {
+          "rsi": 87.3,
+          "momentum_5d": "16.7%",
+          "momentum_20d": "63.0%",
+          "volatility": "4.96%",
+          "volume_ratio": 0.91,
+          "support": 311.49,
+          "resistance": 531.36
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 87.3 (+5)",
+          "Strong uptrend +63.0% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 2,
+        "ticker": "NASDAQ:CRWV",
+        "composite_score": 50,
+        "price": 112.06,
+        "current_metrics": {
+          "rsi": 71.8,
+          "momentum_5d": "-2.7%",
+          "momentum_20d": "62.1%",
+          "volatility": "5.58%",
+          "volume_ratio": 0.75,
+          "support": 67.15,
+          "resistance": 124.96
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "neutral",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "yes",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 71.8 (+5)",
+          "Strong uptrend +62.1% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 3,
+        "ticker": "NASDAQ:AVGO",
+        "composite_score": 50,
+        "price": 418.2,
+        "current_metrics": {
+          "rsi": 87.4,
+          "momentum_5d": "4.0%",
+          "momentum_20d": "42.5%",
+          "volatility": "3.02%",
+          "volume_ratio": 0.77,
+          "support": 289.96,
+          "resistance": 429.31
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 87.4 (+5)",
+          "Strong uptrend +42.5% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 4,
+        "ticker": "NASDAQ:WULF",
+        "composite_score": 50,
+        "price": 21.43,
+        "current_metrics": {
+          "rsi": 71.5,
+          "momentum_5d": "8.4%",
+          "momentum_20d": "56.4%",
+          "volatility": "5.07%",
+          "volume_ratio": 0.97,
+          "support": 13.2,
+          "resistance": 21.6
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 2.0,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 71.5 (+5)",
+          "Strong uptrend +56.4% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 5,
+        "ticker": "NYSE:RDDT",
+        "composite_score": 49,
+        "price": 160.21,
+        "current_metrics": {
+          "rsi": 62.9,
+          "momentum_5d": "2.2%",
+          "momentum_20d": "29.1%",
+          "volatility": "3.90%",
+          "volume_ratio": 0.87,
+          "support": 119.27,
+          "resistance": 168.7
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "neutral",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 1
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Neutral RSI 62.9 (+10)",
+          "Strong uptrend +29.1% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 1/4 (+3)",
+          "Neutral backtest edge (+5)"
+        ]
+      }
+    ]
+  },
+  "ai_verticals": {
+    "watchlist": "ai_verticals",
+    "analysis_date": "2026-04-28 05:29:53",
+    "tickers_analyzed": 13,
+    "top_5_ranked": [
+      {
+        "rank": 1,
+        "ticker": "NASDAQ:MRVL",
+        "composite_score": 60,
+        "price": 158.21,
+        "current_metrics": {
+          "rsi": 87.0,
+          "momentum_5d": "4.6%",
+          "momentum_20d": "80.3%",
+          "volatility": "5.05%",
+          "volume_ratio": 0.96,
+          "support": 86.57,
+          "resistance": 170.84
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "neutral",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 28.0,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "positive"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 87.0 (+5)",
+          "Strong uptrend +80.3% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Positive backtest edge (+15)"
+        ]
+      },
+      {
+        "rank": 2,
+        "ticker": "NASDAQ:PLAB",
+        "composite_score": 60,
+        "price": 51.4,
+        "current_metrics": {
+          "rsi": 93.1,
+          "momentum_5d": "3.8%",
+          "momentum_20d": "39.0%",
+          "volatility": "3.55%",
+          "volume_ratio": 0.88,
+          "support": 36.63,
+          "resistance": 52.79
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 30.0,
+          "resistance_rejection_rate": 2.0,
+          "backtest_edge": "positive"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 93.1 (+5)",
+          "Strong uptrend +39.0% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Positive backtest edge (+15)"
+        ]
+      },
+      {
+        "rank": 3,
+        "ticker": "NASDAQ:TSEM",
+        "composite_score": 59,
+        "price": 203.33,
+        "current_metrics": {
+          "rsi": 59.4,
+          "momentum_5d": "-6.2%",
+          "momentum_20d": "28.2%",
+          "volatility": "4.46%",
+          "volume_ratio": 0.89,
+          "support": 153.26,
+          "resistance": 228.73
+        },
+        "vif_framework": {
+          "gamma_regime": "transition",
+          "level_type": "neutral",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "yes",
+          "volatility_regime": "high",
+          "signal_strength": 1
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 46.0,
+          "resistance_rejection_rate": 2.0,
+          "backtest_edge": "positive"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Neutral RSI 59.4 (+10)",
+          "Strong uptrend +28.2% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 1/4 (+3)",
+          "Positive backtest edge (+15)"
+        ]
+      },
+      {
+        "rank": 4,
+        "ticker": "NASDAQ:AXTI",
+        "composite_score": 59,
+        "price": 70.15,
+        "current_metrics": {
+          "rsi": 64.7,
+          "momentum_5d": "-6.4%",
+          "momentum_20d": "33.0%",
+          "volatility": "12.86%",
+          "volume_ratio": 0.66,
+          "support": 39.7,
+          "resistance": 90.1
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "neutral",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "yes",
+          "volatility_regime": "high",
+          "signal_strength": 1
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 26.0,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "positive"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Neutral RSI 64.7 (+10)",
+          "Strong uptrend +33.0% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 1/4 (+3)",
+          "Positive backtest edge (+15)"
+        ]
+      },
+      {
+        "rank": 5,
+        "ticker": "NASDAQ:COHU",
+        "composite_score": 59,
+        "price": 46.19,
+        "current_metrics": {
+          "rsi": 94.5,
+          "momentum_5d": "2.9%",
+          "momentum_20d": "61.6%",
+          "volatility": "3.54%",
+          "volume_ratio": 1.85,
+          "support": 28.14,
+          "resistance": 47.69
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "strong"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 4
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 8.0,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 94.5 (+5)",
+          "Strong uptrend +61.6% (+15)",
+          "High volume 1.8x (+12)",
+          "High volatility (+10)",
+          "Signal strength 4/4 (+12)",
+          "Neutral backtest edge (+5)"
+        ]
+      }
+    ]
+  },
+  "energy_ai": {
+    "watchlist": "energy_ai",
+    "analysis_date": "2026-04-28 05:29:56",
+    "tickers_analyzed": 13,
+    "top_5_ranked": [
+      {
+        "rank": 1,
+        "ticker": "AMEX:OBE",
+        "composite_score": 60,
+        "price": 13.08,
+        "current_metrics": {
+          "rsi": 75.9,
+          "momentum_5d": "11.8%",
+          "momentum_20d": "38.6%",
+          "volatility": "4.77%",
+          "volume_ratio": 1.37,
+          "support": 8.55,
+          "resistance": 13.75
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 44.0,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "positive"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 75.9 (+5)",
+          "Strong uptrend +38.6% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Positive backtest edge (+15)"
+        ]
+      },
+      {
+        "rank": 2,
+        "ticker": "NASDAQ:ATOM",
+        "composite_score": 59,
+        "price": 7.63,
+        "current_metrics": {
+          "rsi": 74.9,
+          "momentum_5d": "15.4%",
+          "momentum_20d": "113.1%",
+          "volatility": "11.18%",
+          "volume_ratio": 2.24,
+          "support": 3.45,
+          "resistance": 9.59
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "neutral",
+          "volume_signal": "strong"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 4
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 74.9 (+5)",
+          "Strong uptrend +113.1% (+15)",
+          "High volume 2.2x (+12)",
+          "High volatility (+10)",
+          "Signal strength 4/4 (+12)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 3,
+        "ticker": "NASDAQ:WULF",
+        "composite_score": 50,
+        "price": 21.43,
+        "current_metrics": {
+          "rsi": 71.5,
+          "momentum_5d": "8.4%",
+          "momentum_20d": "56.4%",
+          "volatility": "5.07%",
+          "volume_ratio": 0.97,
+          "support": 13.2,
+          "resistance": 21.6
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 2.0,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 71.5 (+5)",
+          "Strong uptrend +56.4% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 4,
+        "ticker": "NASDAQ:NVTS",
+        "composite_score": 50,
+        "price": 18.3,
+        "current_metrics": {
+          "rsi": 88.8,
+          "momentum_5d": "19.4%",
+          "momentum_20d": "133.7%",
+          "volatility": "8.92%",
+          "volume_ratio": 1.03,
+          "support": 7.66,
+          "resistance": 19.79
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "neutral",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 15,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 88.8 (+5)",
+          "Strong uptrend +133.7% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      },
+      {
+        "rank": 5,
+        "ticker": "NYSE:FPS",
+        "composite_score": 50,
+        "price": 37.15,
+        "current_metrics": {
+          "rsi": 91.3,
+          "momentum_5d": "9.1%",
+          "momentum_20d": "32.8%",
+          "volatility": "3.30%",
+          "volume_ratio": 1.29,
+          "support": 27.27,
+          "resistance": 37.49
+        },
+        "vif_framework": {
+          "gamma_regime": "positive",
+          "level_type": "resistance",
+          "volume_signal": "weak"
+        },
+        "situational_awareness": {
+          "trend_strength": "strong",
+          "pullback_opportunity": "no",
+          "volatility_regime": "high",
+          "signal_strength": 3
+        },
+        "backtest_edge": {
+          "support_bounce_rate": 10,
+          "resistance_rejection_rate": 2.0,
+          "backtest_edge": "neutral"
+        },
+        "alpha_sources": [
+          {
+            "type": "momentum",
+            "edge": "trend_continuation",
+            "confidence": "medium",
+            "target_move": "+2-4%"
+          },
+          {
+            "type": "volatility",
+            "edge": "vol_expansion_trade",
+            "confidence": "medium",
+            "target_move": "+1-3% (on reversal)"
+          }
+        ],
+        "score_breakdown": [
+          "Overbought RSI 91.3 (+5)",
+          "Strong uptrend +32.8% (+15)",
+          "Normal volume (+6)",
+          "High volatility (+10)",
+          "Signal strength 3/4 (+9)",
+          "Neutral backtest edge (+5)"
+        ]
+      }
+    ]
+  }
+}
