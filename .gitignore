@@ -1,10 +1,40 @@
+# ── Secrets (NEVER push these) ─────────────────────────────────────────
 .env
 .env.local
+.env.production
+*.key
+*.pem
+
+# ── Python ─────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
-*.class
-*.log
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ──────────────────────────────────────────────
 venv/
 env/
+.venv/
+
+# ── IDE / Editor ──────────────────────────────────────────────────────
 .vscode/
 .idea/
+*.swp
+*.swo
+.claude/settings.local.json
+
+# ── Cached market data & reports (too large / sensitive for public repo)
+data/*.pkl
+data/*.csv
+reports/
+logs/
+
+# ── Temp files ────────────────────────────────────────────────────────
+*.log
+*.class
+_pkg_backup.txt
+pyrightconfig.json
+.python-version
+settings.json.interp

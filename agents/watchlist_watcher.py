@@ -16,14 +16,16 @@ except ImportError as e:
 try:
     from dotenv import load_dotenv
 except ImportError:
-    load_dotenv = lambda: None
+    load_dotenv = lambda *a, **kw: None
 
-load_dotenv()
-CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
-CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-opus-4-7")
+# override=True ensures .env wins over any stale system env var.
+load_dotenv(override=True)
+
+CLAUDE_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
 
 if not CLAUDE_API_KEY:
-    print("ERROR: CLAUDE_API_KEY not found in .env")
+    print("ERROR: ANTHROPIC_API_KEY not found in .env")
     sys.exit(1)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -51,7 +53,7 @@ def fetch_market_data(tickers, period='5d'):
     """Fetch OHLCV data with caching, compute indicators."""
     data = {}
 
-    for ticker in tickers[:15]:
+    for ticker in tickers:
         try:
             ticker_clean = ticker.split(':')[-1] if ':' in ticker else ticker
 
@@ -69,6 +71,16 @@ def fetch_market_data(tickers, period='5d'):
                 logger.warning(f"No live data: {ticker}, using fallback")
                 data[ticker] = generate_mock_data(ticker)
                 continue
+
+            # Handle MultiIndex columns from newer yfinance versions
+            if isinstance(df.columns, pd.MultiIndex):
+                df = pd.DataFrame({
+                    'Close': df[('Close', ticker_clean)],
+                    'High': df[('High', ticker_clean)],
+                    'Low': df[('Low', ticker_clean)],
+                    'Open': df[('Open', ticker_clean)],
+                    'Volume': df[('Volume', ticker_clean)],
+                })
 
             df = df.dropna()
             if len(df) < 2:
@@ -139,53 +151,63 @@ def analyze_with_vif(market_data, watchlist_name):
 
     data_summary = json.dumps(market_data, indent=2)
 
-    prompt = f"""Analyze this watchlist data using VIF (Volatility Imbalance Framework) v4.0:
-Watchlist: {watchlist_name}
-Tickers analyzed: {len(market_data)}
+    system_prompt = f"""You are a VIF v4.0 analyst. Apply the Volatility Imbalance Framework to the data and return ONLY valid JSON.
 
-Market Data (OHLCV + indicators):
-{data_summary}
+<vif_rules>
+• Gamma regime: RSI>65 & price>MA20 = positive | RSI<35 & price<MA20 = negative | else = transition
+• Volume: vol > 1.5x avg = STRONG | <0.8x = WEAK | else = NORMAL
+• Kill switches: K1=RSI>80 or <20 | K2=5d-range>12% | K3=vol<500k | K4=earnings<5d | K6=price<MA20 & vol_weak
+• Signal: BUY (positive gamma + strong vol + no kill) | SELL (negative gamma + kill active) | HOLD (everything else)
+• Confidence: 0-100 – be honest, never inflate.
+</vif_rules>
 
-For each ticker, assess:
-1. Gamma Regime: Estimate from RSI (>70=positive, <30=negative, else=transition) and price vs MA
-2. Structural Levels: Support (near 5d low) or Resistance (near 5d high)
-3. Volume Confirmation: Is volume > 1.5x 20-day average = STRONG, else WEAK
-4. Kill Switches: Flag if RSI extreme (>85 or <15) or change >10%
-
-Return ONLY valid JSON (no markdown, no extra text):
+EXPECTED SCHEMA:
 {{
-  "analysis_date": "{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-  "watchlist": "{watchlist_name}",
-  "tickers_analyzed": {len(market_data)},
+  "analysis_date": "YYYY-MM-DD HH:MM:SS",
+  "watchlist": "NAME",
+  "tickers_analyzed": 0,
+  "top_3_buys": ["TICK1"],
+  "kill_switch_alerts": {{"TICKER": "K1"}},
   "signals": {{
     "TICKER": {{
       "signal": "BUY|SELL|HOLD",
       "confidence": 75,
       "gamma_regime": "positive|negative|transition",
-      "level_type": "support|resistance",
-      "volume_signal": "strong|weak",
-      "kill_switch": "K1|K2|K3|K4|K5|K6|null",
-      "price": 123.45,
-      "rsi": 65,
-      "reasoning": "brief 1-2 sentence explanation"
+      "volume_signal": "strong|normal|weak",
+      "kill_switch": null,
+      "price": 0.00,
+      "rsi": 0,
+      "note": "max 12 words"
     }}
   }},
-  "summary": "1-2 sentence watchlist overview"
+  "market_summary": "2 sentences"
 }}"""
+
+    user_prompt = f"""WATCHLIST: {watchlist_name} | Tickers: {len(market_data)} | Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}
+<data>
+{data_summary}
+</data>"""
 
     try:
         message = client.messages.create(
             model=CLAUDE_MODEL,
             max_tokens=2048,
-            messages=[{"role": "user", "content": prompt}]
+            system=system_prompt,
+            messages=[
+                {"role": "user", "content": user_prompt}
+            ]
         )
 
         response_text = message.content[0].text
+
+        if response_text.startswith("```"):
+            response_text = response_text.split("```")[1]
+            if response_text.startswith("json\n"):
+                response_text = response_text[5:]
+            response_text = response_text.rstrip("```").strip()
+
         try:
-            json_start = response_text.find('{')
-            json_end = response_text.rfind('}') + 1
-            if json_start != -1 and json_end > json_start:
-                return json.loads(response_text[json_start:json_end])
+            return json.loads(response_text)
         except json.JSONDecodeError as e:
             logger.error(f"JSON parse error: {e}")
             return {"raw_response": response_text, "parse_error": str(e)}

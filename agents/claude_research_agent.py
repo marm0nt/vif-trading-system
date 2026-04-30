@@ -11,14 +11,15 @@ except ImportError:
 try:
     from dotenv import load_dotenv
 except ImportError:
-    load_dotenv = lambda: None
+    load_dotenv = lambda *a, **kw: None
 
-load_dotenv()
-CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
+load_dotenv(override=True)  # .env wins over any stale system env var
+
+CLAUDE_API_KEY = os.getenv("ANTHROPIC_API_KEY") or os.getenv("CLAUDE_API_KEY")
 CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
 
 if not CLAUDE_API_KEY:
-    print("ERROR: CLAUDE_API_KEY not found in .env")
+    print("ERROR: ANTHROPIC_API_KEY not found in .env")
     sys.exit(1)
 
 client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)

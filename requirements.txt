@@ -1,0 +1,30 @@
+# VIF Trading System – Requirements
+# Python 3.14 compatible
+# Last updated: 2026-04-29
+
+# ── Core AI / API ──────────────────────────────────────────────────────────────
+anthropic>=0.97.0          # Claude API (VIF analyst, research agent, weekend briefing)
+python-dotenv>=1.0.0       # .env file loading for API keys
+
+# ── Market Data ────────────────────────────────────────────────────────────────
+yfinance>=1.0.0            # Yahoo Finance OHLCV data (free, no API key needed)
+requests>=2.31.0           # HTTP requests for news feeds
+requests-cache>=1.2.0      # Cache HTTP responses to reduce API calls
+beautifulsoup4>=4.12.0     # HTML parsing for news catalysts
+
+# ── Data Processing ────────────────────────────────────────────────────────────
+pandas>=2.0.0              # DataFrames for all market data
+numpy>=1.24.0              # Numerical computing (RSI, ATR calculations)
+scipy>=1.11.0              # Statistical analysis (percentile levels, correlations)
+PyYAML>=6.0                # config/vif_config.yml loading
+
+# ── Technical Indicators ───────────────────────────────────────────────────────
+# NOTE: pandas-ta and TA-Lib require numba/C extensions incompatible with Py 3.14.
+# 'ta' is pure-Python and implements the same indicators (RSI, MACD, BB, ATR, etc.)
+ta>=0.11.0                 # Technical analysis – RSI, MACD, Bollinger Bands, EMA, ATR
+
+# ── Scheduling / Automation ────────────────────────────────────────────────────
+schedule>=1.2.0            # Cron-style job scheduling (schedule_daily.py)
+
+# ── Output / Reporting ─────────────────────────────────────────────────────────
+rich>=13.0.0               # Beautiful terminal output (tables, progress bars)
