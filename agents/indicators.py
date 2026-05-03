@@ -24,14 +24,9 @@ import pandas as pd
 import numpy as np
 import logging
 
-try:
-    from ta.trend import MACD, EMAIndicator, SMAIndicator
-    from ta.momentum import RSIIndicator, StochasticOscillator
-    from ta.volatility import BollingerBands, AverageTrueRange, KeltnerChannel
-    TA_AVAILABLE = True
-except ImportError:
-    TA_AVAILABLE = False
-    logging.warning("ta library not found – falling back to manual calculations")
+from ta.trend import MACD, EMAIndicator, SMAIndicator
+from ta.momentum import RSIIndicator, StochasticOscillator
+from ta.volatility import BollingerBands, AverageTrueRange, KeltnerChannel
 
 logger = logging.getLogger(__name__)
 
@@ -58,35 +53,6 @@ class IndicatorEngine:
             raise ValueError(f"DataFrame missing columns: {missing}")
         self.df = self.df.dropna(subset=["Close", "High", "Low", "Volume"])
 
-    # ── Manual fallbacks (no extra deps) ──────────────────────────────────────
-
-    def _rsi_manual(self, period: int = 14) -> pd.Series:
-        delta = self.df["Close"].diff()
-        gain = delta.clip(lower=0).rolling(period).mean()
-        loss = (-delta.clip(upper=0)).rolling(period).mean()
-        rs = gain / loss.replace(0, np.nan)
-        return 100 - (100 / (1 + rs))
-
-    def _ema_manual(self, period: int) -> pd.Series:
-        return self.df["Close"].ewm(span=period, adjust=False).mean()
-
-    def _sma_manual(self, period: int) -> pd.Series:
-        return self.df["Close"].rolling(period).mean()
-
-    def _atr_manual(self, period: int = 14) -> pd.Series:
-        hl = self.df["High"] - self.df["Low"]
-        hc = (self.df["High"] - self.df["Close"].shift()).abs()
-        lc = (self.df["Low"] - self.df["Close"].shift()).abs()
-        tr = pd.concat([hl, hc, lc], axis=1).max(axis=1)
-        return tr.rolling(period).mean()
-
-    def _bb_manual(self, period: int = 20, std: float = 2.0):
-        mid = self._sma_manual(period)
-        std_dev = self.df["Close"].rolling(period).std()
-        upper = mid + std * std_dev
-        lower = mid - std * std_dev
-        pct_b = (self.df["Close"] - lower) / (upper - lower)
-        return upper, mid, lower, pct_b
 
     # ── Main compute ──────────────────────────────────────────────────────────
 
@@ -102,26 +68,14 @@ class IndicatorEngine:
         result = {"price": round(price, 2)}
 
         # ── RSI ──────────────────────────────────────────────────────────────
-        if TA_AVAILABLE:
-            rsi_series = RSIIndicator(close, window=14).rsi()
-        else:
-            rsi_series = self._rsi_manual(14)
+        rsi_series = RSIIndicator(close, window=14).rsi()
         result["rsi"] = round(float(rsi_series.iloc[-1]), 1) if not rsi_series.isnull().all() else 50.0
 
         # ── MACD (12/26/9) ────────────────────────────────────────────────────
-        if TA_AVAILABLE:
-            macd_obj = MACD(close, window_slow=26, window_fast=12, window_sign=9)
-            macd_line   = float(macd_obj.macd().iloc[-1])
-            macd_signal = float(macd_obj.macd_signal().iloc[-1])
-            macd_hist   = float(macd_obj.macd_diff().iloc[-1])
-        else:
-            ema12 = self._ema_manual(12)
-            ema26 = self._ema_manual(26)
-            macd_line_s = ema12 - ema26
-            macd_signal_s = macd_line_s.ewm(span=9, adjust=False).mean()
-            macd_line   = float(macd_line_s.iloc[-1])
-            macd_signal = float(macd_signal_s.iloc[-1])
-            macd_hist   = round(macd_line - macd_signal, 4)
+        macd_obj = MACD(close, window_slow=26, window_fast=12, window_sign=9)
+        macd_line   = float(macd_obj.macd().iloc[-1])
+        macd_signal = float(macd_obj.macd_signal().iloc[-1])
+        macd_hist   = float(macd_obj.macd_diff().iloc[-1])
 
         result["macd"]        = round(macd_line, 4)
         result["macd_signal"] = round(macd_signal, 4)
@@ -130,10 +84,7 @@ class IndicatorEngine:
 
         # ── EMAs ─────────────────────────────────────────────────────────────
         for period in [9, 21, 50, 200]:
-            if TA_AVAILABLE:
-                ema_val = float(EMAIndicator(close, window=period).ema_indicator().iloc[-1])
-            else:
-                ema_val = float(self._ema_manual(period).iloc[-1])
+            ema_val = float(EMAIndicator(close, window=period).ema_indicator().iloc[-1])
             result[f"ema{period}"] = round(ema_val, 2)
 
         result["ema_trend"] = (
@@ -146,20 +97,12 @@ class IndicatorEngine:
         result["above_ema200"] = price > result["ema200"]
 
         # ── Bollinger Bands (20, 2σ) ─────────────────────────────────────────
-        if TA_AVAILABLE:
-            bb = BollingerBands(close, window=20, window_dev=2)
-            bb_upper = float(bb.bollinger_hband().iloc[-1])
-            bb_mid   = float(bb.bollinger_mavg().iloc[-1])
-            bb_lower = float(bb.bollinger_lband().iloc[-1])
-            bb_pctb  = float(bb.bollinger_pband().iloc[-1])
-            bb_width = float(bb.bollinger_wband().iloc[-1])
-        else:
-            bb_upper, bb_mid, bb_lower, bb_pctb_s = self._bb_manual(20, 2.0)
-            bb_upper = float(bb_upper.iloc[-1])
-            bb_mid   = float(bb_mid.iloc[-1])
-            bb_lower = float(bb_lower.iloc[-1])
-            bb_pctb  = float(bb_pctb_s.iloc[-1])
-            bb_width = (bb_upper - bb_lower) / bb_mid if bb_mid > 0 else 0
+        bb = BollingerBands(close, window=20, window_dev=2)
+        bb_upper = float(bb.bollinger_hband().iloc[-1])
+        bb_mid   = float(bb.bollinger_mavg().iloc[-1])
+        bb_lower = float(bb.bollinger_lband().iloc[-1])
+        bb_pctb  = float(bb.bollinger_pband().iloc[-1])
+        bb_width = float(bb.bollinger_wband().iloc[-1])
 
         result["bb_upper"] = round(bb_upper, 2)
         result["bb_mid"]   = round(bb_mid, 2)
@@ -169,11 +112,8 @@ class IndicatorEngine:
         result["bb_squeeze"] = result["bb_width"] < 0.05   # tight = compression
 
         # ── ATR (14) – volatility / stop sizing ──────────────────────────────
-        if TA_AVAILABLE:
-            atr_series = AverageTrueRange(high, low, close, window=14).average_true_range()
-            atr_val = float(atr_series.iloc[-1])
-        else:
-            atr_val = float(self._atr_manual(14).iloc[-1])
+        atr_series = AverageTrueRange(high, low, close, window=14).average_true_range()
+        atr_val = float(atr_series.iloc[-1])
 
         result["atr"]     = round(atr_val, 3)
         result["atr_pct"] = round(atr_val / price * 100, 2) if price > 0 else 0
