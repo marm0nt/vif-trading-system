@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Setup: Laptop to Desktop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: white;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f0f0f0;
+        }
+
+        .step {
+            background: #f0f7ff;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .step h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        code, pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        pre {
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #155724;
+        }
+
+        .success::before {
+            content: "✓ ";
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+
+        .checklist {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .checklist ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        .result {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .timeline-item {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 4px;
+            margin: 10px;
+            border: 2px solid #007bff;
+        }
+
+        .timeline-item strong {
+            display: block;
+            color: #007bff;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .timeline-item .time {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .next-steps {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .next-steps h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+
+        ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .emoji {
+            margin-right: 5px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            text-align: center;
+            color: #666;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Quick Setup: Laptop to Desktop</h1>
+        <p class="subtitle">Copy your VIF Trading System from laptop to desktop — 1:1 identical setup</p>
+
+        <p><strong>Time</strong>: 30 minutes | <strong>Method</strong>: Simple copy + Python venv</p>
+
+        <!-- Timeline Overview -->
+        <h2><span class="emoji">📊</span>Overview</h2>
+        <table>
+            <tr>
+                <th>Step</th>
+                <th>What</th>
+                <th>Time</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Copy project folder</td>
+                <td>5 min</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Create Python virtual environment</td>
+                <td>3 min</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Install dependencies</td>
+                <td>10 min</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Add API key</td>
+                <td>2 min</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Verify setup</td>
+                <td>3 min</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Test it works</td>
+                <td>5 min</td>
+            </tr>
+        </table>
+
+        <!-- Step 1 -->
+        <div class="step">
+            <h3><span class="step-number">1</span>Copy Project Folder</h3>
+
+            <h4>On Laptop:</h4>
+            <ol>
+                <li>Open File Explorer</li>
+                <li>Go to: <code>C:\Users\marti\vif-trading-system</code></li>
+                <li>Right-click folder → <strong>Copy</strong></li>
+            </ol>
+
+            <h4>On Desktop:</h4>
+            <ol start="4">
+                <li>Open File Explorer</li>
+                <li>Go to: <code>C:\Users\YourUsername\</code> (your user folder)</li>
+                <li>Right-click empty space → <strong>Paste</strong></li>
+            </ol>
+
+            <div class="result">Result: <code>vif-trading-system</code> folder now on your desktop</div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step">
+            <h3><span class="step-number">2</span>Create Python Virtual Environment</h3>
+
+            <h4>On Desktop, open Command Prompt:</h4>
+            <ol>
+                <li>Press: <span class="highlight">Windows Key + R</span></li>
+                <li>Type: <code>cmd</code></li>
+                <li>Press: <span class="highlight">Enter</span></li>
+            </ol>
+
+            <h4>In Command Prompt:</h4>
+            <pre>cd C:\Users\YourUsername\vif-trading-system
+python -m venv venv</pre>
+
+            <p>⏳ Wait 1–2 minutes for venv to create.</p>
+
+            <div class="result">Result: New <code>venv</code> folder appears in project directory</div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step">
+            <h3><span class="step-number">3</span>Activate Virtual Environment</h3>
+
+            <h4>In Command Prompt, type:</h4>
+            <pre>venv\Scripts\activate</pre>
+
+            <div class="result">Success: Prompt now shows <code>(venv) C:\Users\YourUsername\vif-trading-system></code></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step">
+            <h3><span class="step-number">4</span>Install Dependencies</h3>
+
+            <h4>In Command Prompt (with <code>(venv)</code> active), type:</h4>
+            <pre>pip install -r requirements.txt</pre>
+
+            <p>⏳ Wait 5–10 minutes for all packages to install.</p>
+
+            <div class="result">Success: Ends with <code>Successfully installed...</code></div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step">
+            <h3><span class="step-number">5</span>Add API Key</h3>
+
+            <h4>On Laptop:</h4>
+            <ol>
+                <li>Open: <code>.env</code> file (in <code>vif-trading-system</code> folder)</li>
+                <li>Copy: The entire line <code>ANTHROPIC_API_KEY=sk-ant-...</code></li>
+            </ol>
+
+            <h4>On Desktop:</h4>
+            <ol start="3">
+                <li>In your <code>vif-trading-system</code> folder, open: <code>.env.example</code></li>
+                <li>Replace the placeholder with your actual key</li>
+                <li>Save the file</li>
+                <li>Rename from <code>.env.example</code> → <code>.env</code> (right-click → Rename)</li>
+            </ol>
+
+            <div class="result">Result: Desktop now has <code>.env</code> with your API key</div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="step">
+            <h3><span class="step-number">6</span>Verify Setup Works</h3>
+
+            <h4>In Command Prompt (with <code>(venv)</code> active), type:</h4>
+            <pre>python tests/test_api_key.py</pre>
+
+            <div class="result">Success: Should display:</div>
+            <pre>SUCCESS: key valid, billing active.</pre>
+
+            <p><strong>If you see this, you're done! ✅</strong></p>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="step">
+            <h3><span class="step-number">7</span>Test It Works (Optional)</h3>
+
+            <h4>In Command Prompt, run:</h4>
+            <pre>python scripts/check_usage.py</pre>
+
+            <div class="result">Success: Shows your API usage and costs</div>
+        </div>
+
+        <!-- Verification Checklist -->
+        <h2><span class="emoji">✅</span>Verification Checklist</h2>
+        <div class="checklist">
+            <ul>
+                <li>Project folder copied to desktop</li>
+                <li><code>venv</code> folder created</li>
+                <li><code>(venv)</code> shows in Command Prompt</li>
+                <li><code>pip install</code> completed without errors</li>
+                <li><code>.env</code> file created with API key</li>
+                <li><code>python tests/test_api_key.py</code> shows SUCCESS</li>
+            </ul>
+        </div>
+
+        <!-- 1:1 Verification -->
+        <h2><span class="emoji">🔄</span>1:1 Verification (Desktop = Laptop)</h2>
+
+        <p>To verify your desktop is identical to your laptop:</p>
+
+        <h3>On Desktop, run:</h3>
+        <pre>dir /s /b > C:\temp\desktop_files.txt</pre>
+
+        <h3>On Laptop, run:</h3>
+        <pre>dir /s /b > C:\temp\laptop_files.txt</pre>
+
+        <h3>Compare (ignore venv and .env differences):</h3>
+        <ul>
+            <li>Same <code>agents/</code> folder</li>
+            <li>Same <code>scripts/</code> folder</li>
+            <li>Same <code>config/</code> folder</li>
+            <li>Same <code>requirements.txt</code></li>
+            <li>Same <code>.claude/</code> and <code>.vscode/</code> folders</li>
+        </ul>
+
+        <div class="result">If these match, your desktop setup is 1:1 identical to laptop</div>
+
+        <!-- Troubleshooting -->
+        <h2><span class="emoji">🔧</span>Troubleshooting</h2>
+
+        <h3>"Python not found"</h3>
+        <ul>
+            <li>Install Python: <a href="https://www.python.org/downloads/" target="_blank">https://www.python.org/downloads/</a></li>
+            <li>During install: <span class="highlight">CHECK "Add Python to PATH"</span></li>
+            <li>Restart Command Prompt</li>
+        </ul>
+
+        <h3>"venv not activating"</h3>
+        <ul>
+            <li>Make sure you're in project folder: <code>cd C:\Users\YourUsername\vif-trading-system</code></li>
+            <li>Try: <code>venv\Scripts\activate</code></li>
+            <li>Or recreate: <code>python -m venv venv</code></li>
+        </ul>
+
+        <h3>"pip install fails"</h3>
+        <ul>
+            <li>Make sure <code>(venv)</code> is active</li>
+            <li>Try: <code>python -m pip install -r requirements.txt</code></li>
+        </ul>
+
+        <h3>"API key doesn't work"</h3>
+        <ul>
+            <li>Verify <code>.env</code> file exists (not <code>.env.example</code>)</li>
+            <li>Verify API key is correct (copy from laptop again)</li>
+            <li>Run: <code>python tests/test_api_key.py</code></li>
+        </ul>
+
+        <!-- Next Steps -->
+        <h2><span class="emoji">🚀</span>Next Steps</h2>
+
+        <div class="next-steps">
+            <h3>Your desktop setup is now 1:1 identical to your laptop. You can:</h3>
+            <ol>
+                <li><strong>Use Antigravity IDE</strong> to edit and run code</li>
+                <li><strong>Use Command Prompt</strong> with venv activated to run scripts</li>
+                <li><strong>Run analyses</strong> the same way you do on laptop</li>
+            </ol>
+            <p>All commands work identically on both machines.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Setup complete! Your desktop is ready.</strong> 🎉</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">For detailed documentation, see <code>/docs/setup-guides/</code></p>
+        </div>
+    </div>
+</body>
+</html>

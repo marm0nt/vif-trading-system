@@ -50,11 +50,34 @@ PYTHON = VENV_PYTHON if Path(VENV_PYTHON).exists() else "python"
 # ── Job runner ────────────────────────────────────────────────────────────────
 def run_job(label: str, cmd: list[str], timeout: int = 600) -> bool:
     """Run a subprocess job, log output, return success flag."""
+    # Prevent concurrent runs of same job via lock file
+    lock_file = Path(f".claude/scheduled_tasks.lock")
+    job_id = "_".join(cmd).replace("/", "_").replace("-", "_")[:40]
+    lock_path = lock_file.parent / f"{job_id}.lock"
+
+    # Check if job is already running
+    if lock_path.exists():
+        ts_lock = lock_path.read_text().strip()
+        try:
+            ts_start = datetime.fromisoformat(ts_lock)
+            elapsed = (datetime.now() - ts_start).total_seconds()
+            if elapsed < timeout:
+                logger.warning(f"  ⊘ SKIPPED: {label} (already running, started {elapsed:.0f}s ago)")
+                return False
+        except:
+            pass
+        # Stale lock, remove it
+        lock_path.unlink(missing_ok=True)
+
     ts = datetime.now().strftime("%H:%M:%S")
     logger.info(f"{'='*60}")
     logger.info(f"  STARTING: {label}  [{ts}]")
     logger.info(f"{'='*60}")
     try:
+        # Write lock file
+        lock_path.parent.mkdir(exist_ok=True)
+        lock_path.write_text(datetime.now().isoformat())
+
         result = subprocess.run(
             cmd,
             capture_output=True,
@@ -79,6 +102,9 @@ def run_job(label: str, cmd: list[str], timeout: int = 600) -> bool:
     except Exception as e:
         logger.error(f"  ✗ ERROR in {label}: {e}")
         return False
+    finally:
+        # Clean up lock file
+        lock_path.unlink(missing_ok=True)
 
 
 def log_run_summary(jobs: list[dict]):

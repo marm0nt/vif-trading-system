@@ -1,417 +1,530 @@
 #!/usr/bin/env python3
-"""Policy, Government & Fundamental Catalyst Analysis"""
-import json
-from datetime import datetime
+"""
+Catalyst Analysis Agent — VIF Trading System
+=============================================
+Live Claude-powered catalyst scanner. Replaces the previous static hardcoded dict.
 
-CATALYST_DATABASE = {
-    # Vantage Portfolio Top 5
-    "NASDAQ:MU": {
-        "company": "Micron Technology",
-        "sector": "Semiconductors",
-        "catalysts": {
-            "policy": [
-                "CHIPS Act funding (up to $5B for advanced packaging)",
-                "Export control relaxation on AI chips to allied nations",
-                "Potential semiconductor supply chain subsidies"
-            ],
-            "government": [
-                "Taiwan security initiatives (affects supply chain)",
-                "US-Taiwan semiconductor partnership expansion",
-                "Geopolitical risk premium on chip manufacturing"
-            ],
-            "fundamental": [
-                "Data center AI capex cycle (training & inference)",
-                "Memory demand from LLM deployments",
-                "HBM (High Bandwidth Memory) adoption acceleration"
-            ],
-            "earnings_catalysts": "Q3/Q4 2026 - AI capex confirmation",
-            "risk_factors": "China trade tensions, oversupply risk"
-        }
-    },
-    "NASDAQ:CRWV": {
-        "company": "Crown Wave Inc",
-        "sector": "Technology",
-        "catalysts": {
-            "policy": [
-                "Enterprise software modernization push",
-                "Cloud infrastructure investment mandates"
-            ],
-            "government": [
-                "Federal cloud adoption initiatives",
-                "GovCloud expansion contracts"
-            ],
-            "fundamental": [
-                "Legacy system replacement cycles",
-                "Digital transformation mandates"
-            ],
-            "earnings_catalysts": "Q2 2026 guidance raise expected",
-            "risk_factors": "Valuation multiple compression risk"
-        }
-    },
-    "NASDAQ:AVGO": {
-        "company": "Broadcom Inc",
-        "sector": "Semiconductors",
-        "catalysts": {
-            "policy": [
-                "CHIPS Act advanced packaging subsidies",
-                "5G/6G network equipment funding",
-                "Critical infrastructure chip protection"
-            ],
-            "government": [
-                "US-allied nations 5G rollout (market share opportunity)",
-                "Taiwan semiconductor security partnerships",
-                "Defense/aerospace chip demand (classified projects)"
-            ],
-            "fundamental": [
-                "AI infrastructure data center switch shipments +40% YoY",
-                "Optical networking for AI cluster interconnect",
-                "Acquisition of infrastructure AI chip vendors"
-            ],
-            "earnings_catalysts": "Q2 2026 data center strength, guidance",
-            "risk_factors": "China revenue exposure, tariff risk"
-        }
-    },
-    "NASDAQ:WULF": {
-        "company": "Wulf Crypto Mining",
-        "sector": "Crypto/Energy",
-        "catalysts": {
-            "policy": [
-                "Bitcoin ETF approval (already occurred - momentum play)",
-                "Potential Bitcoin strategic reserve proposals",
-                "Energy efficiency regulations (favor WULF's operations)"
-            ],
-            "government": [
-                "El Salvador Bitcoin adoption precedent",
-                "Potential US government Bitcoin purchases",
-                "Energy grid modernization initiatives"
-            ],
-            "fundamental": [
-                "Bitcoin halving (2024) - WULF operational efficiency gain",
-                "Grid power pricing in friendly jurisdictions",
-                "Renewable energy partnerships"
-            ],
-            "earnings_catalysts": "Bitcoin price move, difficulty adjustment",
-            "risk_factors": "Regulatory ban risk, power cost inflation"
-        }
-    },
-    "NYSE:RDDT": {
-        "company": "Reddit Inc",
-        "sector": "Social Media/AI Data",
-        "catalysts": {
-            "policy": [
-                "Content moderation regulatory frameworks",
-                "AI training data licensing regulations"
-            ],
-            "government": [
-                "FTC scrutiny on data usage/privacy",
-                "Potential Section 230 reform (affects moderation liability)"
-            ],
-            "fundamental": [
-                "AI training data licensing deals (Google, OpenAI partners)",
-                "Monetization of user-generated content",
-                "Ad platform expansion (competition with Meta)"
-            ],
-            "earnings_catalysts": "Data licensing revenue disclosure (Q2 2026)",
-            "risk_factors": "Privacy regulation, content liability"
-        }
-    },
+What it does:
+  - Loads all tickers from all watchlists
+  - Fetches real earnings dates from yfinance .calendar
+  - Detects K4 kill switch (earnings within 5 days)
+  - Calls Claude to reason about policy/macro/fundamental catalysts
+  - Outputs structured JSON consumed by the HTML report and pipeline
 
-    # AI Verticals Top 5
-    "NASDAQ:MRVL": {
-        "company": "Marvell Technology",
-        "sector": "Semiconductors",
-        "catalysts": {
-            "policy": [
-                "CHIPS Act advanced packaging funding",
-                "AI chip export control relaxation",
-                "5G infrastructure subsidies"
-            ],
-            "government": [
-                "US-Taiwan semiconductor cooperation",
-                "Allied nations AI chip supply agreements",
-                "Defense department chip procurement"
-            ],
-            "fundamental": [
-                "Data center switch-on-package (SoP) adoption",
-                "CXL (Compute Express Link) memory expansion",
-                "AI accelerator interconnect leadership"
-            ],
-            "earnings_catalysts": "Q3 2026 data center guidance raise",
-            "risk_factors": "China revenue exposure, competition from NVIDIA"
-        }
-    },
-    "NASDAQ:PLAB": {
-        "company": "Phaselab Therapeutics",
-        "sector": "AI/Biotech",
-        "catalysts": {
-            "policy": [
-                "FDA AI/ML-based drug discovery approval streamlining",
-                "NIH AI research funding expansion"
-            ],
-            "government": [
-                "Biodefense Act biotech funding",
-                "ARPA-H (Advanced Research Projects Agency for Health) grants"
-            ],
-            "fundamental": [
-                "AI-discovered drug candidates entering trials",
-                "Pharma partnership announcements for AI platform",
-                "AI prediction accuracy improvements disclosed"
-            ],
-            "earnings_catalysts": "Clinical trial advancement (late 2026)",
-            "risk_factors": "Regulatory setback risk, pharma partnership delays"
-        }
-    },
-    "NASDAQ:TSEM": {
-        "company": "Taiwan Semiconductor Manufacturing",
-        "sector": "Semiconductors",
-        "catalysts": {
-            "policy": [
-                "US plant capacity subsidies (CHIPS Act payments)",
-                "Strategic chip production reshoring"
-            ],
-            "government": [
-                "Taiwan security commitments impact valuations",
-                "US-Taiwan trade normalization",
-                "Defense/critical infrastructure chip priority"
-            ],
-            "fundamental": [
-                "Arizona fab ramp (capacity increase 2026)",
-                "3nm/5nm node utilization from AI demand",
-                "Margin expansion from advanced node mix shift"
-            ],
-            "earnings_catalysts": "Arizona plant operational updates (Q2 2026)",
-            "risk_factors": "Geopolitical (China), US-Taiwan tensions"
-        }
-    },
-    "NASDAQ:AXTI": {
-        "company": "AXTi Semiconductor",
-        "sector": "Semiconductors",
-        "catalysts": {
-            "policy": [
-                "Rare earth semiconductor material supply chain support",
-                "GaAs/GaN (power semiconductors) manufacturing subsidies"
-            ],
-            "government": [
-                "Defense/aerospace power semiconductor contracts",
-                "5G phased array antenna chip demand"
-            ],
-            "fundamental": [
-                "RF semiconductor demand from 5G/6G buildout",
-                "Power management IC adoption in EV platforms",
-                "Military/space program chip orders"
-            ],
-            "earnings_catalysts": "Defense contract wins, guidance (Q3 2026)",
-            "risk_factors": "Technology obsolescence, competition risk"
-        }
-    },
-    "NASDAQ:COHU": {
-        "company": "Cohu Inc",
-        "sector": "Semiconductors/Equipment",
-        "catalysts": {
-            "policy": [
-                "Semiconductor test equipment CHIPS Act subsidies",
-                "Advanced packaging equipment demand"
-            ],
-            "government": [
-                "US semiconductor manufacturing expansion contracts",
-                "Critical infrastructure chip testing capacity mandates"
-            ],
-            "fundamental": [
-                "AI chip test handler demand surge",
-                "Advanced packaging (chiplet) test requirements",
-                "Capacity utilization from TSMC/Samsung expansion"
-            ],
-            "earnings_catalysts": "Test equipment orders (Q3 2026)",
-            "risk_factors": "Capex cycle downturn, competition from Teradyne"
-        }
-    },
+Run:
+  python scripts/catalyst_analysis.py
+  python scripts/catalyst_analysis.py --watchlist vantage_portfolio
+  python scripts/catalyst_analysis.py --top 10
+"""
 
-    # Energy AI Top 5
-    "AMEX:OBE": {
-        "company": "Obsidian Energy",
-        "sector": "Oil & Gas",
-        "catalysts": {
-            "policy": [
-                "Energy independence initiatives (US)",
-                "Data center power contracts (oil revenue diversification)"
+import sys, os, json, logging, argparse
+from datetime import datetime, timedelta
+from pathlib import Path
+
+try:
+    import yfinance as yf
+    import anthropic
+except ImportError as e:
+    print(f"ERROR: Missing dependency — {e}")
+    sys.exit(1)
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = lambda *a, **kw: None
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
+
+load_dotenv(override=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [CATALYST] %(message)s",
+    handlers=[
+        logging.FileHandler("logs/catalyst_analysis.log"),
+        logging.StreamHandler(),
+    ],
+)
+logger = logging.getLogger(__name__)
+Path("logs").mkdir(exist_ok=True)
+Path("reports").mkdir(exist_ok=True)
+
+# ── Config ────────────────────────────────────────────────────────────────────
+_cfg_path = Path("config/vif_config.yml")
+if yaml and _cfg_path.exists():
+    _cfg = yaml.safe_load(_cfg_path.read_text())
+    ANALYST_MODEL    = _cfg.get("api", {}).get("models", {}).get("analyst", "claude-sonnet-4-6")
+    SYNTHESIZER_MODEL = _cfg.get("api", {}).get("models", {}).get("synthesizer", "claude-opus-4-7")
+else:
+    ANALYST_MODEL    = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
+    SYNTHESIZER_MODEL = "claude-opus-4-7"
+
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+if not ANTHROPIC_API_KEY:
+    logger.error("ANTHROPIC_API_KEY not set")
+    sys.exit(1)
+
+client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+
+K4_THRESHOLD_DAYS = 5   # earnings within this many days triggers K4
+BATCH_SIZE        = 15  # tickers per Claude call
+
+# Hardcoded FOMC meeting dates for 2026 (published by Fed annually)
+FOMC_2026 = [
+    "2026-01-28", "2026-03-18", "2026-04-29", "2026-06-17",
+    "2026-07-29", "2026-09-16", "2026-10-28", "2026-12-09",
+]
+
+
+# ── Watchlist loader ──────────────────────────────────────────────────────────
+def load_watchlist(name: str) -> list[str]:
+    path = Path(f"watchlists/{name}.txt")
+    if not path.exists():
+        logger.warning(f"Watchlist not found: {path}")
+        return []
+    tickers = []
+    for t in path.read_text().replace("\n", ",").split(","):
+        t = t.strip()
+        if t and not t.startswith("###"):
+            clean = t.split(":")[-1]  # strip exchange prefix
+            if clean:
+                tickers.append(clean)
+    return list(dict.fromkeys(tickers))  # deduplicate, preserve order
+
+
+def load_all_watchlists() -> dict[str, list[str]]:
+    watchlists = {}
+    for wl_file in Path("watchlists").glob("*.txt"):
+        tickers = load_watchlist(wl_file.stem)
+        if tickers:
+            watchlists[wl_file.stem] = tickers
+    return watchlists
+
+
+# ── Earnings calendar ─────────────────────────────────────────────────────────
+def get_earnings_dates(tickers: list[str]) -> dict[str, dict]:
+    """
+    Fetch earnings dates for a list of tickers via yfinance.calendar.
+    Returns {ticker: {date, days_away, k4_active}}
+    """
+    results = {}
+    now = datetime.now()
+    logger.info(f"Fetching earnings calendar for {len(tickers)} tickers...")
+
+    for t in tickers:
+        try:
+            cal = yf.Ticker(t).calendar
+            if not isinstance(cal, dict):
+                continue
+            dates = cal.get("Earnings Date", [])
+            if not dates:
+                continue
+            # Use the nearest future date
+            future = [d for d in dates if datetime.strptime(str(d), "%Y-%m-%d") >= now]
+            if not future:
+                continue
+            nearest = min(future, key=lambda d: abs((datetime.strptime(str(d), "%Y-%m-%d") - now).days))
+            days_away = (datetime.strptime(str(nearest), "%Y-%m-%d") - now).days
+            results[t] = {
+                "date": str(nearest),
+                "days_away": days_away,
+                "k4_active": abs(days_away) <= K4_THRESHOLD_DAYS,
+            }
+        except Exception:
+            pass
+
+    k4_count = sum(1 for v in results.values() if v["k4_active"])
+    logger.info(f"Earnings found: {len(results)} tickers | K4 alerts: {k4_count}")
+    return results
+
+
+# ── Macro calendar (lightweight, no external API needed) ─────────────────────
+def get_macro_events() -> list[dict]:
+    """
+    Returns forward-looking macro calendar with actual FOMC dates.
+    FOMC dates are hardcoded from the official Fed schedule (published annually).
+    """
+    today = datetime.now().date()
+    events = []
+
+    # Next 2 FOMC meetings
+    fomc_count = 0
+    for date_str in sorted(FOMC_2026):
+        d = datetime.strptime(date_str, "%Y-%m-%d").date()
+        days_away = (d - today).days
+        if days_away >= 0:
+            events.append({
+                "event": "FOMC Meeting",
+                "date": date_str,
+                "days_away": days_away,
+                "impact": "HIGH",
+                "affected_sectors": ["Financials", "Tech", "REITs"],
+            })
+            fomc_count += 1
+            if fomc_count >= 2:
+                break
+
+    # Approximate monthly releases (BLS publishes schedule annually)
+    events += [
+        {"event": "CPI Release",  "approximate": "monthly ~13th", "impact": "HIGH",  "affected_sectors": ["Bonds", "Tech", "Consumer"]},
+        {"event": "PPI Release",  "approximate": "monthly ~14th", "impact": "MED",   "affected_sectors": ["Industrials", "Materials"]},
+        {"event": "Jobs Report",  "approximate": "first Friday",  "impact": "HIGH",  "affected_sectors": ["Consumer", "Financials"]},
+        {"event": "PCE Deflator", "approximate": "monthly ~28th", "impact": "HIGH",  "affected_sectors": ["Tech", "Consumer"]},
+    ]
+    return events
+
+
+def fetch_news_headlines(tickers: list[str], max_per_ticker: int = 5) -> dict[str, list[str]]:
+    """
+    Fetch recent news headlines via yfinance for a batch of tickers.
+    Returns {ticker: [headline1, headline2, ...]}
+    """
+    results = {}
+    for t in tickers:
+        try:
+            news = yf.Ticker(t).get_news(count=max_per_ticker)
+            if not news:
+                continue
+            headlines = []
+            for item in news[:max_per_ticker]:
+                # yfinance news items have nested content structure
+                content = item.get("content", item)
+                title = content.get("title", item.get("title", ""))
+                if title:
+                    headlines.append(title)
+            if headlines:
+                results[t] = headlines
+        except Exception:
+            pass
+    if results:
+        logger.info(f"News fetched for {len(results)}/{len(tickers)} tickers")
+    return results
+
+
+# ── Claude prompt ─────────────────────────────────────────────────────────────
+CATALYST_SYSTEM_PROMPT = """You are a senior macro and fundamental analyst for an AI-powered trading system using the VIF (Volatility Imbalance Framework) v4.0.
+
+Your job: identify real, current catalysts that could cause price moves > 5% in the next 5-30 trading days for the tickers provided. You think in terms of:
+- Policy catalysts: Fed decisions, CHIPS Act funding rounds, export controls, tariffs, executive orders
+- Government catalysts: DoD contracts, FDA approvals, ARPA grants, regulatory decisions
+- Fundamental catalysts: earnings beats/misses, guidance changes, revenue preannouncements, analyst upgrades
+- Sector rotation: capital flows between sectors driven by macro regime changes
+- Macro regime: rate environment, inflation trajectory, risk-on/risk-off positioning
+
+RULES:
+- Only cite catalysts that are plausible given the current macro environment (May 2026)
+- Be specific: "CHIPS Act round 3 disbursement Q3 2026" not "government support"
+- Assign a catalyst_strength: HIGH (>10% expected move) | MED (5-10%) | LOW (<5%)
+- Flag kill_switch K4 ONLY if earnings are within 5 days of today
+- sector_rotation must name the DESTINATION sector, not just the source
+- macro_regime must include current Fed stance, rate trajectory, and risk appetite
+
+Return ONLY valid JSON — no markdown, no commentary."""
+
+CATALYST_USER_TEMPLATE = """Today: {today}
+
+TICKERS TO ANALYZE: {tickers}
+
+EARNINGS CALENDAR (from yfinance — authoritative):
+{earnings_json}
+
+RECENT NEWS HEADLINES (from yfinance, last 48-72 hours):
+{news_json}
+
+MACRO CALENDAR:
+{macro_json}
+
+TASK — Return this exact JSON structure:
+{{
+  "scan_date": "{today}",
+  "macro_regime": {{
+    "fed_stance": "one phrase",
+    "rate_trajectory": "rising|falling|neutral",
+    "risk_appetite": "risk-on|risk-off|neutral",
+    "key_theme": "one sentence describing dominant macro driver"
+  }},
+  "sector_themes": [
+    {{"theme": "theme name", "tickers": ["T1","T2"], "catalyst_strength": "HIGH|MED|LOW", "time_horizon": "1-5d|5-30d|30d+"}}
+  ],
+  "macro_calendar": [
+    {{"event": "event name", "date": "YYYY-MM-DD or 'TBD'", "impact": "HIGH|MED|LOW", "affected_sectors": ["sector1"]}}
+  ],
+  "ticker_catalysts": [
+    {{
+      "ticker": "TICK",
+      "catalyst_type": "policy|government|fundamental|sector|macro",
+      "catalyst": "specific catalyst description",
+      "catalyst_strength": "HIGH|MED|LOW",
+      "time_horizon": "1-5d|5-30d|30d+",
+      "key_risk": "one sentence",
+      "kill_switch": null
+    }}
+  ],
+  "high_risk_catalysts": [
+    {{
+      "ticker": "TICK",
+      "catalyst": "description",
+      "date": "YYYY-MM-DD or approximate",
+      "days_away": 0,
+      "risk": "HIGH|MED|LOW",
+      "action": "K4 kill switch — do not take new positions"
+    }}
+  ],
+  "top_5_opportunity_tickers": ["T1","T2","T3","T4","T5"],
+  "top_3_risk_tickers": ["T1","T2","T3"]
+}}"""
+
+
+# ── Claude analysis ───────────────────────────────────────────────────────────
+def analyze_catalysts_with_claude(
+    tickers: list[str],
+    earnings: dict,
+    macro_events: list,
+    news: dict,
+    batch_label: str = "all",
+) -> dict:
+    """Single Claude call for a batch of tickers."""
+    today = datetime.now().strftime("%Y-%m-%d %A")
+
+    # Only include earnings and news for tickers in this batch
+    batch_earnings = {t: v for t, v in earnings.items() if t in tickers}
+    batch_news     = {t: v for t, v in news.items()     if t in tickers}
+
+    user_prompt = CATALYST_USER_TEMPLATE.format(
+        today=today,
+        tickers=", ".join(tickers),
+        earnings_json=json.dumps(batch_earnings, indent=2),
+        news_json=json.dumps(batch_news, indent=2) if batch_news else "No recent headlines available.",
+        macro_json=json.dumps(macro_events, indent=2),
+    )
+
+    try:
+        msg = client.messages.create(
+            model=ANALYST_MODEL,
+            max_tokens=4096,
+            system=[
+                {
+                    "type": "text",
+                    "text": CATALYST_SYSTEM_PROMPT,
+                    "cache_control": {"type": "ephemeral"},  # cache the system prompt
+                }
             ],
-            "government": [
-                "Oil price floor support proposals",
-                "Pipeline infrastructure investment mandates",
-                "LNG export capacity expansion"
-            ],
-            "fundamental": [
-                "AI data center power purchase agreements (PPAs)",
-                "Upstream production optimization (AI-driven efficiency)",
-                "Strategic asset sales (deleveraging)"
-            ],
-            "earnings_catalysts": "Q2 2026 production guidance, PPA deals",
-            "risk_factors": "Oil price crash, ESG headwinds"
-        }
-    },
-    "NASDAQ:ATOM": {
-        "company": "Atomera Inc",
-        "sector": "Semiconductors/Materials",
-        "catalysts": {
-            "policy": [
-                "Critical minerals/materials CHIPS Act support",
-                "Semiconductor manufacturing cost reduction initiatives"
-            ],
-            "government": [
-                "SEMI-related materials research funding (NSF/DOD)",
-                "Advanced packaging material specifications mandates"
-            ],
-            "fundamental": [
-                "Semiconductor manufacturer adoption of Atomera's SpS (Selective Silicon) process",
-                "Cost/power savings from advanced materials technology",
-                "Licensing revenue scaling from major foundries"
-            ],
-            "earnings_catalysts": "Manufacturing partner adoption announcements",
-            "risk_factors": "Process technology risk, fab adoption delays"
-        }
-    },
-    "NASDAQ:WULF": {
-        "company": "Wulf Crypto Mining",
-        "sector": "Crypto/Energy",
-        "catalysts": {
-            "policy": [
-                "Bitcoin strategic reserve proposals",
-                "Renewable energy incentive programs"
-            ],
-            "government": [
-                "El Salvador/Argentina precedent (Bitcoin adoption)",
-                "Energy grid modernization with mining participants"
-            ],
-            "fundamental": [
-                "Hash rate increase from new mining hardware",
-                "Energy arbitrage opportunities (cheap power jurisdictions)",
-                "M&A consolidation in mining industry"
-            ],
-            "earnings_catalysts": "Bitcoin hash rate/difficulty changes",
-            "risk_factors": "Regulatory ban, power cost inflation"
-        }
-    },
-    "NASDAQ:NVTS": {
-        "company": "Navitas Semiconductor",
-        "sector": "Semiconductors/Power",
-        "catalysts": {
-            "policy": [
-                "EV charging infrastructure subsidies (charger chip demand)",
-                "Power efficiency standards mandates"
-            ],
-            "government": [
-                "Infrastructure bill EV charging funding (ongoing)",
-                "Defense mobile power supply contracts"
-            ],
-            "fundamental": [
-                "GaN (Gallium Nitride) chip adoption in fast chargers",
-                "EV on-board charger OEM design wins",
-                "Data center power supply efficiency upgrades"
-            ],
-            "earnings_catalysts": "EV charger chip adoption ramp (Q3-Q4 2026)",
-            "risk_factors": "EV adoption slowdown, price competition"
-        }
-    },
-    "NYSE:FPS": {
-        "company": "First Solar",
-        "sector": "Solar/Renewable Energy",
-        "catalysts": {
-            "policy": [
-                "IRA (Inflation Reduction Act) solar manufacturing tax credits",
-                "US solar manufacturing capacity incentives",
-                "Critical minerals extraction support (lithium, rare earths)"
-            ],
-            "government": [
-                "Federal solar procurement mandates",
-                "Energy independence renewable initiatives",
-                "Climate/ESG policy support for renewables"
-            ],
-            "fundamental": [
-                "Utility-scale solar capacity growth (gigawatt deployments)",
-                "Advanced module efficiency improvements (next-gen tech)",
-                "Energy storage integration partnerships",
-                "AI data center power contracts (renewable base)"
-            ],
-            "earnings_catalysts": "IRA manufacturing awards (2026), guidance raise",
-            "risk_factors": "Supply chain delays, competition from China, tariff risk"
-        }
+            messages=[{"role": "user", "content": user_prompt}],
+            temperature=0,
+        )
+        text = msg.content[0].text.strip()
+
+        # Strip markdown fences if present
+        if text.startswith("```"):
+            lines = text.split("\n")
+            text = "\n".join(lines[1:-1]) if lines[-1].strip() == "```" else "\n".join(lines[1:])
+
+        result = json.loads(text)
+        logger.info(
+            f"Batch '{batch_label}': {len(tickers)} tickers | "
+            f"themes={len(result.get('sector_themes',[]))} | "
+            f"catalysts={len(result.get('ticker_catalysts',[]))} | "
+            f"high_risk={len(result.get('high_risk_catalysts',[]))}"
+        )
+        return result
+
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON parse error (batch '{batch_label}'): {e}")
+        return {"error": f"JSON parse error: {e}", "raw": text[:500]}
+    except Exception as e:
+        logger.error(f"Claude API error (batch '{batch_label}'): {e}")
+        return {"error": str(e)}
+
+
+def merge_batch_results(batches: list[dict]) -> dict:
+    """Merge multiple batch results into a single unified report."""
+    merged = {
+        "macro_regime": {},
+        "sector_themes": [],
+        "macro_calendar": [],
+        "ticker_catalysts": [],
+        "high_risk_catalysts": [],
+        "top_5_opportunity_tickers": [],
+        "top_3_risk_tickers": [],
     }
-}
 
-def generate_catalyst_report():
-    """Generate detailed catalyst analysis for top 5 per watchlist."""
+    seen_themes = set()
+    seen_catalysts = set()
+    seen_k4 = set()
+
+    for batch in batches:
+        if "error" in batch:
+            continue
+
+        # Use the first valid macro_regime (they should all agree)
+        if not merged["macro_regime"] and batch.get("macro_regime"):
+            merged["macro_regime"] = batch["macro_regime"]
+
+        # Deduplicate sector themes by name
+        for theme in batch.get("sector_themes", []):
+            key = theme.get("theme", "")
+            if key not in seen_themes:
+                merged["sector_themes"].append(theme)
+                seen_themes.add(key)
+
+        # Deduplicate macro calendar by event name
+        for evt in batch.get("macro_calendar", []):
+            key = evt.get("event", "")
+            if key not in seen_themes:
+                merged["macro_calendar"].append(evt)
+                seen_themes.add(key)
+
+        # Deduplicate ticker catalysts by (ticker, catalyst_type)
+        for cat in batch.get("ticker_catalysts", []):
+            key = (cat.get("ticker"), cat.get("catalyst_type"))
+            if key not in seen_catalysts:
+                merged["ticker_catalysts"].append(cat)
+                seen_catalysts.add(key)
+
+        # Deduplicate K4 alerts by ticker
+        for alert in batch.get("high_risk_catalysts", []):
+            t = alert.get("ticker")
+            if t and t not in seen_k4:
+                merged["high_risk_catalysts"].append(alert)
+                seen_k4.add(t)
+
+        # Accumulate opportunity and risk tickers
+        merged["top_5_opportunity_tickers"].extend(batch.get("top_5_opportunity_tickers", []))
+        merged["top_3_risk_tickers"].extend(batch.get("top_3_risk_tickers", []))
+
+    # Deduplicate opportunity/risk lists, keep order
+    merged["top_5_opportunity_tickers"] = list(dict.fromkeys(merged["top_5_opportunity_tickers"]))[:5]
+    merged["top_3_risk_tickers"]        = list(dict.fromkeys(merged["top_3_risk_tickers"]))[:3]
+
+    return merged
+
+
+# ── Per-watchlist analysis ────────────────────────────────────────────────────
+def analyze_watchlist(
+    watchlist_name: str,
+    tickers: list[str],
+    earnings: dict,
+    macro_events: list,
+    news: dict,
+    top_n: int = 15,
+) -> dict:
+    """Run Claude catalyst analysis for a single watchlist."""
+    # Prioritize tickers with known earnings dates first, then alphabetical
+    with_earnings = [t for t in tickers if t in earnings]
+    without = [t for t in tickers if t not in with_earnings]
+    prioritized = (with_earnings + without)[:top_n]
+
+    logger.info(f"Analyzing '{watchlist_name}': {len(prioritized)} tickers (of {len(tickers)} total)")
+
+    # Batch into groups
+    batches = []
+    for i in range(0, len(prioritized), BATCH_SIZE):
+        batch = prioritized[i : i + BATCH_SIZE]
+        label = f"{watchlist_name}_batch{i // BATCH_SIZE + 1}"
+        result = analyze_catalysts_with_claude(batch, earnings, macro_events, news, label)
+        batches.append(result)
+
+    merged = merge_batch_results(batches)
+    merged["watchlist"] = watchlist_name
+    merged["tickers_analyzed"] = len(prioritized)
+    merged["total_tickers_in_watchlist"] = len(tickers)
+    return merged
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+def main():
+    parser = argparse.ArgumentParser(description="VIF Live Catalyst Scanner")
+    parser.add_argument("--watchlist", "-w", help="Single watchlist (e.g., vantage_portfolio)")
+    parser.add_argument("--top",       "-t", type=int, default=15, help="Max tickers per watchlist (default 15)")
+    args = parser.parse_args()
+
+    logger.info("=" * 70)
+    logger.info("CATALYST ANALYSIS AGENT — VIF TRADING SYSTEM (LIVE)")
+    logger.info(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}  |  model={ANALYST_MODEL}")
+    logger.info("=" * 70)
+
+    # Load watchlists
+    if args.watchlist:
+        watchlists = {args.watchlist: load_watchlist(args.watchlist)}
+    else:
+        watchlists = load_all_watchlists()
+
+    if not watchlists:
+        logger.error("No watchlists found in watchlists/")
+        return 1
+
+    # Collect all unique tickers for a single earnings calendar + news fetch
+    all_tickers  = list(dict.fromkeys(t for tickers in watchlists.values() for t in tickers))
+    earnings     = get_earnings_dates(all_tickers)
+    macro_events = get_macro_events()
+    news         = fetch_news_headlines(all_tickers)
+
+    # Run per-watchlist analysis
     report = {
-        "analysis_date": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        "catalyst_themes": {},
-        "watchlist_analyses": {}
+        "analysis_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "model": ANALYST_MODEL,
+        "catalyst_themes": {},  # populated below from merged sector_themes
+        "watchlist_analyses": {},
+        "k4_kill_switches": {},  # all K4 alerts across all watchlists
     }
 
-    # Aggregate themes
-    themes = {
-        "AI Chip Demand": ["NASDAQ:MU", "NASDAQ:AVGO", "NASDAQ:MRVL", "NASDAQ:TSEM"],
-        "Policy Tailwinds (CHIPS Act)": ["NASDAQ:MU", "NASDAQ:AVGO", "NASDAQ:TSEM"],
-        "Geopolitical Risk (China)": ["NASDAQ:MU", "NASDAQ:AVGO", "NASDAQ:TSEM"],
-        "Energy/Power Semiconductors": ["NASDAQ:AXTI", "NASDAQ:NVTS"],
-        "Bitcoin/Crypto Upside": ["NASDAQ:WULF"],
-        "Data Licensing": ["NYSE:RDDT"],
-        "Renewable Energy Growth": ["NYSE:FPS", "AMEX:OBE"],
-        "Advanced Materials": ["NASDAQ:ATOM"]
-    }
+    all_themes: dict[str, list[str]] = {}
 
-    report["catalyst_themes"] = themes
+    for wl_name, tickers in watchlists.items():
+        result = analyze_watchlist(wl_name, tickers, earnings, macro_events, news, top_n=args.top)
+        report["watchlist_analyses"][wl_name.upper()] = result
 
-    # Per watchlist detailed analysis
-    watchlists = {
-        "VANTAGE_PORTFOLIO": [
-            "NASDAQ:MU", "NASDAQ:CRWV", "NASDAQ:AVGO", "NASDAQ:WULF", "NYSE:RDDT"
-        ],
-        "AI_VERTICALS": [
-            "NASDAQ:MRVL", "NASDAQ:PLAB", "NASDAQ:TSEM", "NASDAQ:AXTI", "NASDAQ:COHU"
-        ],
-        "ENERGY_AI": [
-            "AMEX:OBE", "NASDAQ:ATOM", "NASDAQ:WULF", "NASDAQ:NVTS", "NYSE:FPS"
-        ]
-    }
-
-    for watchlist_name, tickers in watchlists.items():
-        analysis = {
-            "watchlist": watchlist_name,
-            "top_5_catalysts": {}
-        }
-
-        for rank, ticker in enumerate(tickers, 1):
-            if ticker in CATALYST_DATABASE:
-                cat_data = CATALYST_DATABASE[ticker]
-                analysis["top_5_catalysts"][f"RANK_{rank}"] = {
-                    "rank": rank,
-                    "ticker": ticker,
-                    "company": cat_data.get('company'),
-                    "sector": cat_data.get('sector'),
-                    "policy_catalysts": cat_data.get('catalysts', {}).get('policy', []),
-                    "government_catalysts": cat_data.get('catalysts', {}).get('government', []),
-                    "fundamental_catalysts": cat_data.get('catalysts', {}).get('fundamental', []),
-                    "near_term_catalyst": cat_data.get('catalysts', {}).get('earnings_catalysts'),
-                    "key_risks": cat_data.get('catalysts', {}).get('risk_factors')
+        # Aggregate K4 alerts
+        for alert in result.get("high_risk_catalysts", []):
+            t = alert.get("ticker")
+            if t:
+                report["k4_kill_switches"][t] = {
+                    "switch": "K4",
+                    "earnings_date": alert.get("date"),
+                    "days_away": alert.get("days_away"),
+                    "action": "Do not initiate new positions",
                 }
 
-        report["watchlist_analyses"][watchlist_name] = analysis
+        # Aggregate sector themes
+        for theme in result.get("sector_themes", []):
+            name = theme.get("theme", "")
+            tks  = theme.get("tickers", [])
+            if name not in all_themes:
+                all_themes[name] = []
+            all_themes[name].extend(tks)
 
-    return report
+    # Deduplicate theme tickers
+    report["catalyst_themes"] = {k: list(dict.fromkeys(v)) for k, v in all_themes.items()}
+
+    # Add earnings calendar for all tickers with dates
+    report["earnings_calendar"] = {
+        t: v for t, v in sorted(earnings.items(), key=lambda x: x[1]["days_away"])
+    }
+
+    # Save
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    out = Path("reports") / f"catalyst_analysis_{ts}.json"
+    out.write_text(json.dumps(report, indent=2))
+    logger.info(f"Catalyst analysis saved -> {out}")
+
+    # Console summary
+    print(f"\n{'='*70}")
+    print(f"CATALYST SCAN COMPLETE | {len(watchlists)} watchlists | {len(all_tickers)} tickers")
+    print(f"{'='*70}")
+    print(f"  K4 Kill Switches: {len(report['k4_kill_switches'])} tickers")
+    print(f"  Sector Themes:    {len(report['catalyst_themes'])} active")
+    print(f"  Earnings tracked: {len(report['earnings_calendar'])} tickers")
+    if report["k4_kill_switches"]:
+        print(f"\n  K4 ALERTS (do not trade):")
+        for t, v in report["k4_kill_switches"].items():
+            print(f"    {t}: earnings {v['earnings_date']} ({v['days_away']}d away)")
+    print(f"\n  Saved: {out}")
+
+    return 0
+
 
 if __name__ == "__main__":
-    print("="*80)
-    print("CATALYST ANALYSIS: Policy, Government & Alpha Generation")
-    print("="*80)
-
-    report = generate_catalyst_report()
-
-    print(json.dumps(report, indent=2))
-
-    # Save report
-    from pathlib import Path
-    Path('reports').mkdir(exist_ok=True)
-    output_file = Path('reports') / f"catalyst_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-    with open(output_file, 'w') as f:
-        json.dump(report, f, indent=2)
-
-    print(f"\nCatalyst analysis saved to {output_file}")
+    sys.exit(main())

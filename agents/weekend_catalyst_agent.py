@@ -41,8 +41,17 @@ logger = logging.getLogger(__name__)
 Path("logs").mkdir(exist_ok=True)
 Path("reports").mkdir(exist_ok=True)
 
+import yaml
+
 CLAUDE_API_KEY = os.getenv("ANTHROPIC_API_KEY") or os.getenv("CLAUDE_API_KEY")
-CLAUDE_MODEL   = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
+
+config_path = Path("config/vif_config.yml")
+if config_path.exists():
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    CLAUDE_MODEL = config.get("api", {}).get("models", {}).get("synthesizer", "claude-opus-4-7")
+else:
+    CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-opus-4-7")
 
 # ── Watchlist loader ──────────────────────────────────────────────────────────
 def load_all_tickers():
@@ -218,7 +227,7 @@ def main():
     events = get_upcoming_events(tickers)
     logger.info(f"Upcoming events flagged: {len(events)}")
 
-    logger.info("Running Claude VIF weekend analysis…")
+    logger.info(f"Running Claude VIF weekend analysis ({CLAUDE_MODEL})…")
     briefing = run_weekend_analysis(market_data, events)
 
     # Save

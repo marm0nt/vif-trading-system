@@ -13,10 +13,20 @@ try:
 except ImportError:
     load_dotenv = lambda *a, **kw: None
 
+from pathlib import Path
+import yaml
+
 load_dotenv(override=True)  # .env wins over any stale system env var
 
 CLAUDE_API_KEY = os.getenv("ANTHROPIC_API_KEY") or os.getenv("CLAUDE_API_KEY")
-CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
+
+def get_model(role="analyst"):
+    config_path = Path("config/vif_config.yml")
+    if config_path.exists():
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+        return config.get("api", {}).get("models", {}).get(role, "claude-sonnet-4-6")
+    return os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
 
 if not CLAUDE_API_KEY:
     print("ERROR: ANTHROPIC_API_KEY not found in .env")
@@ -38,10 +48,13 @@ Answer trading questions using VIF framework."""
 def main():
     parser = argparse.ArgumentParser(description="VIF Trading Research Agent")
     parser.add_argument("--query", "-q", required=True, help="Your question")
+    parser.add_argument("--model", "-m", choices=["router", "analyst", "synthesizer"], default="analyst", help="Model role to use")
     args = parser.parse_args()
 
+    CLAUDE_MODEL = get_model(args.model)
+
     print(f"\n[{datetime.now().strftime('%H:%M:%S')}] Claude Research Agent")
-    print(f"Model: {CLAUDE_MODEL}")
+    print(f"Model Role: {args.model} -> {CLAUDE_MODEL}")
     print(f"Query: {args.query}\n")
 
     try:
@@ -52,11 +65,11 @@ def main():
             messages=[{"role": "user", "content": args.query}]
         )
 
-        print("═" * 80)
+        print("=" * 80)
         print("RESPONSE")
-        print("═" * 80)
+        print("=" * 80)
         print(message.content[0].text)
-        print("═" * 80)
+        print("=" * 80)
         print(f"Tokens: {message.usage.input_tokens + message.usage.output_tokens}")
         return 0
 

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIF Trading System - Desktop Setup Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 4px solid #4CAF50;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4CAF50;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #f9f9f9;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .step {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #e65100;
+        }
+
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #2e7d32;
+        }
+
+        .checklist {
+            background: #f0f4ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checklist label {
+            cursor: pointer;
+            display: block;
+            margin: 8px 0;
+            font-size: 1em;
+        }
+
+        .method-box {
+            background: #f9f9f9;
+            border: 2px solid #4CAF50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .method-box h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+
+        .time-estimate {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .divider {
+            border-top: 2px solid #ecf0f1;
+            margin: 40px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .toc {
+            background: #f0f4ff;
+            border: 1px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .toc a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h2 {
+                page-break-after: avoid;
+            }
+            .step, .warning, .success, .checklist, .method-box {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🖥️ VIF Trading System</h1>
+            <p class="subtitle">Desktop Setup Guide for Novice Users</p>
+            <p style="color: #7f8c8d; margin-top: 10px;"><strong>Updated:</strong> 2026-04-30 | <strong>Difficulty:</strong> Beginner-Friendly | <strong>Time:</strong> 30 minutes</p>
+        </header>
+
+        <section class="toc">
+            <h3>📑 Quick Navigation</h3>
+            <ul>
+                <li><a href="#overview">Quick Overview</a></li>
+                <li><a href="#prerequisites">Prerequisites</a></li>
+                <li><a href="#method-a">Method A: Simple Copy (Recommended)</a></li>
+                <li><a href="#method-b">Method B: Git Method</a></li>
+                <li><a href="#syncing">Syncing Between Machines</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+            </ul>
+        </section>
+
+        <section id="overview">
+            <h2>Quick Overview</h2>
+            <p>You want to run the same VIF trading system on your desktop that you currently run on your laptop.</p>
+
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Difficulty</th>
+                    <th>Setup Time</th>
+                    <th>Best For</th>
+                </tr>
+                <tr>
+                    <td><strong>A: Simple Copy</strong></td>
+                    <td>⭐ Easy</td>
+                    <td>15 min</td>
+                    <td>Novices, quick setup</td>
+                </tr>
+                <tr>
+                    <td><strong>B: Git Method</strong></td>
+                    <td>⭐⭐ Medium</td>
+                    <td>30 min</td>
+                    <td>Professional setup, syncing</td>
+                </tr>
+            </table>
+
+            <p style="margin-top: 20px;"><strong>Recommendation:</strong> Start with <strong>Method A</strong> (simple copy). It's the easiest and works great.</p>
+        </section>
+
+        <section id="prerequisites">
+            <h2>Prerequisites</h2>
+            <p>Before you start, make sure you have these on your desktop:</p>
+
+            <h3>On Your Desktop:</h3>
+            <div class="checklist">
+                <label><input type="checkbox"> <strong>Python 3.14</strong> installed
+                    <ul style="margin-top: 8px; font-size: 0.9em;">
+                        <li>Download from: <a href="https://www.python.org/downloads/" target="_blank">python.org</a></li>
+                        <li>✅ Check: Open Command Prompt, type <code>python --version</code></li>
+                        <li>Should show: <code>Python 3.14.x</code></li>
+                    </ul>
+                </label>
+
+                <label style="margin-top: 15px;"><input type="checkbox"> <strong>Git</strong> installed (only for Method B)
+                    <ul style="margin-top: 8px; font-size: 0.9em;">
+                        <li>Download from: <a href="https://git-scm.com/download/win" target="_blank">git-scm.com</a></li>
+                        <li>✅ Check: Open Command Prompt, type <code>git --version</code></li>
+                    </ul>
+                </label>
+
+                <label style="margin-top: 15px;"><input type="checkbox"> <strong>Your API Key</strong> from laptop's .env file
+                    <ul style="margin-top: 8px; font-size: 0.9em;">
+                        <li>You'll need: <code>ANTHROPIC_API_KEY=sk-ant-...</code></li>
+                    </ul>
+                </label>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="method-a">
+            <h2>Method A: Simple Copy (Recommended)</h2>
+            <p><strong>Best for:</strong> Getting up and running quickly without git knowledge</p>
+
+            <h3>Step 1: Copy the Project Folder <span class="time-estimate">5 min</span></h3>
+
+            <p><strong>On your laptop:</strong></p>
+            <ol>
+                <li>Open File Explorer</li>
+                <li>Navigate to: <code>C:\Users\marti\vif-trading-system</code></li>
+                <li>Right-click on the <code>vif-trading-system</code> folder</li>
+                <li>Click: <strong>Copy</strong></li>
+            </ol>
+
+            <p style="margin-top: 20px;"><strong>On your desktop:</strong></p>
+            <ol>
+                <li>Open File Explorer</li>
+                <li>Navigate to your desired location (e.g., <code>C:\Users\YourUsername\</code>)</li>
+                <li>Right-click in empty space</li>
+                <li>Click: <strong>Paste</strong></li>
+            </ol>
+
+            <div class="success">✅ <strong>Result:</strong> You now have a <code>vif-trading-system</code> folder on your desktop</div>
+
+            <h3>Step 2: Open Command Prompt <span class="time-estimate">1 min</span></h3>
+
+            <ol>
+                <li>Press: <strong>Windows Key + R</strong></li>
+                <li>Type: <code>cmd</code></li>
+                <li>Press: <strong>Enter</strong></li>
+            </ol>
+
+            <p>A black Command Prompt window opens.</p>
+
+            <h3>Step 3: Navigate to Your Project <span class="time-estimate">1 min</span></h3>
+
+            <p>In Command Prompt, type:</p>
+            <pre>cd C:\Users\YourUsername\vif-trading-system</pre>
+
+            <p><strong>Replace <code>YourUsername</code></strong> with your actual Windows username.</p>
+
+            <p><strong>Example:</strong></p>
+            <pre>cd C:\Users\marti\vif-trading-system</pre>
+
+            <div class="success">✅ <strong>Success:</strong> You should see the path in the prompt like: <code>C:\Users\marti\vif-trading-system></code></div>
+
+            <h3>Step 4: Create a Virtual Environment <span class="time-estimate">3 min</span></h3>
+
+            <p>In Command Prompt, type:</p>
+            <pre>python -m venv venv</pre>
+
+            <p>This creates a new Python environment for this project (separate from your system Python).</p>
+
+            <div class="warning">⏳ <strong>Wait 1–2 minutes</strong> while it installs.</div>
+
+            <div class="success">✅ <strong>Success:</strong> A new folder called <code>venv</code> appears in your project folder.</div>
+
+            <h3>Step 5: Activate the Virtual Environment <span class="time-estimate">1 min</span></h3>
+
+            <p>In Command Prompt, type:</p>
+            <pre>venv\Scripts\activate</pre>
+
+            <div class="success">✅ <strong>Success:</strong> The prompt changes to show <code>(venv)</code> at the start:
+            <pre style="background: #e8f5e9; color: #2e7d32;">(venv) C:\Users\marti\vif-trading-system></pre>
+            </div>
+
+            <h3>Step 6: Install Dependencies <span class="time-estimate">10 min</span></h3>
+
+            <p>In Command Prompt, type:</p>
+            <pre>pip install -r requirements.txt</pre>
+
+            <div class="warning">⏳ <strong>Wait 5–10 minutes</strong> while packages install. You'll see lots of text scrolling.</div>
+
+            <div class="success">✅ <strong>Success:</strong> Message says something like:<br><code>Successfully installed anthropic-0.97.0 yfinance-1.0.0 ...</code></div>
+
+            <h3>Step 7: Add Your API Key <span class="time-estimate">2 min</span></h3>
+
+            <p><strong>On your laptop:</strong></p>
+            <ol>
+                <li>Open the <code>.env</code> file (in <code>C:\Users\marti\vif-trading-system\</code>)</li>
+                <li>Copy the line: <code>ANTHROPIC_API_KEY=sk-ant-...</code></li>
+            </ol>
+
+            <p style="margin-top: 20px;"><strong>On your desktop:</strong></p>
+            <ol>
+                <li>In the <code>vif-trading-system</code> folder, find the <code>.env.example</code> file</li>
+                <li>Open it with Notepad</li>
+                <li>Replace the placeholder with your actual key:
+                    <pre>ANTHROPIC_API_KEY=sk-ant-YOUR_KEY_HERE</pre>
+                </li>
+                <li>Save it</li>
+                <li><strong>Rename</strong> from <code>.env.example</code> to <code>.env</code>
+                    <ul style="margin-top: 8px;">
+                        <li>Right-click → Rename</li>
+                        <li>Change name from <code>.env.example</code> to <code>.env</code></li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="success">✅ <strong>Success:</strong> You now have a <code>.env</code> file with your API key</div>
+
+            <h3>Step 8: Verify Setup <span class="time-estimate">3 min</span></h3>
+
+            <p>In Command Prompt (still with <code>(venv)</code> active), type:</p>
+            <pre>python tests/test_api_key.py</pre>
+
+            <div class="success">✅ <strong>Success:</strong> You should see:
+            <pre style="background: #e8f5e9; color: #2e7d32;">SUCCESS: key valid, billing active.</pre>
+            If you see this, you're done! Your desktop setup works.
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="method-b">
+            <h2>Method B: Git Method (More Professional)</h2>
+            <p><strong>Best for:</strong> Syncing between multiple machines, version control</p>
+
+            <h3>Step 1: Initialize Git on Your Laptop <span class="time-estimate">2 min</span></h3>
+
+            <p><strong>On your laptop</strong>, open Command Prompt in the project folder:</p>
+            <pre>cd C:\Users\marti\vif-trading-system
+git init
+git add .
+git commit -m "Initial commit: VIF trading system setup"</pre>
+
+            <div class="success">✅ <strong>Result:</strong> Your project is now a git repository locally.</div>
+
+            <h3>Step 2: Create a GitHub Repository <span class="time-estimate">5 min</span></h3>
+
+            <ol>
+                <li>Go to: <a href="https://github.com/new" target="_blank">github.com/new</a></li>
+                <li>Create a repository named: <code>vif-trading-system</code></li>
+                <li><strong>DO NOT</strong> initialize with README (you already have one)</li>
+                <li>Click: <strong>Create repository</strong></li>
+                <li>GitHub shows you commands to run</li>
+            </ol>
+
+            <h3>Step 3: Push to GitHub <span class="time-estimate">3 min</span></h3>
+
+            <p><strong>On your laptop</strong>, in Command Prompt in the project folder:</p>
+            <pre>git remote add origin https://github.com/YOUR_USERNAME/vif-trading-system.git
+git branch -M main
+git push -u origin main</pre>
+
+            <p><strong>Replace <code>YOUR_USERNAME</code></strong> with your GitHub username.</p>
+
+            <div class="success">✅ <strong>Result:</strong> Your project is now on GitHub as a backup.</div>
+
+            <h3>Step 4: Clone on Your Desktop <span class="time-estimate">10 min</span></h3>
+
+            <p><strong>On your desktop</strong>, open Command Prompt:</p>
+            <pre>cd C:\Users\YourUsername\
+git clone https://github.com/YOUR_USERNAME/vif-trading-system.git
+cd vif-trading-system</pre>
+
+            <p><strong>Replace <code>YOUR_USERNAME</code></strong> with your GitHub username.</p>
+
+            <h3>Step 5: Set Up Desktop Environment</h3>
+
+            <p>Follow <strong>Steps 4–8</strong> from Method A:</p>
+            <ul>
+                <li>Create virtual environment</li>
+                <li>Activate it</li>
+                <li>Install dependencies</li>
+                <li>Add <code>.env</code> file</li>
+                <li>Verify setup</li>
+            </ul>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="syncing">
+            <h2>Syncing Between Laptop & Desktop</h2>
+
+            <h3>After You Make Changes on Laptop:</h3>
+            <pre>cd C:\Users\marti\vif-trading-system
+git add .
+git commit -m "Description of changes"
+git push</pre>
+
+            <h3>On Desktop, Update to Latest:</h3>
+            <pre>cd C:\Users\YourUsername\vif-trading-system
+git pull</pre>
+
+            <div class="warning">⚠️ <strong>Important:</strong> Always commit your changes before switching machines.</div>
+
+            <h3>Files NOT to Commit:</h3>
+            <p>Git will ignore these automatically (they're machine-specific):</p>
+            <ul>
+                <li><code>.env</code> (API key)</li>
+                <li><code>venv/</code> (virtual environment)</li>
+                <li><code>logs/</code> (log files)</li>
+                <li><code>data/</code> (cache files)</li>
+            </ul>
+
+            <p>These shouldn't be shared between machines.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+
+            <h3>Problem: "Python is not recognized"</h3>
+            <p><strong>Cause:</strong> Python not installed or not added to PATH</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Download Python from: <a href="https://www.python.org/downloads/" target="_blank">python.org</a></li>
+                <li>During installation, <strong>CHECK the box:</strong> "Add Python to PATH"</li>
+                <li>Restart Command Prompt</li>
+                <li>Try again</li>
+            </ol>
+
+            <h3>Problem: "pip: command not found"</h3>
+            <p><strong>Cause:</strong> Python not properly installed</p>
+            <p><strong>Solution:</strong></p>
+            <pre>python -m pip install -r requirements.txt</pre>
+            <p>Use <code>python -m pip</code> instead of just <code>pip</code>.</p>
+
+            <h3>Problem: "No module named 'anthropic'"</h3>
+            <p><strong>Cause:</strong> Virtual environment not activated</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Make sure you see <code>(venv)</code> at the start of the prompt</li>
+                <li>If not, type: <code>venv\Scripts\activate</code></li>
+                <li>Then try running your script again</li>
+            </ol>
+
+            <h3>Problem: "Your credit balance is too low"</h3>
+            <p><strong>Cause:</strong> API key issue or account out of credits</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Verify <code>.env</code> file has correct API key</li>
+                <li>Check billing: <a href="https://console.anthropic.com/account/billing" target="_blank">console.anthropic.com/account/billing</a></li>
+                <li>Run: <code>python tests/test_api_key.py</code> to diagnose</li>
+            </ol>
+
+            <h3>Problem: File paths not working</h3>
+            <p><strong>Cause:</strong> Wrong file path or wrong current directory</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Always use full paths or navigate to correct folder first</li>
+                <li>Check current location: <code>cd</code> (shows current directory)</li>
+                <li>List files: <code>dir</code> (shows what's in folder)</li>
+            </ol>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2>Quick Reference: Essential Commands</h2>
+            <pre># Navigate to project
+cd C:\Users\YourUsername\vif-trading-system
+
+# Activate virtual environment
+venv\Scripts\activate
+
+# Deactivate virtual environment
+deactivate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run a script
+python agents/watchlist_watcher.py --watchlist vantage_portfolio
+
+# Check costs
+python scripts/check_usage.py
+
+# Test API key
+python tests/test_api_key.py
+
+# Update from git (Method B only)
+git pull
+
+# Commit changes (Method B only)
+git add .
+git commit -m "Description"
+git push</pre>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2>Checklist: Desktop Setup Complete</h2>
+            <div class="checklist">
+                <label><input type="checkbox"> Project folder copied to desktop</label>
+                <label><input type="checkbox"> Virtual environment created (<code>venv</code> folder exists)</label>
+                <label><input type="checkbox"> Virtual environment activated (you see <code>(venv)</code> in prompt)</label>
+                <label><input type="checkbox"> Dependencies installed (no errors when running <code>pip install</code>)</label>
+                <label><input type="checkbox"> <code>.env</code> file created with API key</label>
+                <label><input type="checkbox"> <code>python tests/test_api_key.py</code> succeeds</label>
+                <label><input type="checkbox"> <code>python scripts/check_usage.py</code> works</label>
+            </div>
+
+            <div class="success">✅ <strong>All checks pass?</strong> You're ready to use your system on desktop!</div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2>Running Your System on Desktop</h2>
+            <p>Now that setup is complete, you can run:</p>
+            <pre># Make sure you're in the project folder with (venv) active
+
+# Run watchlist analysis
+python agents/watchlist_watcher.py --watchlist vantage_portfolio
+
+# Check costs
+python scripts/check_usage.py
+
+# Run full scheduler
+python schedule_daily.py</pre>
+
+            <p style="margin-top: 20px;">Everything works the same as on your laptop!</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2>Important Notes</h2>
+
+            <h3>Virtual Environment</h3>
+            <ul>
+                <li><strong>Each machine needs its own</strong> <code>venv</code> folder</li>
+                <li>Don't copy the <code>venv</code> folder between machines</li>
+                <li>Always create a fresh one: <code>python -m venv venv</code></li>
+                <li>Takes 1–2 minutes to create, so no big deal</li>
+            </ul>
+
+            <h3>API Key</h3>
+            <ul>
+                <li><strong>Never commit <code>.env</code> to git</strong> (it contains secrets)</li>
+                <li>Create a new <code>.env</code> file on each machine</li>
+                <li>Copy the key from your laptop's <code>.env</code></li>
+            </ul>
+
+            <h3>Data Sync</h3>
+            <ul>
+                <li>Cache files (<code>data/</code>) and logs are machine-specific</li>
+                <li>Reports (<code>reports/</code>) can be shared if you use git</li>
+                <li>Don't worry about syncing temporary files</li>
+            </ul>
+        </section>
+
+        <section style="margin-top: 40px; padding: 20px; background: #e8f5e9; border-radius: 5px;">
+            <h2 style="margin-top: 0;">🎉 You're All Set!</h2>
+            <ol style="font-size: 1.05em;">
+                <li><strong>Choose your method</strong> (A or B)</li>
+                <li><strong>Follow the steps</strong> in order</li>
+                <li><strong>Test with:</strong> <code>python tests/test_api_key.py</code></li>
+                <li><strong>Start analyzing:</strong> <code>python agents/watchlist_watcher.py --watchlist vantage_portfolio</code></li>
+            </ol>
+            <p style="margin-top: 20px;"><strong>Good luck with your desktop setup! 🚀</strong></p>
+        </section>
+
+        <footer>
+            <p>VIF Trading System • Desktop Setup Guide • 2026-04-30</p>
+            <p>For more help, see: <code>QUICK_START_USAGE_TRACKING.md</code> and <code>CLAUDE.md</code></p>
+        </footer>
+    </div>
+</body>
+</html>

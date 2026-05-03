@@ -39,7 +39,10 @@ data_fetching:
   cache_ttl_hours: 24
 
 api:
-  model: "claude-sonnet-4-6"
+  models:
+    router: "claude-haiku-4-5"
+    analyst: "claude-sonnet-4-6"
+    synthesizer: "claude-opus-4-7"
   max_tokens: 1024
   temperature: 0  # Deterministic analysis
 

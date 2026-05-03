@@ -58,6 +58,13 @@ After every pipeline run:
   4. Monthly: review run_history.json → which agent fails most? → fix first
 ```
 
+## Agent Design Reference
+
+When adding or modifying agents/subagents in this pipeline, consult:
+- `/agent-design-principles` — Anthropic's canonical guidance mapped to VIF (pattern selection, ground-truth verification, tool design, evaluation)
+
+**Key rule:** Every pipeline step must verify ground truth from the previous step before proceeding. Never chain assumptions.
+
 ## Performance improvement checklist (review monthly)
 - [ ] Mean pipeline runtime < 10 minutes (if > 10min: parallelize fetches)
 - [ ] Failed agent rate < 5% (if > 5%: check API credit balance + network)

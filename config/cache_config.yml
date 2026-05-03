@@ -1,0 +1,89 @@
+# Anthropic Prompt Caching & Batch API Configuration
+# Reference: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
+
+prompt_caching:
+  enabled: true
+  ttl: "ephemeral"  # 5-minute cache (cheapest); alternatives: "permanent" (1-hour, more expensive)
+  cache_control_type: "ephemeral"
+
+  # Which system prompts should be cached?
+  cache_system_prompts:
+    - vif_framework  # K1-K6 kill switches, gamma regime rules, structural levels
+
+  # Estimated savings
+  vif_framework_tokens: 200  # Approximate tokens for full VIF instructions
+  cache_cost_multiplier: 1.25  # Cache write = 1.25x input rate
+  cache_read_cost_multiplier: 0.1  # Cache read = 10% of input rate
+  monthly_analysis_calls: 250  # Estimated calls/month using cached prompts
+  estimated_savings_per_month: 0.60  # $ saved by caching VIF rules
+
+batch_api:
+  enabled: false  # Set to true when you want overnight batch processing
+  discount: 0.5  # 50% cost reduction
+  max_processing_time_hours: 24  # Results returned within 24 hours
+
+  # When to use batch processing
+  batch_schedules:
+    - name: "overnight_full_analysis"
+      time: "02:00"  # 2 AM local time
+      days: ["MON", "TUE", "WED", "THU", "FRI"]
+      watchlists: ["vantage_portfolio", "ai_verticals", "energy_ai"]
+      description: "Process all watchlists at 50% cost during off-hours"
+
+  # Batch API request limits
+  request_limits:
+    max_requests_per_batch: 10000
+    max_tokens_per_request: 1024
+    max_batch_size_mb: 100
+
+# Cost comparison scenarios
+cost_projections:
+  scenario_1_realtime_only:
+    daily_cost: 0.13
+    monthly_cost: 3.90
+    description: "Realtime API calls only (current setup)"
+
+  scenario_2_with_caching:
+    daily_cost: 0.05  # ~60% reduction from cached VIF framework
+    monthly_cost: 1.50
+    description: "Realtime + prompt caching enabled"
+    notes: "Cache the 200-token VIF framework once, reuse across 250+ calls"
+
+  scenario_3_with_batch:
+    daily_cost: 0.03  # ~77% reduction from batching overnight analysis
+    monthly_cost: 0.90
+    description: "Realtime + batch processing (overnight)"
+    notes: "Move non-realtime analysis to batch API (50% discount)"
+
+  scenario_4_full_optimization:
+    daily_cost: 0.02  # ~85% reduction from caching + batching
+    monthly_cost: 0.60
+    description: "Realtime (with cache) + batch processing"
+    notes: "Best of both: cache VIF rules + batch nightly runs"
+
+# Implementation roadmap
+implementation:
+  phase_1_caching:
+    priority: "HIGH"
+    effort: "5 minutes"
+    savings: "60% on realtime calls"
+    steps:
+      - "Add cache_control field to VIF system prompt"
+      - "Verify cache hit tracking in logs"
+      - "Monitor cache_read tokens in usage reports"
+
+  phase_2_batch_api:
+    priority: "MEDIUM"
+    effort: "30 minutes"
+    savings: "Additional 50% on nightly runs"
+    steps:
+      - "Create batch request builder"
+      - "Schedule nightly batch jobs (2 AM)"
+      - "Implement result polling & callback"
+      - "Separate realtime from batch outputs"
+
+# References & Documentation
+references:
+  anthropic_prompt_caching: "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  anthropic_batches: "https://docs.anthropic.com/en/docs/build-a-basic-ai-chat-bot"
+  pricing_details: "https://platform.claude.com/docs/en/about-claude/pricing"
