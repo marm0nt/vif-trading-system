@@ -42,9 +42,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ── Python interpreter (use venv if available) ────────────────────────────────
-VENV_PY = str(Path("venv/Scripts/python.exe"))
-PYTHON   = VENV_PY if Path(VENV_PY).exists() else sys.executable
+# ── Python interpreter (use sys.executable so sub-agents inherit same runtime)
+PYTHON = sys.executable
 
 # ── Mode → agent pipeline map ─────────────────────────────────────────────────
 PIPELINES = {

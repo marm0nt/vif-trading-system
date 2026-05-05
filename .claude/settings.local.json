@@ -11,7 +11,9 @@
       "Agent",
       "Glob",
       "Grep",
-      "Bash(Get-Content \"C:\\\\Users\\\\marti\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-marti-vif-trading-system\\\\bac8b4cd-87f1-42f0-897f-c9b6288f7171\\\\tasks\\\\bthl19mcm.output\" -Wait)"
+      "Bash(Get-Content \"C:\\\\Users\\\\marti\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-marti-vif-trading-system\\\\bac8b4cd-87f1-42f0-897f-c9b6288f7171\\\\tasks\\\\bthl19mcm.output\" -Wait)",
+      "mcp__tradingview__tv_health_check",
+      "mcp__tradingview__tv_launch"
     ]
   }
 }

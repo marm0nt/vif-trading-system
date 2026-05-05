@@ -31,6 +31,10 @@ data/*.csv
 reports/
 logs/
 
+# ── External MCP / Skills (keep code local, don't push to GitHub) ────
+tradingview-mcp-jackson/
+claude-trading-skills/
+
 # ── Temp files ────────────────────────────────────────────────────────
 *.log
 *.class
