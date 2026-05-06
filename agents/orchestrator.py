@@ -78,7 +78,7 @@ PIPELINES = {
 }
 
 
-def run_agent(label: str, cmd_args: list[str], timeout: int = 600) -> dict:
+def run_agent(label: str, cmd_args: list[str], timeout: int = 900) -> dict:
     """
     Run a sub-agent script, capture output.
     Returns a result dict with success flag, key outputs.
@@ -138,8 +138,10 @@ def run_pipeline(mode: str) -> list[dict]:
         pipeline = PIPELINES.get(mode, PIPELINES["full"])
         logger.info(f"Pipeline: [{mode.upper()}] – {len(pipeline)} agents")
         results = []
-        for label, cmd in pipeline:
-            results.append(run_agent(label, cmd))
+        for entry in pipeline:
+            label, cmd = entry[0], entry[1]
+            timeout_override = entry[2] if len(entry) > 2 else None
+            results.append(run_agent(label, cmd, **({} if timeout_override is None else {"timeout": timeout_override})))
         return results
     finally:
         lock_path.unlink(missing_ok=True)
