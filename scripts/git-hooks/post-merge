@@ -1,0 +1,9 @@
+#!/bin/bash
+# Auto-sync IDE settings after git pull on laptop
+
+if [ -f ".vscode/settings.json" ]; then
+  if [ -n "$APPDATA" ]; then
+    APPDATA_PATH="$APPDATA/Code/User/settings.json"
+    cp ".vscode/settings.json" "$APPDATA_PATH" 2>/dev/null && echo "✓ IDE settings synced"
+  fi
+fi
