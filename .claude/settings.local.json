@@ -16,7 +16,10 @@
       "mcp__tradingview__tv_launch",
       "mcp__tradingview__chart_get_state",
       "mcp__tradingview__watchlist_get",
-      "mcp__tradingview__ui_evaluate"
+      "mcp__tradingview__ui_evaluate",
+      "mcp__tradingview__data_get_study_values",
+      "mcp__tradingview__quote_get",
+      "mcp__tradingview__data_get_ohlcv"
     ]
   }
 }
