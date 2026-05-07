@@ -52,10 +52,13 @@ The user invokes you when they ask for:
 **Use when:** User asks for end-of-day wrap, afterhours conviction update, or 5-day momentum check.
 
 **Sequence:**
-1. **vif-analyst** `--all --period 5d` — 5-day wrap with fresh signals
-2. **report-builder** — HTML report from VIF analysis
+1. **vif-analyst** `--all --period 5d` — 5-day wrap with fresh signals + MOAT check
+2. **signal-verifier** — Validate today's signals against EOD data (4-gate check)
+3. **postmarket-debrief** — Calculate hit rate, flag 5%+ movers, pull tomorrow's calendar
+4. **alpha-extractor** — (conditional) Run only if postmarket-debrief flags 5%+ movers
+5. **report-builder** — HTML report combining VIF signals + hit rate + movers + overnight calendar
 
-**Expected output:** `reports/vif_analysis_{timestamp}.html` with intraday action and next-day setup prep.
+**Expected output:** `reports/vif_analysis_{timestamp}.html` with intraday action, signal accuracy, 5%+ movers, and next-day prep.
 
 ### 4. Weekend Mode (Sat 08:00 + Sun 18:00 CT)
 

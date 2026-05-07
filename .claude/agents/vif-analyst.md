@@ -83,9 +83,40 @@ Primary output is JSON: `reports/analysis_{timestamp}.json`
 
 **HTML Report:** After generating JSON, orchestrator delegates to report-builder to convert JSON to HTML via `scripts/html_report_generator.py`. The HTML report is the final user-facing deliverable (per CLAUDE.md).
 
+## MOAT Sector Correlation Check
+
+Before finalizing signals, check the 5 MOAT anchor names: **NVDA, AVGO, MRVL, LITE, COHR**
+
+```bash
+python -c "
+import yfinance as yf
+moat = ['NVDA','AVGO','MRVL','LITE','COHR']
+data = yf.download(moat, period='2d', interval='1d', auto_adjust=True)
+pct = data['Close'].pct_change().iloc[-1] * 100
+print(pct.to_string())
+"
+```
+
+Count how many MOAT names are negative today:
+- **0–1 negative** → MOAT strong. No impact on signals.
+- **2 negative** → MOAT mixed. Flag `moat_conviction: REDUCED` in output. Mention in report.
+- **3+ negative** → MOAT weak. Flag `moat_conviction: SUPPRESSED`. Downgrade AI/semicon BUY signals from HIGH to MEDIUM confidence.
+
+Add `moat_status` to the JSON output:
+```json
+{
+  "moat_status": {
+    "negative_count": 2,
+    "conviction_modifier": "REDUCED",
+    "names_negative": ["LITE", "COHR"]
+  }
+}
+```
+
 ## Integration Points
 
 Signals feed into:
+- **Signal Verifier** (4-gate validation before publishing)
 - Swing Trade Screener (R:R ranking)
 - Weekend Catalyst Agent (top setups)
 - Report Builder (HTML conversion)
