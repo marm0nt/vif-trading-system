@@ -1,0 +1,38 @@
+{
+  "python.terminal.useEnvFile": true,
+  "python.locator": "js",
+  "python.venvPath": "C:\\Users\\marti\\vif-trading-system",
+  "python.venvFolders": [
+    "venv"
+  ],
+  "python.interpreter.infoVisibility": "always",
+  "python.terminal.activateEnvironment": true,
+  "python.experiments.optOutFrom": [
+    "pythonTerminalEnvVarActivation"
+  ],
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.extraPaths": [
+    "C:\\Users\\marti\\vif-trading-system\\venv\\Lib\\site-packages"
+  ],
+  "antigravity.workspace.trusted": true,
+  "antigravity.agent.autoApproveCommands": true,
+  "antigravity.agent.autoApproveFileEdits": true,
+  "antigravity.agent.autoApproveBrowserActions": false,
+  "security.workspace.trust.enabled": false,
+  "terminal.integrated.enablePersistentSessions": true,
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.env.windows": {
+    "PYTHONUTF8": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "VIRTUAL_ENV": "C:\\Users\\marti\\vif-trading-system\\venv"
+  },
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "terminal.integrated.enableImages": true,
+  "git.ignoredRepositories": [
+    "C:\\Users\\marti\\vif-trading-system\\tradingview-mcp-jackson"
+  ],
+  "workbench.colorTheme": "Dark Modern"
+}
