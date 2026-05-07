@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Note:** At the start of every session, Claude reads all files in `.claude/memory/` for project context continuity. This enables memory and conversation history to sync across desktop and laptop.
+
 ## Project Overview
 
 **VIF Trading System** is an AI-powered watchlist monitoring engine that applies the Volatility Imbalance Framework (v4.0) to analyze stock setups and generate trading signals. The system runs on a daily schedule (via `schedule_daily.py`) and outputs structured analysis for swing trade opportunities, macro themes, and catalyst-driven setups.
