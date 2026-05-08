@@ -50,17 +50,17 @@ PIPELINES = {
     "premarket": [
         # 07:00 – 09:30 CT
         # Goal: identify best setups BEFORE the open
-        ("Catalyst Scan",         ["scripts/catalyst_analysis.py"]),
+        ("Catalyst Scan",         ["scripts/active/analysis/catalyst_analysis.py"]),
         ("VIF Watchlist (1mo)",   ["agents/watchlist_watcher.py", "--all", "--period", "1mo"]),
-        ("Swing Screener",        ["scripts/swing_trade_screener_v2.py"]),
+        ("Swing Screener",        ["scripts/active/analysis/swing_trade_screener_v2.py"]),
     ],
     "market_open": [
         # 09:35 CT – catch opening volume
-        ("Opening Swing Screen",  ["scripts/swing_trade_screener_v2.py"]),
+        ("Opening Swing Screen",  ["scripts/active/analysis/swing_trade_screener_v2.py"]),
     ],
     "afterhours": [
         # 16:05 CT – review how the day closed
-        ("Daily Conviction Model",["scripts/daily_watchlist_analysis.py"]),
+        ("Daily Conviction Model",["scripts/active/analysis/daily_watchlist_analysis.py"]),
         ("VIF Wrap (5d)",         ["agents/watchlist_watcher.py", "--all", "--period", "5d"]),
     ],
     "weekend": [
@@ -69,10 +69,10 @@ PIPELINES = {
     ],
     "full": [
         # On-demand: complete end-to-end run
-        ("Catalyst Scan",         ["scripts/catalyst_analysis.py"]),
+        ("Catalyst Scan",         ["scripts/active/analysis/catalyst_analysis.py"]),
         ("VIF Full Scan (1mo)",   ["agents/watchlist_watcher.py", "--all", "--period", "1mo"]),
-        ("Swing Screener V2",     ["scripts/swing_trade_screener_v2.py"]),
-        ("Daily Analysis",        ["scripts/daily_watchlist_analysis.py"]),
+        ("Swing Screener V2",     ["scripts/active/analysis/swing_trade_screener_v2.py"]),
+        ("Daily Analysis",        ["scripts/active/analysis/daily_watchlist_analysis.py"]),
         ("Weekend Brief",         ["agents/weekend_catalyst_agent.py"]),
     ],
 }
@@ -669,7 +669,7 @@ def generate_html_report(results: list[dict], mode: str):
     """Build a fully-parsed, browsable HTML report from pipeline results."""
     try:
         sys.path.insert(0, str(Path.cwd()))
-        from scripts.html_report_generator import create_html_template, save_html_report
+        from scripts.active.reporting.html_report_generator import create_html_template, save_html_report
     except ImportError as e:
         logger.warning(f"HTML report skipped (import error): {e}")
         return

@@ -129,7 +129,7 @@ def job_premarket_catalyst():
     """07:00 – Policy, government & fundamental catalyst scan."""
     run_job(
         "Premarket Catalyst Analysis",
-        [PYTHON, "scripts/catalyst_analysis.py"],
+        [PYTHON, "scripts/active/analysis/catalyst_analysis.py"],
         timeout=120,
     )
 
