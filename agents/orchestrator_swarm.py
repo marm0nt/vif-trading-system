@@ -59,6 +59,7 @@ try:
         NativeVIFAnalystAgent,
         CriticAgent,
         NativeSwingScreenerAgent,
+        RiskAgent,
     )
 except ImportError as e:
     logger.error(f"Swarm framework import failed: {e}. Falling back to subprocess orchestrator.")
@@ -143,11 +144,13 @@ def initialize_swarm():
     # 2. VIF analyst runs second, reads K4 from catalyst's LoRA cache
     # 3. Critic agent runs third, reviews VIF signals and vetoes/downgrades via latent context
     # 4. Swing screener runs fourth, reuses market data from VIF's KV cache layer-1
+    # 5. Risk agent runs fifth (final), applies circuit breaker (-5% drawdown) and risk mitigation
     agent_pool = {
         "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
         "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
         "critic": CriticAgent("critic"),
         "swing-screener": NativeSwingScreenerAgent("swing-screener"),
+        "risk-agent": RiskAgent("risk-agent"),
     }
 
     # Initialize orchestrator
@@ -164,7 +167,8 @@ def initialize_swarm():
     logger.info(f"  ✓ Gossip Router initialized (500ms timeout, 2 agents/subtask)")
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
     logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
-    logger.info(f"    Execution order: Catalyst → VIF → Critic → SwingScreener (Planner-Critic-Executor)")
+    logger.info(f"    Phase 1: Catalyst → VIF → Critic (Planner-Critic-Executor)")
+    logger.info(f"    Phase 2: SwingScreener → Risk (Circuit Breaker + LATS mitigation)")
 
     return orchestrator, kv_cache, latent_memory, consensus
 

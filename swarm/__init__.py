@@ -20,6 +20,7 @@ from .native_catalyst_monitor_agent import NativeCatalystMonitorAgent
 from .native_vif_analyst_agent import NativeVIFAnalystAgent
 from .critic_agent import CriticAgent
 from .native_swing_screener_agent import NativeSwingScreenerAgent
+from .risk_agent import RiskAgent
 
 __all__ = [
     "KVCacheManager",
@@ -34,4 +35,5 @@ __all__ = [
     "NativeVIFAnalystAgent",
     "CriticAgent",
     "NativeSwingScreenerAgent",
+    "RiskAgent",
 ]
