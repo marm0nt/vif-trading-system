@@ -52,9 +52,9 @@ try:
         LatentWorkingMemory,
         GossipRouter,
         ConfidenceWeightedConsensus,
-        VIFAnalystAgent,
-        CatalystMonitorAgent,
-        SwingScreenerAgent,
+        NativeCatalystMonitorAgent,
+        NativeVIFAnalystAgent,
+        NativeSwingScreenerAgent,
     )
 except ImportError as e:
     logger.error(f"Swarm framework import failed: {e}. Falling back to subprocess orchestrator.")
@@ -134,11 +134,14 @@ def initialize_swarm():
         signal_priority={"BUY": 3, "SELL": 2, "HOLD": 1}
     )
 
-    # Create agent pool
+    # Create agent pool (CRITICAL: order matters for latent context propagation)
+    # 1. Catalyst monitor runs first, writes K4 tickers to layer-2 LoRA cache
+    # 2. VIF analyst runs second, reads K4 from catalyst's LoRA cache
+    # 3. Swing screener runs third, reuses market data from VIF's KV cache layer-1
     agent_pool = {
-        "vif-analyst-1": VIFAnalystAgent("vif-analyst-1"),
-        "catalyst-monitor": CatalystMonitorAgent("catalyst-monitor"),
-        "swing-screener": SwingScreenerAgent("swing-screener"),
+        "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
+        "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
+        "swing-screener": NativeSwingScreenerAgent("swing-screener"),
     }
 
     # Initialize orchestrator
@@ -154,7 +157,8 @@ def initialize_swarm():
     logger.info(f"  ✓ Latent Working Memory initialized (layers: 8, 16, 24)")
     logger.info(f"  ✓ Gossip Router initialized (500ms timeout, 2 agents/subtask)")
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
-    logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} specialist agents)")
+    logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
+    logger.info(f"    Execution order: Catalyst → VIF → SwingScreener (latent context enabled)")
 
     return orchestrator, kv_cache, latent_memory, consensus
 
@@ -183,15 +187,36 @@ def run_pipeline(mode: str):
     logger.info(f"Context: {len(pipeline_cfg['task_context'].get('watchlists', []))} watchlists")
 
     try:
-        result = orchestrator.orchestrate_task(
-            task_prompt=pipeline_cfg['task_prompt'],
-            task_context=pipeline_cfg['task_context']
-        )
+        # Try smolagents bridge first (richer multi-step reasoning + retry)
+        try:
+            from swarm.smolagents_bridge import ProductionSwarmBridge
+            logger.info("Using smolagents ProductionSwarmBridge for orchestration")
+            bridge = ProductionSwarmBridge()
+            raw_result = bridge.run(pipeline_cfg['task_prompt'])
 
-        # Extract results
-        consensus_signals = result.get("consensus", {}).get("consensus_signals", {})
-        conflicts = result.get("consensus", {}).get("conflicts", [])
-        metrics = result.get("metrics", {})
+            # Parse raw JSON output from bridge
+            if isinstance(raw_result, str):
+                result_data = json.loads(raw_result) if raw_result.startswith('{') else {"raw": raw_result}
+            else:
+                result_data = raw_result
+
+            # Extract consensus signals from smolagents output
+            consensus_signals = result_data.get("consensus_signals", {})
+            conflicts = result_data.get("conflicts", [])
+            metrics = result_data.get("metrics", {})
+
+        except ImportError:
+            # smolagents not installed — fall back to native SwarmOrchestrator
+            logger.info("smolagents not available, using native SwarmOrchestrator")
+            result = orchestrator.orchestrate_task(
+                task_prompt=pipeline_cfg['task_prompt'],
+                task_context=pipeline_cfg['task_context']
+            )
+
+            # Extract results
+            consensus_signals = result.get("consensus", {}).get("consensus_signals", {})
+            conflicts = result.get("consensus", {}).get("conflicts", [])
+            metrics = result.get("metrics", {})
 
         # Log summary
         logger.info(f"\n{'='*65}")

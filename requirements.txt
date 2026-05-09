@@ -28,3 +28,7 @@ schedule>=1.2.0            # Cron-style job scheduling (schedule_daily.py)
 
 # ── Output / Reporting ─────────────────────────────────────────────────────────
 rich>=13.0.0               # Beautiful terminal output (tables, progress bars)
+
+# ── Agentic Frameworks ──────────────────────────────────────────────────────────
+dspy-ai>=2.5.0             # DSPy offline prompt optimizer (research/dspy_compiler.py only, not runtime)
+smolagents>=1.10.0         # Multi-mode agents: ToolCallingAgent (prod) + CodeAgent (research)

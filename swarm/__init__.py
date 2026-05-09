@@ -12,23 +12,24 @@ Based on arXiv research:
 
 from .kv_cache_manager import KVCacheManager, KVCacheBinding
 from .latent_memory import LatentWorkingMemory
-from .specialist_agent import SpecialistAgent
+from .specialist_agent import SpecialistAgent, PromptLoader
 from .gossip_router import GossipRouter
 from .consensus import ConfidenceWeightedConsensus
 from .orchestrator import SwarmOrchestrator
-from .vif_analyst_agent import VIFAnalystAgent
-from .catalyst_monitor_agent import CatalystMonitorAgent
-from .swing_screener_agent import SwingScreenerAgent
+from .native_catalyst_monitor_agent import NativeCatalystMonitorAgent
+from .native_vif_analyst_agent import NativeVIFAnalystAgent
+from .native_swing_screener_agent import NativeSwingScreenerAgent
 
 __all__ = [
     "KVCacheManager",
     "KVCacheBinding",
     "LatentWorkingMemory",
     "SpecialistAgent",
+    "PromptLoader",
     "GossipRouter",
     "ConfidenceWeightedConsensus",
     "SwarmOrchestrator",
-    "VIFAnalystAgent",
-    "CatalystMonitorAgent",
-    "SwingScreenerAgent",
+    "NativeCatalystMonitorAgent",
+    "NativeVIFAnalystAgent",
+    "NativeSwingScreenerAgent",
 ]

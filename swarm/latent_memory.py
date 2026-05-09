@@ -8,7 +8,7 @@ Agents exchange last-layer hidden states for collaborative reasoning.
 Enables consensus without message-passing overhead.
 """
 
-from typing import Dict, Optional, List, Any
+from typing import Dict, Optional, List, Any, Tuple
 from datetime import datetime
 import json
 

@@ -8,6 +8,59 @@ and async execution model.
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import json
+from pathlib import Path
+from functools import lru_cache
+
+
+class PromptLoader:
+    """
+    Load compiled prompt strings from config/prompts_compiled.json.
+
+    Zero dspy import at runtime. DSPy optimizer runs offline and exports to JSON.
+    """
+
+    PROMPTS_PATH = Path("config/prompts_compiled.json")
+    EXPECTED_PROMPT_VERSION = "1.0"
+
+    @classmethod
+    @lru_cache(maxsize=1)
+    def load(cls) -> dict:
+        """Load prompts JSON file (cached)."""
+        if cls.PROMPTS_PATH.exists():
+            try:
+                return json.loads(cls.PROMPTS_PATH.read_text())
+            except Exception as e:
+                print(f"WARNING: Failed to load compiled prompts: {e}")
+                return {}
+        return {}
+
+    @classmethod
+    def get_system_prompt(cls, prompt_key: str, fallback: str = "") -> str:
+        """Get system prompt for a specific key (e.g., 'vif_signal', 'catalyst')."""
+        data = cls.load()
+        return data.get(prompt_key, {}).get("system", fallback)
+
+    @classmethod
+    def get_few_shots(cls, prompt_key: str) -> list:
+        """Get few-shot examples for a specific key."""
+        data = cls.load()
+        return data.get(prompt_key, {}).get("few_shots", [])
+
+    @classmethod
+    def prompt_version(cls) -> str:
+        """Get compiled prompts version."""
+        return cls.load().get("version", "unknown")
+
+    @classmethod
+    def validate_version(cls, expected: str = None) -> bool:
+        """Check if prompt version matches expected (or EXPECTED_PROMPT_VERSION if not specified)."""
+        if expected is None:
+            expected = cls.EXPECTED_PROMPT_VERSION
+        actual = cls.prompt_version()
+        if actual != expected:
+            print(f"WARNING: Compiled prompt version mismatch. Expected {expected}, got {actual}. Run 'python research/dspy_compiler.py --export' to refresh.")
+            return False
+        return True
 
 
 class SpecialistAgent:
