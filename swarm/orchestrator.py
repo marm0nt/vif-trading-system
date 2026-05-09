@@ -64,6 +64,7 @@ class SwarmOrchestrator:
 
         # 2. Initialize shared KV cache session
         cache_binding = self.kv_cache.create_session(
+            agent_id="swarm-orchestrator",
             shared_backbone=True,
             per_agent_lora=True
         )
