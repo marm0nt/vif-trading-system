@@ -23,6 +23,14 @@ logger = logging.getLogger(__name__)
 
 _REPO_ROOT = Path(__file__).parent.parent
 
+# Non-equity tickers that yfinance cannot fetch (crypto, indices, futures)
+# Reuse same exclusion pattern as _PatchedSwingScreener
+_NON_EQUITY_EXCLUDE = {
+    'BTCUSDT', 'BTCUSDT.P', 'VIX', 'VX1!', 'VX2!',
+    '3081', 'IQE', 'SIVE', 'IQEPF', 'SIVEF', 'SLOIF',
+    'AYARZZX',
+}
+
 
 class NativeVIFAnalystAgent(SpecialistAgent):
     """
@@ -89,6 +97,18 @@ class NativeVIFAnalystAgent(SpecialistAgent):
                 tickers = parse_watchlist(str(wl_file))
                 if not tickers:
                     self.logger.warning(f"{self.agent_id}: No tickers in {watchlist_name}")
+                    continue
+
+                # Filter out non-equity tickers (crypto, indices, futures)
+                valid_tickers = [
+                    t for t in tickers
+                    if t.strip().split(":")[-1].strip() not in _NON_EQUITY_EXCLUDE
+                ]
+                if len(valid_tickers) < len(tickers):
+                    self.logger.info(f"{self.agent_id}: Filtered {len(tickers) - len(valid_tickers)} non-equity tickers from {watchlist_name}")
+                tickers = valid_tickers
+                if not tickers:
+                    self.logger.warning(f"{self.agent_id}: No valid equity tickers in {watchlist_name} after filter")
                     continue
 
                 # Get market data with KV cache check
