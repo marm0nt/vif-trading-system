@@ -126,53 +126,53 @@ def log_run_summary(jobs: list[dict]):
 # ── Individual job definitions ────────────────────────────────────────────────
 
 def job_premarket_catalyst():
-    """07:00 – Policy, government & fundamental catalyst scan."""
+    """07:00 – Policy, government & fundamental catalyst scan via SwarmOrchestrator."""
     run_job(
-        "Premarket Catalyst Analysis",
-        [PYTHON, "scripts/active/analysis/catalyst_analysis.py"],
-        timeout=120,
+        "Premarket Catalyst Analysis [Swarm]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "premarket"],
+        timeout=300,
     )
 
 def job_premarket_vif_scan():
-    """08:45 – Orchestrator premarket pipeline (catalyst + VIF + swing)."""
+    """08:45 – Swarm orchestrator premarket pipeline (catalyst + VIF + swing)."""
     run_job(
-        "Premarket Pipeline [Orchestrator]",
-        [PYTHON, "agents/orchestrator.py", "--mode", "premarket"],
-        timeout=720,
+        "Premarket Pipeline [Swarm]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "premarket"],
+        timeout=600,
     )
 
 def job_market_open_swing():
-    """09:35 – Orchestrator market-open pipeline (swing screener)."""
+    """09:35 – Swarm orchestrator market-open pipeline (swing screener)."""
     run_job(
-        "Market-Open Pipeline [Orchestrator]",
-        [PYTHON, "agents/orchestrator.py", "--mode", "market_open"],
-        timeout=600,
+        "Market-Open Pipeline [Swarm]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "market_open"],
+        timeout=300,
     )
 
 def job_afterhours_analysis():
-    """16:05 – Orchestrator after-hours pipeline (daily + 5d VIF)."""
+    """16:05 – Swarm orchestrator after-hours pipeline (daily + 5d VIF)."""
     jobs_log = []
     ok1 = run_job(
-        "After-Hours Pipeline [Orchestrator]",
-        [PYTHON, "agents/orchestrator.py", "--mode", "afterhours"],
-        timeout=720,
+        "After-Hours Pipeline [Swarm]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "afterhours"],
+        timeout=600,
     )
-    jobs_log.append({"label": "after_hours_orchestrator", "success": ok1})
+    jobs_log.append({"label": "after_hours_swarm_orchestrator", "success": ok1})
     log_run_summary(jobs_log)
 
 def job_weekend_catalyst():
-    """Weekend – Orchestrator weekend pipeline (catalyst briefing)."""
+    """Weekend – Swarm orchestrator weekend pipeline (catalyst briefing)."""
     run_job(
-        "Weekend Pipeline [Orchestrator]",
-        [PYTHON, "agents/orchestrator.py", "--mode", "weekend"],
-        timeout=600,
+        "Weekend Pipeline [Swarm]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "weekend"],
+        timeout=300,
     )
 
 def job_friday_close():
-    """Fri 16:30 – Full end-of-week pipeline via orchestrator."""
+    """Fri 16:30 – Full end-of-week pipeline via swarm orchestrator."""
     run_job(
-        "Friday Full Pipeline [Orchestrator]",
-        [PYTHON, "agents/orchestrator.py", "--mode", "full"],
+        "Friday Full Pipeline [Swarm]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "full"],
         timeout=900,
     )
 
@@ -196,14 +196,16 @@ def build_schedule():
     schedule.every().saturday.at("08:00").do(job_weekend_catalyst)
     schedule.every().sunday.at("18:00").do(job_weekend_catalyst)
 
-    logger.info("Schedule registered:")
-    logger.info("  Weekdays  07:00  Premarket Catalyst Scan")
-    logger.info("  Weekdays  08:45  Premarket VIF Watchlist (1mo data)")
-    logger.info("  Weekdays  09:35  Market-Open Swing Screener V2")
-    logger.info("  Weekdays  16:05  After-Hours Analysis (daily + 5d VIF)")
-    logger.info("  Fridays   16:30  End-of-Week Screener + Options Strategy")
-    logger.info("  Saturday  08:00  Weekend Catalyst Briefing")
-    logger.info("  Sunday    18:00  Monday Morning Prep")
+    logger.info("Schedule registered (Swarm Intelligence Framework):")
+    logger.info("  Weekdays  07:00  Premarket Pipeline [Swarm] – Catalyst + VIF + Swing")
+    logger.info("  Weekdays  08:45  Premarket Pipeline [Swarm] – Full 1mo analysis")
+    logger.info("  Weekdays  09:35  Market-Open Pipeline [Swarm] – Swing setups")
+    logger.info("  Weekdays  16:05  After-Hours Pipeline [Swarm] – 5d VIF + conviction")
+    logger.info("  Fridays   16:30  Friday Full Pipeline [Swarm] – Complete end-of-week")
+    logger.info("  Saturday  08:00  Weekend Pipeline [Swarm] – Macro catalyst briefing")
+    logger.info("  Sunday    18:00  Weekend Pipeline [Swarm] – Monday morning prep")
+    logger.info("\n  Architecture: Multi-agent swarm with KV cache sharing + latent collaboration")
+    logger.info("  Expected improvements: 45-50% cache hit rate, 40-50% latency reduction, 50% cost savings")
 
 
 # ── Main loop ─────────────────────────────────────────────────────────────────

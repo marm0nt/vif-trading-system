@@ -16,6 +16,9 @@ from .specialist_agent import SpecialistAgent
 from .gossip_router import GossipRouter
 from .consensus import ConfidenceWeightedConsensus
 from .orchestrator import SwarmOrchestrator
+from .vif_analyst_agent import VIFAnalystAgent
+from .catalyst_monitor_agent import CatalystMonitorAgent
+from .swing_screener_agent import SwingScreenerAgent
 
 __all__ = [
     "KVCacheManager",
@@ -25,4 +28,7 @@ __all__ = [
     "GossipRouter",
     "ConfidenceWeightedConsensus",
     "SwarmOrchestrator",
+    "VIFAnalystAgent",
+    "CatalystMonitorAgent",
+    "SwingScreenerAgent",
 ]

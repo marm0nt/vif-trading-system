@@ -1,0 +1,247 @@
+#!/usr/bin/env python3
+"""
+Swarm Intelligence Orchestrator - Phase 3 Integration
+
+Replaces sequential subprocess orchestration with intelligent multi-agent swarm.
+Uses KV cache sharing + latent collaboration + gossip routing + consensus.
+
+Usage:
+  python agents/orchestrator_swarm.py --mode premarket
+  python agents/orchestrator_swarm.py --mode afterhours
+  python agents/orchestrator_swarm.py --mode full
+"""
+
+import sys
+import os
+import json
+import logging
+import argparse
+import uuid
+from datetime import datetime
+from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = lambda *a, **kw: None
+
+load_dotenv(override=True)
+Path("logs").mkdir(exist_ok=True)
+Path("reports").mkdir(exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [SWARM-ORCHESTRATOR] %(message)s",
+    handlers=[
+        logging.FileHandler("logs/orchestrator_swarm.log", encoding="utf-8"),
+        logging.StreamHandler(),
+    ],
+)
+logger = logging.getLogger(__name__)
+
+# Import swarm framework
+try:
+    from swarm import (
+        SwarmOrchestrator,
+        KVCacheManager,
+        LatentWorkingMemory,
+        GossipRouter,
+        ConfidenceWeightedConsensus,
+        VIFAnalystAgent,
+        CatalystMonitorAgent,
+        SwingScreenerAgent,
+    )
+except ImportError as e:
+    logger.error(f"Swarm framework import failed: {e}. Falling back to subprocess orchestrator.")
+    import subprocess
+    sys.exit(subprocess.run([sys.executable, "agents/orchestrator.py"] + sys.argv[1:]).returncode)
+
+
+# ── Watchlists ────────────────────────────────────────────────────────────────
+WATCHLISTS = [
+    "AI Physical Layer & Power Infrastructure",
+    "AI Verticals (Supply Chain)",
+    "Core Growth & Macro Indices (Large-Cap Anchors)",
+    "Energy & AI (Power Convergence)",
+    "Speculative _ High-Beta",
+    "Trump Admin_ Onshoring",
+]
+
+# ── Task decomposition by mode ─────────────────────────────────────────────────
+PIPELINES = {
+    "premarket": {
+        "description": "07:00 – 09:30 CT: Premarket catalyst + VIF + swing screener",
+        "task_prompt": "Analyze 6 watchlists for trading signals and opportunities before market open",
+        "task_context": {
+            "watchlists": WATCHLISTS,
+            "period": "1mo",
+            "focus": ["catalyst_scan", "vif_analysis", "swing_setups"],
+        }
+    },
+    "market_open": {
+        "description": "09:35 CT: Swing screener for opening volume",
+        "task_prompt": "Screen for swing trade setups at market open",
+        "task_context": {
+            "watchlists": WATCHLISTS,
+            "period": "5d",
+            "focus": ["swing_setups"],
+        }
+    },
+    "afterhours": {
+        "description": "16:05 CT: Daily conviction model + 5d VIF wrap",
+        "task_prompt": "Review daily market close and 5-day trend analysis",
+        "task_context": {
+            "watchlists": WATCHLISTS,
+            "period": "5d",
+            "focus": ["daily_conviction", "vif_5d"],
+        }
+    },
+    "weekend": {
+        "description": "Weekend: Catalyst briefing and macro analysis",
+        "task_prompt": "Scan macro catalysts, earnings dates, sector rotation for week ahead",
+        "task_context": {
+            "watchlists": WATCHLISTS,
+            "period": "1mo",
+            "focus": ["catalyst_scan"],
+        }
+    },
+    "full": {
+        "description": "Full end-to-end analysis: all modes combined",
+        "task_prompt": "Complete analysis: catalysts, VIF signals, swing setups, daily conviction",
+        "task_context": {
+            "watchlists": WATCHLISTS,
+            "period": "1mo",
+            "focus": ["catalyst_scan", "vif_analysis", "swing_setups", "daily_conviction"],
+        }
+    },
+}
+
+
+def initialize_swarm():
+    """Initialize swarm framework components."""
+    logger.info("Initializing swarm intelligence framework...")
+
+    # Create framework components
+    kv_cache = KVCacheManager(max_cache_mb=500, max_recompute_layers=3)
+    latent_memory = LatentWorkingMemory(layers_to_share=[8, 16, 24])
+    gossip_router = GossipRouter(gossip_timeout_ms=500, max_agents_per_subtask=2)
+    consensus = ConfidenceWeightedConsensus(
+        signal_priority={"BUY": 3, "SELL": 2, "HOLD": 1}
+    )
+
+    # Create agent pool
+    agent_pool = {
+        "vif-analyst-1": VIFAnalystAgent("vif-analyst-1"),
+        "catalyst-monitor": CatalystMonitorAgent("catalyst-monitor"),
+        "swing-screener": SwingScreenerAgent("swing-screener"),
+    }
+
+    # Initialize orchestrator
+    orchestrator = SwarmOrchestrator(
+        kv_cache_manager=kv_cache,
+        latent_memory=latent_memory,
+        agent_pool=agent_pool,
+        gossip_router=gossip_router,
+        consensus_resolver=consensus,
+    )
+
+    logger.info(f"  ✓ KV Cache Manager initialized (500MB, 3-layer recomputation)")
+    logger.info(f"  ✓ Latent Working Memory initialized (layers: 8, 16, 24)")
+    logger.info(f"  ✓ Gossip Router initialized (500ms timeout, 2 agents/subtask)")
+    logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
+    logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} specialist agents)")
+
+    return orchestrator, kv_cache, latent_memory, consensus
+
+
+def run_pipeline(mode: str):
+    """Execute pipeline via SwarmOrchestrator."""
+    if mode not in PIPELINES:
+        logger.error(f"Unknown mode: {mode}. Valid modes: {list(PIPELINES.keys())}")
+        return 1
+
+    pipeline_cfg = PIPELINES[mode]
+    logger.info(f"{'='*65}")
+    logger.info(f"  SWARM ORCHESTRATOR: {pipeline_cfg['description']}")
+    logger.info(f"  Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"{'='*65}")
+
+    # Initialize swarm
+    orchestrator, kv_cache, latent_memory, consensus = initialize_swarm()
+
+    # Generate trace ID
+    trace_id = str(uuid.uuid4())
+    logger.info(f"\nTrace-ID: {trace_id}")
+
+    # Execute swarm task
+    logger.info(f"\nExecuting task: {pipeline_cfg['task_prompt']}")
+    logger.info(f"Context: {len(pipeline_cfg['task_context'].get('watchlists', []))} watchlists")
+
+    try:
+        result = orchestrator.orchestrate_task(
+            task_prompt=pipeline_cfg['task_prompt'],
+            task_context=pipeline_cfg['task_context']
+        )
+
+        # Extract results
+        consensus_signals = result.get("consensus", {}).get("consensus_signals", {})
+        conflicts = result.get("consensus", {}).get("conflicts", [])
+        metrics = result.get("metrics", {})
+
+        # Log summary
+        logger.info(f"\n{'='*65}")
+        logger.info(f"  SWARM EXECUTION COMPLETE")
+        logger.info(f"{'='*65}")
+        logger.info(f"Duration: {metrics.get('duration_ms', 0):.0f}ms")
+        logger.info(f"Agents: {metrics.get('agents_executed', 0)}/{metrics.get('agents_total', 0)} succeeded")
+        logger.info(f"KV Cache Hit Rate: {metrics.get('kv_cache_hit_rate', 0):.1%}")
+        logger.info(f"Consensus Conflicts: {metrics.get('consensus_conflicts', 0)}")
+
+        # Count signal types
+        buy_count = sum(1 for s in consensus_signals.values() if s.get("signal") == "BUY")
+        sell_count = sum(1 for s in consensus_signals.values() if s.get("signal") == "SELL")
+        hold_count = sum(1 for s in consensus_signals.values() if s.get("signal") == "HOLD")
+
+        logger.info(f"Signals: {buy_count} BUY, {sell_count} SELL, {hold_count} HOLD")
+
+        # Save results
+        output_file = Path("reports") / f"swarm_result_{mode}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        output_file.write_text(json.dumps({
+            "mode": mode,
+            "trace_id": trace_id,
+            "timestamp": datetime.now().isoformat(),
+            "consensus_signals": consensus_signals,
+            "conflicts": conflicts,
+            "metrics": metrics,
+        }, indent=2))
+        logger.info(f"\nResults saved -> {output_file}")
+
+        return 0 if metrics.get("agents_executed", 0) == metrics.get("agents_total", 0) else 1
+
+    except Exception as e:
+        logger.error(f"Swarm execution failed: {e}", exc_info=True)
+        return 1
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Swarm Intelligence Orchestrator – Multi-agent coordination with KV cache + latent collaboration"
+    )
+    parser.add_argument(
+        "--mode", "-m",
+        choices=list(PIPELINES.keys()),
+        default="full",
+        help="Pipeline mode (default: full)"
+    )
+    args = parser.parse_args()
+
+    return run_pipeline(args.mode)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
