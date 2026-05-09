@@ -18,6 +18,7 @@ from .consensus import ConfidenceWeightedConsensus
 from .orchestrator import SwarmOrchestrator
 from .native_catalyst_monitor_agent import NativeCatalystMonitorAgent
 from .native_vif_analyst_agent import NativeVIFAnalystAgent
+from .critic_agent import CriticAgent
 from .native_swing_screener_agent import NativeSwingScreenerAgent
 
 __all__ = [
@@ -31,5 +32,6 @@ __all__ = [
     "SwarmOrchestrator",
     "NativeCatalystMonitorAgent",
     "NativeVIFAnalystAgent",
+    "CriticAgent",
     "NativeSwingScreenerAgent",
 ]

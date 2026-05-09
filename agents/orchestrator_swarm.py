@@ -20,6 +20,9 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
+# Ensure repo is in path for swarm module imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 if hasattr(sys.stderr, "reconfigure"):
@@ -54,6 +57,7 @@ try:
         ConfidenceWeightedConsensus,
         NativeCatalystMonitorAgent,
         NativeVIFAnalystAgent,
+        CriticAgent,
         NativeSwingScreenerAgent,
     )
 except ImportError as e:
@@ -137,10 +141,12 @@ def initialize_swarm():
     # Create agent pool (CRITICAL: order matters for latent context propagation)
     # 1. Catalyst monitor runs first, writes K4 tickers to layer-2 LoRA cache
     # 2. VIF analyst runs second, reads K4 from catalyst's LoRA cache
-    # 3. Swing screener runs third, reuses market data from VIF's KV cache layer-1
+    # 3. Critic agent runs third, reviews VIF signals and vetoes/downgrades via latent context
+    # 4. Swing screener runs fourth, reuses market data from VIF's KV cache layer-1
     agent_pool = {
         "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
         "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
+        "critic": CriticAgent("critic"),
         "swing-screener": NativeSwingScreenerAgent("swing-screener"),
     }
 
@@ -158,7 +164,7 @@ def initialize_swarm():
     logger.info(f"  ✓ Gossip Router initialized (500ms timeout, 2 agents/subtask)")
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
     logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
-    logger.info(f"    Execution order: Catalyst → VIF → SwingScreener (latent context enabled)")
+    logger.info(f"    Execution order: Catalyst → VIF → Critic → SwingScreener (Planner-Critic-Executor)")
 
     return orchestrator, kv_cache, latent_memory, consensus
 

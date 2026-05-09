@@ -9,7 +9,7 @@ Enables consensus without message-passing overhead.
 """
 
 from typing import Dict, Optional, List, Any, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 
@@ -93,7 +93,7 @@ class LatentWorkingMemory:
         if agent_id not in self.write_history:
             self.write_history[agent_id] = []
         self.write_history[agent_id].append({
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "layers": list(hidden_states_dict.keys()),
             "state_count": len(hidden_states_dict),
         })
