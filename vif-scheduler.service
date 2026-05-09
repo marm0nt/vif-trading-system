@@ -1,0 +1,41 @@
+# VIF Trading System - systemd Service (Linux/Mac)
+# Installation:
+#   1. Copy to /etc/systemd/system/vif-scheduler.service
+#   2. sudo systemctl daemon-reload
+#   3. sudo systemctl enable vif-scheduler
+#   4. sudo systemctl start vif-scheduler
+#   5. sudo systemctl status vif-scheduler
+
+[Unit]
+Description=VIF Trading System - Autonomous Daily Scheduler
+Documentation=file:///home/user/vif-trading-system/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=marti
+WorkingDirectory=/home/marti/vif-trading-system
+ExecStart=/usr/bin/python3 schedule_daily.py
+
+# Restart on failure
+Restart=always
+RestartSec=10
+StandardOutput=append:/home/marti/vif-trading-system/logs/scheduler-systemd.log
+StandardError=append:/home/marti/vif-trading-system/logs/scheduler-systemd.log
+
+# Resource limits
+MemoryLimit=2G
+CPUQuota=80%
+
+# Security
+NoNewPrivileges=true
+ProtectHome=no
+ProtectSystem=strict
+ReadWritePaths=/home/marti/vif-trading-system
+
+# Service hardening
+SyslogIdentifier=vif-scheduler
+
+[Install]
+WantedBy=multi-user.target

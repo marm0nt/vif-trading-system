@@ -236,7 +236,7 @@ class RiskAgent(SpecialistAgent):
 
         if self.latent_memory:
             recent_states = self.latent_memory.read_hidden_states(
-                self.agent_id, source_agents=["vif-analyst-1", "swing-screener"], lookback_states=3
+                self.agent_id, source_agents=["vif-analyst-1", "swing-screener"]
             )
             # Analyze recent hidden state volatility
             if recent_states and len(recent_states) > 0:
