@@ -1,0 +1,259 @@
+{
+  "template_id": "vif_daily_master_report",
+  "version": "1.0",
+  "description": "Orchestrator-Coordinator template for daily VIF master report generation across 6 institutional watchlists",
+  "created": "2026-05-08",
+  "execution_pattern": "parallel_fan_out_with_consolidation",
+
+  "decomposition": {
+    "description": "Tree of Thoughts decomposition for daily report pipeline",
+    "master_plan": "Fan 8 independent agents (6 VIF analysts + catalyst monitor + swing screener) → collect A2A JSON state → consolidate metrics → generate XML report",
+    "sub_agents": [
+      {
+        "agent_type": "vif-analyst",
+        "watchlist": "AI Physical Layer & Power Infrastructure",
+        "context_payload": {
+          "watchlist_file": "watchlists/AI Physical Layer & Power Infrastructure.txt",
+          "tickers_expected": 47,
+          "framework": "VIF v4.0",
+          "period": "1mo",
+          "output_format": "json"
+        },
+        "output_expectations": {
+          "signals": "BUY/SELL/HOLD with confidence scores",
+          "kill_switches": "K1-K6 trigger status per ticker",
+          "gamma_regime": "positive/negative/transition distribution"
+        }
+      },
+      {
+        "agent_type": "vif-analyst",
+        "watchlist": "AI Verticals (Supply Chain)",
+        "context_payload": {
+          "watchlist_file": "watchlists/AI Verticals (Supply Chain).txt",
+          "tickers_expected": 31,
+          "framework": "VIF v4.0",
+          "period": "1mo",
+          "output_format": "json"
+        }
+      },
+      {
+        "agent_type": "vif-analyst",
+        "watchlist": "Core Growth & Macro Indices (Large-Cap Anchors)",
+        "context_payload": {
+          "watchlist_file": "watchlists/Core Growth & Macro Indices (Large-Cap Anchors).txt",
+          "tickers_expected": 56,
+          "framework": "VIF v4.0",
+          "period": "1mo",
+          "output_format": "json"
+        }
+      },
+      {
+        "agent_type": "vif-analyst",
+        "watchlist": "Energy & AI (Power Convergence)",
+        "context_payload": {
+          "watchlist_file": "watchlists/Energy & AI (Power Convergence).txt",
+          "tickers_expected": 13,
+          "framework": "VIF v4.0",
+          "period": "1mo",
+          "output_format": "json"
+        }
+      },
+      {
+        "agent_type": "vif-analyst",
+        "watchlist": "Speculative _ High-Beta",
+        "context_payload": {
+          "watchlist_file": "watchlists/Speculative _ High-Beta.txt",
+          "tickers_expected": 10,
+          "framework": "VIF v4.0",
+          "period": "1mo",
+          "output_format": "json"
+        }
+      },
+      {
+        "agent_type": "vif-analyst",
+        "watchlist": "Trump Admin_ Onshoring",
+        "context_payload": {
+          "watchlist_file": "watchlists/Trump Admin_ Onshoring.txt",
+          "tickers_expected": 13,
+          "framework": "VIF v4.0",
+          "period": "1mo",
+          "output_format": "json"
+        }
+      },
+      {
+        "agent_type": "catalyst-monitor",
+        "scope": "all_watchlists",
+        "context_payload": {
+          "focus": ["earnings_calendar", "macro_catalysts", "sector_themes"],
+          "lookahead_days": 5,
+          "output_format": "json"
+        }
+      },
+      {
+        "agent_type": "swing-trade-screener",
+        "scope": "all_watchlists",
+        "context_payload": {
+          "setup_types": ["PULLBACK_TO_MA20", "BULLISH_MA_MOMENTUM", "SUPPORT_BOUNCE", "CONSOLIDATION_BREAKOUT", "OVERSOLD_BOUNCE"],
+          "rank_by": "risk_reward_ratio",
+          "output_format": "json"
+        }
+      }
+    ]
+  },
+
+  "a2a_consolidation": {
+    "description": "Agent-to-Agent JSON consolidation protocol",
+    "step_1_collect": {
+      "action": "Orchestrator collects JSON output from all 8 agents",
+      "format": "analysis_<watchlist>_<timestamp>.json",
+      "location": "reports/",
+      "state_structure": {
+        "watchlist_name": "string",
+        "analysis_date": "ISO8601",
+        "tickers_analyzed": "integer",
+        "signals": {
+          "<ticker>": {
+            "signal": "BUY|SELL|HOLD",
+            "confidence": "0-100",
+            "gamma_regime": "positive|negative|transition",
+            "volume_signal": "strong|normal|weak",
+            "kill_switch": "K1,K2|null",
+            "price": "float",
+            "rsi": "float",
+            "note": "string"
+          }
+        }
+      }
+    },
+    "step_2_aggregate": {
+      "action": "Consolidate all watchlist JSON into single metrics dashboard",
+      "operation": "Orchestrator reads all analysis_*.json files, sums signal counts, calculates gamma/kill distributions",
+      "output": "consolidated_analysis_<date>.json",
+      "metrics_tracked": [
+        "total_buy",
+        "total_sell",
+        "total_hold",
+        "gamma_positive_count",
+        "gamma_negative_count",
+        "gamma_transition_count",
+        "kill_switch_counts (K1-K6)",
+        "watchlist_breakdown_summary"
+      ]
+    }
+  },
+
+  "xml_report_generation": {
+    "description": "Anthropic-optimized XML tagging for human-facing report",
+    "structure": {
+      "executive_summary": {
+        "content": "Market condition overview, signal hit rate, dominant kill switches",
+        "example_tags": ["<market_condition>", "<signal_distribution>", "<risk_level>"]
+      },
+      "signal_analysis": {
+        "content": "BUY/SELL/HOLD breakdown by watchlist, top opportunities, conviction scoring",
+        "example_tags": ["<buy_signals>", "<sell_signals>", "<hold_rationale>"]
+      },
+      "kill_switch_heat_map": {
+        "content": "K1-K6 trigger counts, sector exposure, risk clusters",
+        "example_tags": ["<kill_switch_k1>", "<overbought_clusters>", "<liquidity_risk>"]
+      },
+      "gamma_regime_shifts": {
+        "content": "Positive/negative/transition distribution, regime changes vs previous day",
+        "example_tags": ["<positive_momentum>", "<negative_reversal>", "<transition_watch>"]
+      },
+      "recommendations": {
+        "content": "Actionable next steps, scalable entry/exit logic, monitoring priorities",
+        "example_tags": ["<immediate_actions>", "<swing_setup_ranking>", "<catalyst_watch>"]
+      },
+      "blockers": {
+        "content": "Any data gaps, agent failures, market-dependent constraints",
+        "example_tags": ["<data_gaps>", "<agent_failures>", "<market_halts>"]
+      }
+    }
+  },
+
+  "otel_traceability": {
+    "description": "OpenTelemetry span logging + Git commit convention",
+    "span_logging": {
+      "location": "logs/otel/vif_daily_<date>.jsonl",
+      "fields": [
+        "timestamp",
+        "span_id",
+        "parent_span_id",
+        "agent_id",
+        "operation",
+        "status (success|failure)",
+        "duration_ms",
+        "metadata (context_size, tickers_processed, etc)"
+      ]
+    },
+    "git_commit_convention": {
+      "format": "[orchestrator] feat(vif_daily_report): consolidated analysis <date>",
+      "body": {
+        "summary": "What changed (signal distribution, regime shifts, etc)",
+        "trace_id": "UUID generated for this run",
+        "parent_prompt_hash": "SHA of user prompt that triggered this run",
+        "agent_outputs": "JSON state hash from all 8 agents",
+        "metrics_delta": "BUY/SELL/HOLD counts vs previous day"
+      },
+      "example": "[orchestrator] feat(vif_daily_report): consolidated 280 tickers, 7 BUY/131 SELL/142 HOLD\n\nTrace-ID: a1b2c3d4-e5f6-47g8-h9i0-j1k2l3m4n5o6\nParent-Prompt-Hash: sha256_abc123def456\nAgents: 6 VIF analysts + catalyst monitor + swing screener\nMetrics Delta: +4 BUY signals vs previous (3→7)"
+    }
+  },
+
+  "security_whitelist": {
+    "description": "Bash operations restricted to explicit whitelist",
+    "allowed_operations": [
+      "mkdir -p reports/",
+      "touch reports/analysis_*.json",
+      "cp reports/analysis_*.json reports/consolidated_analysis_<date>.json",
+      "mv reports/*.json reports/archive/",
+      "sed -i 's/old/new/g' reports/*.json (for schema migration only)",
+      "grep -r 'SELL' reports/ (read-only query)",
+      "git add reports/",
+      "git commit -m '[orchestrator] ...' (with full body as per convention)"
+    ],
+    "prohibited_operations": [
+      "curl (no external API calls from orchestrator)",
+      "wget",
+      "sudo",
+      "rm -rf (use archive pattern instead)",
+      "docker commands",
+      "system updates"
+    ]
+  },
+
+  "execution_checklist": {
+    "pre_execution": [
+      "Verify all 6 watchlist files exist (ls -la watchlists/)",
+      "Check reports/ directory writable",
+      "Confirm yfinance cache valid (24-hour TTL)",
+      "Verify TradingView MCP connection available (optional, for live quote verification)"
+    ],
+    "during_execution": [
+      "Fan all 8 agents in parallel",
+      "Log each agent dispatch to OTel span",
+      "Monitor for failures (agent timeout, data fetch error)",
+      "Collect A2A JSON state as each agent completes"
+    ],
+    "post_execution": [
+      "Consolidate metrics JSON",
+      "Generate XML report structure",
+      "Render as HTML for browser viewing",
+      "Commit to Git with OTel trace ID",
+      "Archive previous day's report to reports/archive/"
+    ]
+  },
+
+  "next_run_scheduling": {
+    "daily_cadence": [
+      "07:00 CT - Catalyst monitor (macro + earnings)",
+      "08:45 CT - Premarket VIF (1mo period)",
+      "09:35 CT - Swing trade screener",
+      "16:05 CT - Afterhours conviction + 5d update",
+      "Friday 16:30 CT - Weekly sweep",
+      "Saturday 08:00 CT - Weekend macro briefing",
+      "Sunday 18:00 CT - Monday morning prep"
+    ],
+    "template_reuse": "Load this template for each scheduled run, customize dates/times as needed"
+  }
+}
