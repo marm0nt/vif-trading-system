@@ -186,6 +186,7 @@ class NativeVIFAnalystAgent(SpecialistAgent):
         Fetch market data with KV cache check per ticker.
 
         If cached in layer 1, reuse. Otherwise fetch from yfinance + indicators.
+        Strips exchange prefix (e.g., NASDAQ:NVDA → NVDA) before yfinance call.
         """
         try:
             from agents.indicators import fetch_and_compute
@@ -196,7 +197,10 @@ class NativeVIFAnalystAgent(SpecialistAgent):
         market_data = {}
 
         for ticker in tickers:
-            # Check KV cache first
+            # Strip exchange prefix for yfinance (NASDAQ:NVDA → NVDA)
+            ticker_clean = ticker.split(':')[-1] if ':' in ticker else ticker
+
+            # Check KV cache first (use original ticker as key for cache consistency)
             cached = None
             if self.kv_cache_binding:
                 cached = self.kv_cache_binding.get(layer=1, key=ticker)
@@ -205,9 +209,9 @@ class NativeVIFAnalystAgent(SpecialistAgent):
                 self.logger.debug(f"{self.agent_id}: KV cache hit for {ticker}")
                 market_data[ticker] = cached
             else:
-                # Fetch and compute
-                self.logger.debug(f"{self.agent_id}: Fetching {ticker} from yfinance")
-                fetched = fetch_and_compute(ticker, period)
+                # Fetch and compute (use clean ticker for yfinance)
+                self.logger.debug(f"{self.agent_id}: Fetching {ticker_clean} from yfinance")
+                fetched = fetch_and_compute(ticker_clean, period)
                 if fetched:
                     market_data[ticker] = fetched
 

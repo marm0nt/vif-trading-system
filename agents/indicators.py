@@ -190,7 +190,7 @@ def fetch_and_compute(ticker: str, period: str = "6mo") -> dict | None:
     import yfinance as yf
     try:
         df = yf.download(ticker, period=period, progress=False)
-        if df is None or len(df) < 30:
+        if df is None or len(df) < 20:
             return None
         if isinstance(df.columns, pd.MultiIndex):
             df = pd.DataFrame({
