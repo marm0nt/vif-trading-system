@@ -8,6 +8,7 @@ python-dotenv>=1.0.0       # .env file loading for API keys
 
 # ── Market Data ────────────────────────────────────────────────────────────────
 yfinance>=1.0.0            # Yahoo Finance OHLCV data (free, no API key needed)
+finvizfinance>=1.3.0       # Finviz screener API – institutional discovery (Jan 2026 release)
 requests>=2.31.0           # HTTP requests for news feeds
 requests-cache>=1.2.0      # Cache HTTP responses to reduce API calls
 beautifulsoup4>=4.12.0     # HTML parsing for news catalysts

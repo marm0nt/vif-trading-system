@@ -124,6 +124,17 @@ PIPELINES = {
             "focus": ["catalyst_scan", "vif_analysis", "swing_setups", "daily_conviction"],
         }
     },
+    "finviz_screen": {
+        "description": "07:30 CT: Independent FinViz discovery scan (separate from VIF watchlists)",
+        "task_prompt": "Run 19 institutional screeners: Hunt, CANSLIM, Kell variants, earnings-driven. Compare results with VIF signals for overlap analysis.",
+        "task_context": {
+            "mode": "finviz_screen",
+            "screener_groups": ["daily_screeners", "tactical_screeners"],
+            "focus": ["finviz_discovery"],
+            "compare_with_vif": True,
+            "output_format": "html",
+        }
+    },
 }
 
 
@@ -173,13 +184,92 @@ def initialize_swarm():
     return orchestrator, kv_cache, latent_memory, consensus
 
 
+def _run_finviz_pipeline(pipeline_cfg: dict):
+    """Run FinViz discovery scan independently (not swarm-orchestrated)."""
+    logger.info(f"{'='*65}")
+    logger.info(f"  FINVIZ DISCOVERY SCREENER: {pipeline_cfg['description']}")
+    logger.info(f"  Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"{'='*65}")
+
+    import subprocess
+    import time
+
+    start_time = time.time()
+    trace_id = str(uuid.uuid4())
+    logger.info(f"\nTrace-ID: {trace_id}")
+
+    try:
+        # Run finviz screener agent with daily mode
+        logger.info("Executing FinViz discovery scan...")
+        result = subprocess.run(
+            [sys.executable, "agents/finviz_screener_agent.py", "--mode", "daily"],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+
+        if result.returncode != 0:
+            logger.error(f"Finviz agent failed: {result.stderr}")
+            return 1
+
+        # Parse finviz results
+        try:
+            finviz_output = json.loads(result.stdout)
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse finviz output: {e}")
+            return 1
+
+        duration_ms = int((time.time() - start_time) * 1000)
+
+        # Aggregate results
+        screeners_executed = finviz_output.get("screeners_executed", 0)
+        total_tickers = set()
+        for screener_result in finviz_output.get("screeners", {}).values():
+            total_tickers.update(screener_result.get("tickers", []))
+
+        logger.info(f"\n{'='*65}")
+        logger.info(f"  FINVIZ SCAN COMPLETE")
+        logger.info(f"{'='*65}")
+        logger.info(f"Duration: {duration_ms}ms")
+        logger.info(f"Screeners Executed: {screeners_executed}")
+        logger.info(f"Unique Tickers Discovered: {len(total_tickers)}")
+        logger.info(f"Top Discoveries: {list(total_tickers)[:10]}")
+
+        # Save results
+        output_file = Path("reports") / f"finviz_screen_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        output_file.write_text(json.dumps({
+            "mode": "finviz_screen",
+            "trace_id": trace_id,
+            "timestamp": datetime.now().isoformat(),
+            "duration_ms": duration_ms,
+            "finviz_results": finviz_output,
+            "unique_tickers": sorted(list(total_tickers)),
+            "discovery_count": len(total_tickers),
+        }, indent=2, default=str))
+        logger.info(f"\nResults saved -> {output_file}")
+
+        return 0
+
+    except subprocess.TimeoutExpired:
+        logger.error("Finviz scan timed out (>300s)")
+        return 1
+    except Exception as e:
+        logger.error(f"Finviz pipeline failed: {e}", exc_info=True)
+        return 1
+
+
 def run_pipeline(mode: str):
-    """Execute pipeline via SwarmOrchestrator."""
+    """Execute pipeline via SwarmOrchestrator or specialized agent."""
     if mode not in PIPELINES:
         logger.error(f"Unknown mode: {mode}. Valid modes: {list(PIPELINES.keys())}")
         return 1
 
     pipeline_cfg = PIPELINES[mode]
+
+    # Special handling for finviz_screen (independent discovery, not swarm-orchestrated)
+    if mode == "finviz_screen":
+        return _run_finviz_pipeline(pipeline_cfg)
+
     logger.info(f"{'='*65}")
     logger.info(f"  SWARM ORCHESTRATOR: {pipeline_cfg['description']}")
     logger.info(f"  Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

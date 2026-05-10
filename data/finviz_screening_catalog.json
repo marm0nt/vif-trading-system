@@ -1,0 +1,440 @@
+{
+  "group_daily_screeners_2026-05-10T12:41:56.784905": {
+    "error": "Group 'daily_screeners' not configured"
+  },
+  "group_daily_2026-05-10T12:42:10.361676": {
+    "group": "daily",
+    "screeners_executed": 4,
+    "timestamp": "2026-05-10T12:42:10.360883",
+    "screeners": {
+      "hunt_1_3": {
+        "screener_name": "hunt_1_3",
+        "filters_applied": [
+          "fa_salesqoq_u30",
+          "geo_usa",
+          "ind_stocksonly",
+          "ipodate_prev3yrs",
+          "sh_avgvol_o500",
+          "sh_short_o5",
+          "ta_changeopen_u",
+          "ta_sma20_pa",
+          "ta_sma200_pa",
+          "ta_sma50_pa"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 10,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:10.361104"
+      },
+      "backtested_6mo_top1": {
+        "screener_name": "backtested_6mo_top1",
+        "filters_applied": [
+          "fa_epsyoy1_o20",
+          "fa_salesqoq_o20",
+          "ind_stocksonly",
+          "sh_avgvol_o500",
+          "sh_short_o5",
+          "ta_beta_o1",
+          "ta_changeopen_u",
+          "ta_sma20_pa",
+          "ta_sma200_pa",
+          "ta_sma50_pa"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 10,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:10.361303"
+      },
+      "canslim_1_a_plus": {
+        "screener_name": "canslim_1_a_plus",
+        "filters_applied": [
+          "fa_eps5years_o25",
+          "fa_epsqoq_o25",
+          "fa_epsyoy1_o10",
+          "fa_payoutratio_u30",
+          "fa_peg_low",
+          "fa_roe_o15",
+          "fa_salesqoq_o20",
+          "sh_float_u50",
+          "sh_instown_o30",
+          "sh_price_o10",
+          "sh_short_u10",
+          "ta_perf_13wup",
+          "ta_sma200_pa",
+          "ta_sma50_cross200a"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 15,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:10.361473"
+      },
+      "gap_up_screener": {
+        "screener_name": "gap_up_screener",
+        "filters_applied": [
+          "geo_usa",
+          "ind_stocksonly",
+          "sh_avgvol_o500",
+          "sh_price_o1",
+          "ta_gap_u7"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 15,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:10.361640"
+      }
+    }
+  },
+  "group_daily_2026-05-10T12:42:37.752147": {
+    "group": "daily",
+    "screeners_executed": 4,
+    "timestamp": "2026-05-10T12:42:37.751248",
+    "screeners": {
+      "hunt_1_3": {
+        "screener_name": "hunt_1_3",
+        "filters_applied": [
+          "fa_salesqoq_u30",
+          "geo_usa",
+          "ind_stocksonly",
+          "ipodate_prev3yrs",
+          "sh_avgvol_o500",
+          "sh_short_o5",
+          "ta_changeopen_u",
+          "ta_sma20_pa",
+          "ta_sma200_pa",
+          "ta_sma50_pa"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 10,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:37.751476"
+      },
+      "backtested_6mo_top1": {
+        "screener_name": "backtested_6mo_top1",
+        "filters_applied": [
+          "fa_epsyoy1_o20",
+          "fa_salesqoq_o20",
+          "ind_stocksonly",
+          "sh_avgvol_o500",
+          "sh_short_o5",
+          "ta_beta_o1",
+          "ta_changeopen_u",
+          "ta_sma20_pa",
+          "ta_sma200_pa",
+          "ta_sma50_pa"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 10,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:37.751714"
+      },
+      "canslim_1_a_plus": {
+        "screener_name": "canslim_1_a_plus",
+        "filters_applied": [
+          "fa_eps5years_o25",
+          "fa_epsqoq_o25",
+          "fa_epsyoy1_o10",
+          "fa_payoutratio_u30",
+          "fa_peg_low",
+          "fa_roe_o15",
+          "fa_salesqoq_o20",
+          "sh_float_u50",
+          "sh_instown_o30",
+          "sh_price_o10",
+          "sh_short_u10",
+          "ta_perf_13wup",
+          "ta_sma200_pa",
+          "ta_sma50_cross200a"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 15,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:37.751910"
+      },
+      "gap_up_screener": {
+        "screener_name": "gap_up_screener",
+        "filters_applied": [
+          "geo_usa",
+          "ind_stocksonly",
+          "sh_avgvol_o500",
+          "sh_price_o1",
+          "ta_gap_u7"
+        ],
+        "tickers": [
+          "NVDA",
+          "MSFT",
+          "TSLA",
+          "AAPL",
+          "AVGO",
+          "ASML",
+          "META",
+          "GOOGL",
+          "MU",
+          "AMAT"
+        ],
+        "metadata": {
+          "total_results": 47,
+          "top_k": 15,
+          "execution_time_ms": 0,
+          "quality_gate_applied": true,
+          "data_source": "mock"
+        },
+        "quality_scores": {
+          "NVDA": 0.92,
+          "MSFT": 0.9,
+          "TSLA": 0.88,
+          "AAPL": 0.8600000000000001,
+          "AVGO": 0.8400000000000001,
+          "ASML": 0.8200000000000001,
+          "META": 0.8,
+          "GOOGL": 0.78,
+          "MU": 0.76,
+          "AMAT": 0.74
+        },
+        "timestamp": "2026-05-10T12:42:37.752097"
+      }
+    }
+  },
+  "screen_hunt_1_3_2026-05-10T12:42:57.682679": {
+    "screener_name": "hunt_1_3",
+    "filters_applied": [
+      "fa_salesqoq_u30",
+      "geo_usa",
+      "ind_stocksonly",
+      "ipodate_prev3yrs",
+      "sh_avgvol_o500",
+      "sh_short_o5",
+      "ta_changeopen_u",
+      "ta_sma20_pa",
+      "ta_sma200_pa",
+      "ta_sma50_pa"
+    ],
+    "tickers": [
+      "NVDA",
+      "MSFT",
+      "TSLA",
+      "AAPL",
+      "AVGO",
+      "ASML",
+      "META",
+      "GOOGL",
+      "MU",
+      "AMAT"
+    ],
+    "metadata": {
+      "total_results": 47,
+      "top_k": 10,
+      "execution_time_ms": 0,
+      "quality_gate_applied": true,
+      "data_source": "mock"
+    },
+    "quality_scores": {
+      "NVDA": 0.92,
+      "MSFT": 0.9,
+      "TSLA": 0.88,
+      "AAPL": 0.8600000000000001,
+      "AVGO": 0.8400000000000001,
+      "ASML": 0.8200000000000001,
+      "META": 0.8,
+      "GOOGL": 0.78,
+      "MU": 0.76,
+      "AMAT": 0.74
+    },
+    "timestamp": "2026-05-10T12:42:57.682638"
+  }
+}

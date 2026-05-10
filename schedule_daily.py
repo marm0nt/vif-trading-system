@@ -133,6 +133,14 @@ def job_premarket_catalyst():
         timeout=300,
     )
 
+def job_finviz_screen():
+    """07:30 – Independent FinViz institutional screener discovery scan."""
+    run_job(
+        "FinViz Discovery Screener [Independent]",
+        [PYTHON, "agents/orchestrator_swarm.py", "--mode", "finviz_screen"],
+        timeout=300,
+    )
+
 def job_premarket_vif_scan():
     """08:45 – Swarm orchestrator premarket pipeline (catalyst + VIF + swing)."""
     run_job(
@@ -185,6 +193,7 @@ def build_schedule():
     # ── Weekday jobs ──────────────────────────────────────────────────────────
     for day in ["monday", "tuesday", "wednesday", "thursday", "friday"]:
         getattr(schedule.every(), day).at("07:00").do(job_premarket_catalyst)
+        getattr(schedule.every(), day).at("07:30").do(job_finviz_screen)
         getattr(schedule.every(), day).at("08:45").do(job_premarket_vif_scan)
         getattr(schedule.every(), day).at("09:35").do(job_market_open_swing)
         getattr(schedule.every(), day).at("16:05").do(job_afterhours_analysis)
@@ -196,8 +205,9 @@ def build_schedule():
     schedule.every().saturday.at("08:00").do(job_weekend_catalyst)
     schedule.every().sunday.at("18:00").do(job_weekend_catalyst)
 
-    logger.info("Schedule registered (Swarm Intelligence Framework):")
+    logger.info("Schedule registered (Swarm Intelligence Framework + FinViz Discovery):")
     logger.info("  Weekdays  07:00  Premarket Pipeline [Swarm] – Catalyst + VIF + Swing")
+    logger.info("  Weekdays  07:30  FinViz Discovery [Independent] – 19 institutional screeners")
     logger.info("  Weekdays  08:45  Premarket Pipeline [Swarm] – Full 1mo analysis")
     logger.info("  Weekdays  09:35  Market-Open Pipeline [Swarm] – Swing setups")
     logger.info("  Weekdays  16:05  After-Hours Pipeline [Swarm] – 5d VIF + conviction")
@@ -205,6 +215,7 @@ def build_schedule():
     logger.info("  Saturday  08:00  Weekend Pipeline [Swarm] – Macro catalyst briefing")
     logger.info("  Sunday    18:00  Weekend Pipeline [Swarm] – Monday morning prep")
     logger.info("\n  Architecture: Multi-agent swarm with KV cache sharing + latent collaboration")
+    logger.info("  FinViz runs independently at 07:30 (before VIF watchlist analysis at 08:45)")
     logger.info("  Expected improvements: 45-50% cache hit rate, 40-50% latency reduction, 50% cost savings")
 
 
