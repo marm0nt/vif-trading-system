@@ -12,6 +12,7 @@ Reduces false signals by ~23% (industry benchmark for MAS with critic loop).
 
 import logging
 from datetime import datetime, timezone
+import json
 import numpy as np
 
 from swarm.specialist_agent import SpecialistAgent
@@ -104,6 +105,13 @@ class CriticAgent(SpecialistAgent):
                 else:
                     passed_signals[ticker] = signal_data
                     self.logger.info(f"{self.agent_id}: PASS {ticker}")
+
+            # Apply Munger Inversion Audit to passed and downgraded signals
+            for ticker in list(passed_signals.keys()):
+                passed_signals[ticker] = self._munger_inversion_audit(ticker, passed_signals[ticker])
+
+            for ticker in list(downgraded_signals.keys()):
+                downgraded_signals[ticker] = self._munger_inversion_audit(ticker, downgraded_signals[ticker])
 
             # Combine results
             final_signals = {**passed_signals, **downgraded_signals}
@@ -227,6 +235,71 @@ class CriticAgent(SpecialistAgent):
         downgraded["confidence"] = int(downgraded["confidence"] * 0.75)  # 25% confidence reduction
         downgraded["veto_reason"] = reason
         return downgraded
+
+    def _munger_inversion_audit(self, ticker: str, signal_data: dict) -> dict:
+        """
+        Munger Inversion: Force 3 reasons the trade could be wrong before finalizing.
+        If 2+ reasons are classified 'strong', auto-downgrade confidence by 25%.
+        Only runs on BUY/SELL signals with confidence >= 70.
+
+        Implements the Evaluator-Optimizer pattern for signal quality.
+        """
+        # Skip low-conviction signals
+        if signal_data.get("confidence", 0) < 70:
+            return signal_data
+
+        signal_type = signal_data.get("signal", "HOLD")
+        if signal_type not in ("BUY", "SELL"):
+            return signal_data
+
+        invalidation_prompt = f"""Analyze this {signal_type} signal and identify exactly 3 specific reasons it could fail:
+
+Ticker: {ticker}
+Signal: {signal_type} | Confidence: {signal_data['confidence']}
+RSI: {signal_data.get('rsi', 'N/A')} | Gamma: {signal_data.get('gamma_regime', 'N/A')}
+Volume: {signal_data.get('volume_signal', 'N/A')} | Kill Switch: {signal_data.get('kill_switch', 'None')}
+
+For EACH reason, classify severity as "strong" (likely invalidation) or "weak" (minor risk).
+
+Output ONLY this JSON structure, no markdown:
+{{"inversion_reasons": [
+  {{"reason": "reason text here", "severity": "strong|weak"}},
+  {{"reason": "reason text here", "severity": "strong|weak"}},
+  {{"reason": "reason text here", "severity": "strong|weak"}}
+]}}"""
+
+        try:
+            # Use Haiku for cost-efficiency on this audit step (256 tokens max)
+            response = self.client.messages.create(
+                model="claude-haiku-4-5-20251001",
+                max_tokens=256,
+                temperature=0,
+                messages=[{"role": "user", "content": invalidation_prompt}]
+            )
+
+            audit_json = response.content[0].text
+            audit = json.loads(audit_json)
+
+            # Count strong invalidations
+            strong_count = sum(1 for r in audit["inversion_reasons"] if r.get("severity") == "strong")
+
+            # Add audit results to signal
+            signal_data["munger_audit"] = audit["inversion_reasons"]
+
+            # Auto-downgrade if 2+ strong invalidations
+            if strong_count >= 2:
+                original_conf = signal_data.get("confidence", 50)
+                signal_data["confidence"] = int(original_conf * 0.75)
+                signal_data["munger_downgrade"] = True
+                signal_data["munger_reason"] = f"{strong_count} strong invalidations identified"
+                self.logger.info(f"{self.agent_id}: Munger downgrade {ticker} — {strong_count} strong reasons")
+
+            return signal_data
+
+        except (json.JSONDecodeError, KeyError, AttributeError) as e:
+            # If audit fails, keep original signal but log the error
+            self.logger.warning(f"{self.agent_id}: Munger audit failed for {ticker}: {e}")
+            return signal_data
 
     def _encode_hidden_states(self, vetoed: dict, downgraded: dict, passed: dict) -> dict:
         """

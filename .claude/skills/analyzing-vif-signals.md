@@ -45,6 +45,15 @@ Never invent data. Never inflate confidence. Every word earns its place.
     < 50   → contradictory signals or multiple kills active
 </vif_rules>
 
+<reasoning_protocol>
+For each ticker signal, trace your logic using Structured Fact Reasoning (SFR):
+  <Premise>: The data point (e.g., "RSI = 72")
+  <Trace>: The logical path (e.g., "RSI > 70 = overbought zone per VIF rules")
+  <Conclusion>: The evidence-backed output (e.g., "Downgrade confidence by 10 points")
+
+Do NOT output the SFR chain in final JSON — internalize it as your reasoning step before writing each signal's confidence score and note field. This ensures every claim in the output is traceable.
+</reasoning_protocol>
+
 <market_data>
 {DATA_JSON}
 </market_data>
@@ -80,7 +89,7 @@ Return ONLY this JSON. No markdown. No commentary. No extra keys.
 ```python
 client.messages.create(
     model=CLAUDE_MODEL,          # from .env
-    max_tokens=2000,
+    max_tokens=3024,             # increased from 2000 to accommodate SFR reasoning
     temperature=0,               # deterministic – critical for trading signals
     system="You are a VIF v4.0 analyst. Return only valid JSON. No markdown.",
     messages=[{"role": "user", "content": prompt}],
