@@ -334,9 +334,60 @@ API calls use `temperature=0` (deterministic output). This ensures consistent si
 
 ---
 
+## External Alpha Audit Capability (Phase 4.5 — May 9, 2026)
+
+**NEW:** The system integrates GitHub and Hugging Face MCPs for external research validation.
+
+### How It Works
+- Critic agent calls `audit_vif_signal()` for low-confidence signals (< 55%)
+- Searches Hugging Face for relevant academic papers
+- Searches GitHub for reference implementation repositories
+- Extracts and compares trading factors to VIF baseline
+- Boosts confidence if research confirms signal (+5 max), downgrades if contradicts (-10 floor)
+- Flags novel factors for Week 2-3 integration roadmap
+
+### Key Files
+- `agents/external_alpha_auditor.py` — MCP wrapper + factor comparison engine
+- `docs/skills/external-alpha-audit.md` — Audit workflow and integration points
+- `docs/skills/repo-navigation.md` — Repository parsing and factor extraction patterns
+- `data/external_repos_catalog.json` — Cached repository analysis (auto-populated)
+- `data/external_papers_cache.json` — Cached paper search results (30-day TTL)
+
+### Token Efficiency
+- Monthly cost: ~1,900 tokens (~$0.019) — negligible overhead
+- Papers cached 30 days, repos cached indefinitely (updated weekly)
+- Audits only run for signals < 55% confidence (cost-optimized)
+
+### Integration Status
+- **Phase 1** ✓ Complete (May 9, 2026): Infrastructure + catalogs
+- **Phase 2** ⏳ Scheduled (Week 2): Critic agent integration
+- **Phase 3** ⏳ Scheduled (Week 3+): Novel factor backtesting
+
+### Configuration
+GitHub and Hugging Face MCP servers configured in `~/.claude/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "your_token_here" }
+    },
+    "huggingface": {
+      "command": "npx",
+      "args": ["-y", "hf-mcp-server"],
+      "env": { "HF_TOKEN": "your_token_here" }
+    }
+  }
+}
+```
+
+---
+
 ## Operational Reference
 
 For deployment and monitoring:
-- See `DEPLOYMENT_STATUS.txt` for current system status
+- See `DEPLOYMENT_COMPLETE.md` for latest system status and signal generation fixes
 - See `docs/SETUP.md` for troubleshooting installation issues
 - See `docs/QUICKSTART.md` for beginner workflows
+- See `docs/skills/external-alpha-audit.md` for research validation workflow
