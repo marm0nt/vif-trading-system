@@ -64,6 +64,7 @@ class NativeVectorBTAgent(SpecialistAgent):
             agent_type="vectorbt-backtester",
             role_description="Signal validation via 6-month historical backtest (Sharpe, drawdown, win rate)"
         )
+        self.logger = logging.getLogger(__name__)
         self.kv_cache_binding = kv_cache_binding
         self.latent_memory = None
         self.cache_path = _REPO_ROOT / "data" / "vectorbt_cache"

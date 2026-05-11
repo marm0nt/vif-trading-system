@@ -37,7 +37,14 @@ if not CLAUDE_API_KEY:
     print("ERROR: ANTHROPIC_API_KEY not found in .env")
     sys.exit(1)
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/watchlist_watcher.log'),
+        logging.StreamHandler()
+    ]
+)
 logger = logging.getLogger(__name__)
 
 client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)

@@ -1,0 +1,242 @@
+# VIF Trading System — Complete Architecture Map
+
+**Last updated:** 2026-05-11
+
+**Upload this file to Claude Desktop or Claude.ai browser to give Claude instant full-system context.**
+
+---
+
+## 1. Claude Code Agents (`.claude/agents/`)
+
+These are reusable agent personas Claude assumes in chat sessions. Invoke with `/agent-name`.
+
+| Agent | Purpose | Python Backing | Load-bearing? |
+|-------|---------|-----------------|---------------|
+| `orchestrator-coordinator` | Master pipeline controller; delegates to 5 different analysis modes | `agents/orchestrator.py` | YES — runs all schedules |
+| `vif-analyst` | Watchlist VIF signal generation (BUY/SELL/HOLD) | `agents/watchlist_watcher.py` | YES — primary analysis |
+| `weekend-catalyst-analyst` | Monday morning briefing with macro themes, earnings, sector rotation | `agents/weekend_catalyst_agent.py` | YES — weekend pipeline |
+| `swing-trade-screener` | 5 swing setup types ranked by R:R ratio, 2-4 week timeframe | `scripts/swing_trade_screener_v2.py` | YES — part of daily pipeline |
+| `catalyst-monitor` | Government policy, regulatory decisions, earnings dates, K4 kill switches | `scripts/catalyst_analysis.py` | YES — first step of premarket |
+| `indicator-engine` | Shared technical indicator reference (RSI, MACD, BB, EMA, ATR, Gamma Regime, K1–K6) | `agents/indicators.py` | NO (informational, not in pipeline) |
+| `market-researcher` | Ad-hoc Q&A for VIF signals, macro catalysts, technical levels | `agents/claude_research_agent.py` | NO (manual CLI only) |
+| `report-builder` | HTML report generation from raw JSON data | `scripts/html_report_generator.py` + `scripts/generate_vif_master_report.py` | YES — creates final output |
+| `cost-analyzer` | API cost tracking, budget analysis, token usage | `scripts/check_usage.py` | NO (manual monitoring) |
+| `feature-extractor` | Meta-tool: extracts core logic from GitHub repos | None (pure Claude Code) | NO (GitHub workflow only) |
+| `integration-planner` | Meta-tool: maps extracted features to VIF system | None (pure Claude Code) | NO (GitHub workflow only) |
+| `repo-scanner` | Meta-tool: scans GitHub repositories for reusable code | None (pure Claude Code) | NO (GitHub workflow only) |
+
+---
+
+## 2. Claude Code Skills (`.claude/skills/`)
+
+These are reusable knowledge modules that inform Claude's analysis. They are loaded automatically when relevant.
+
+| Skill | Purpose | Updates? |
+|-------|---------|----------|
+| `analyzing-vif-signals.md` | **AUTHORITATIVE** VIF v4.0 prompt template with all framework rules | Quarterly |
+| `briefing-weekend-macro.md` | Monday morning briefing prompt template | Quarterly |
+| `computing-indicators.md` | Indicator library reference, yfinance patterns, Python 3.14 compat | As needed |
+| `fetching-market-data.md` | yfinance data fetching best practices, cache logic, TTL rules | As needed |
+| `monitoring-catalysts.md` | Catalyst taxonomy, K4 kill switch mapping, FOMC 2026 dates, token costs | Quarterly |
+| `screening-swing-setups.md` | 5 swing setup types, quality scoring formula, output schema | Quarterly |
+| `orchestrating-pipelines.md` | Pipeline mode reference, delegation rules, error handling, monthly checklist | Quarterly |
+| `parsing-watchlists.md` | Watchlist file locations, ticker normalization, validation checklist | As needed |
+| `github-feature-extraction.md` | 5-phase GitHub repo evaluation + integration workflow | As needed |
+| `agent-design-principles.md` | Anthropic agentic patterns mapped to VIF (7 pattern types, production checklist) | Annual |
+| `finviz-custom-screeners.md` | **NEW (May 2026):** 19 FinViz screener configurations + factor mappings | Quarterly |
+| `external-alpha-audit.md` | **NEW (May 2026):** GitHub + HF research audit workflow (Phase 4.5) | Quarterly |
+| `repo-navigation.md` | **NEW (May 2026):** GitHub repo parsing patterns for factor extraction | As needed |
+| `TEMPLATE_SKILL.md` | Developer scaffold for creating new skills/agents | Reference only |
+
+---
+
+## 3. Python Agents in `agents/`
+
+These are the actual runtime executors. Invoked by `schedule_daily.py` and orchestrator.
+
+| Script | Role | Called By | Load-bearing? |
+|--------|------|-----------|---------------|
+| `orchestrator.py` | Master pipeline controller; runs subprocesses for each analysis type | `schedule_daily.py` every slot | **YES** — Entry point for all automation |
+| `orchestrator_swarm.py` | **Phase 3:** Swarm-based orchestration (LRAgent + LatentMAS routing) | Phase 3 integration | **YES** — Next-gen coordinator |
+| `finviz_screener_agent.py` | **Phase 3:** FinViz Discovery Screener (19 custom screeners) | `schedule_daily.py` 07:30 | **YES** — Institutional discovery |
+| `finviz_orchestrator_coordinator.py` | **Phase 3:** FinViz swarm integration layer | orchestrator_swarm finviz_screen pipeline | YES — Swarm routing |
+| `external_alpha_auditor.py` | **Phase 4.5:** GitHub + HF MCP wrapper (low-confidence research audit) | Critic agent when confidence < 55% | Soft — Enhancement layer |
+| `watchlist_watcher.py` | Core VIF analyzer; loads watchlists, fetches OHLCV, batches to Claude for signals | Orchestrator premarket/afterhours/full | **YES** — Primary analysis |
+| `weekend_catalyst_agent.py` | Fetches earnings, momentum, macro themes; generates Monday briefing JSON | Orchestrator weekend/full | **YES** — Weekend reporting |
+| `indicators.py` | Shared IndicatorEngine class; computes RSI, MACD, BB, EMA, ATR, Gamma Regime, K1–K6 | Orchestrator `run_single_ticker()` + imported by skills | Soft (not used in main pipeline) |
+| `claude_research_agent.py` | Interactive CLI for manual research queries; takes --query and --model args | Manual only, never scheduled | NO — Convenience tool |
+| `report_ui_agent.py` | **ARCHIVED** — Markdown fallback (never triggered by pipeline) | — | NO — Dead path |
+
+**Technical Debt Note:** `watchlist_watcher.py` has its own inline `compute_rsi()` and does NOT use `indicators.py`. If you change RSI logic in `indicators.py`, the main pipeline is unaffected. Fix: import from `indicators.py` instead (future session, needs testing).
+
+---
+
+## 4. Pipeline Scripts in `scripts/`
+
+| Script | Role | Called By | Load-bearing? |
+|--------|------|-----------|---------------|
+| `catalyst_analysis.py` | Scans upcoming earnings, fetches news, detects K4 kill switches, outputs catalyst JSON | `schedule_daily.py` 07:00 + Orchestrator premarket | **YES** — First step |
+| `swing_trade_screener_v2.py` | Screens 5 setup types, ranks by R:R, saves JSON | Orchestrator premarket/market_open/full | **YES** — Daily screener |
+| `daily_watchlist_analysis.py` | Conviction scoring for hardcoded ticker list (maintenance risk) | Orchestrator afterhours | **YES** — Conviction model |
+| `html_report_generator.py` | Creates professional HTML reports from JSON data | Orchestrator `generate_html_report()` imports directly | **YES** — Report output |
+| `json_to_excel_exporter.py` | Converts VIF JSON to Excel workbooks | `watchlist_watcher.py` end-of-run (optional) | Soft — Graceful failure |
+| `generate_vif_master_report.py` | **BEST** HTML dashboard with Chart.js, tabs, CSV export, dark theme | Manual only (NOT wired) | NO — But should be wired |
+| `check_usage.py` | Reads usage logs, computes daily costs, cache hit rates, projections | Manual monitoring only | NO — Diagnostic tool |
+| `git-hooks/post-merge` | Bash hook to auto-sync `.vscode/settings.json` on `git pull` | Git post-merge trigger | NO — IDE sync only |
+| `setup_hooks.ps1` | PowerShell installer for the post-merge git hook | Manual setup once | NO — Companion to above |
+
+**Archived (Not in Active Pipeline):**
+- `advanced_analysis.py` — Never wired in
+- `autonomous_improvements.py` — Frozen planning doc, overdue dates
+- `daily_news_monitor.py` — Hardcoded stale data from 2026-05-01
+- `generate_daily_html_report.py` — Hardcoded to one past file
+- `options_execution_plan.py` — One-off trade plan
+- `tqqq_options_analysis.py` — Ad-hoc analysis
+- `daily_changelog_generator.py` — Manual only, not scheduled
+
+---
+
+---
+
+## 4.5. Swarm Intelligence Framework (Phase 3, In Development)
+
+**Status:** Infrastructure deployed (May 9, 2026), Phase 3 integration pending.
+
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| `swarm/orchestrator.py` | Master swarm coordinator (LRAgent + LatentMAS) | Phase 2 complete |
+| `swarm/vif_analyst_agent.py` | Specialist VIF analysis agent | Phase 2 complete |
+| `swarm/catalyst_monitor_agent.py` | Specialist catalyst monitoring agent | Phase 2 complete |
+| `swarm/swing_screener_agent.py` | Specialist swing setup screener agent | Phase 2 complete |
+| `swarm/critic_agent.py` | **Validation + Munger Inversion audit** | Phase 2 complete |
+| `swarm/risk_agent.py` | Risk assessment specialist | Phase 2 complete |
+| `swarm/specialist_agent.py` | Base specialist agent class | Phase 1 complete |
+| `swarm/kv_cache_manager.py` | State persistence (LRAgent KV cache) | Phase 1 complete |
+| `swarm/latent_memory.py` | LatentMAS distributed memory | Phase 1 complete |
+| `swarm/gossip_router.py` | Inter-agent gossip protocol | Phase 1 complete |
+| `swarm/consensus.py` | Consensus decision logic | Phase 1 complete |
+| `swarm/smolagents_bridge.py` | smolagents framework integration | Phase 1 complete |
+
+**Key Advancement (May 10):** Critic agent now performs Munger Inversion audit on all signals. Boosts low-confidence analysis.
+
+## 5. Pipeline Flow (What Runs When)
+
+### Daily Premarket (Mon–Fri 07:00 → 09:35)
+```
+07:00  catalyst_analysis.py
+       └─ Fetches earnings, news, K4 kill switches
+
+07:30  finviz_screener_agent.py (Phase 3)
+       ├─ Runs 19 custom screeners
+       ├─ Institutional discovery (independent of VIF)
+       └─ Outputs JSON to reports/catalysts/
+       
+08:45  orchestrator.py --mode premarket
+       ├─ catalyst_analysis.py (fresh run, populates K4)
+       ├─ watchlist_watcher.py --all --period 1mo (VIF signals, 1-month data)
+       └─ swing_trade_screener_v2.py (5 setup types)
+       └─ Generates combined HTML report
+```
+
+### Daily Market Hours (Mon–Fri 09:35)
+```
+09:35  orchestrator.py --mode market_open
+       ├─ swing_trade_screener_v2.py (updated screens)
+       └─ HTML report
+```
+
+### After Hours (Mon–Fri 16:05)
+```
+16:05  orchestrator.py --mode afterhours
+       ├─ daily_watchlist_analysis.py (conviction model)
+       ├─ watchlist_watcher.py --all --period 5d (VIF signals, 5-day data)
+       └─ HTML report
+```
+
+### End of Week (Friday 16:30)
+```
+16:30  orchestrator.py --mode full
+       └─ All of the above (premarket + market_open + afterhours)
+```
+
+### Weekend (Sat 08:00 + Sun 18:00)
+```
+Sat 08:00 & Sun 18:00  orchestrator.py --mode weekend
+       ├─ weekend_catalyst_agent.py (Monday morning briefing)
+       └─ HTML report with macro analysis
+```
+
+---
+
+## 6. High-Priority Improvements
+
+### Immediate (This Session)
+- ✅ Archive dead-weight scripts (done)
+- ✅ Create SYSTEM_CONTEXT.md (done)
+- [ ] Wire `generate_vif_master_report.py` into orchestrator (replaces simpler HTML generator)
+- [ ] Update `report-builder.md` agent to reference the master report generator
+
+### Phase 2 (Next Session)
+- Fix `watchlist_watcher.py` to import RSI from `indicators.py` (technical debt)
+- Create `dynamic-conviction-scoring.md` skill to replace hardcoded tickers in `daily_watchlist_analysis.py`
+- Create `system-architect.md` meta-agent — reviews gaps and auto-drafts new agent definitions
+
+### Phase 3 (Future)
+- Integrate options analysis into the VIF framework (currently ad-hoc)
+- Add real-time Slack/Discord alerts for high-conviction setups
+- Create risk management agent for position sizing
+
+---
+
+## 7. Recommended New Agents/Skills
+
+| What | Type | Why | Priority |
+|------|------|-----|----------|
+| `system-architect` | Agent | Self-creates new agents/skills when gaps are found | Phase 2 |
+| `risk-manager` | Agent | Position sizing, drawdown limits, Kelly criterion | Phase 3 |
+| `dynamic-conviction-scoring` | Skill | Replace hardcoded ticker lists with dynamic watchlist reads | Phase 2 |
+| `live-alerts` | Agent | Pushes high-conviction signals to Slack/Discord in real-time | Phase 3 |
+
+---
+
+## 8. What NOT to Edit
+
+These are configuration/setup files managed by Claude Code or system tools:
+
+- `.claude/settings.json` — User permissions (managed by VS Code)
+- `.claude/settings.local.json` — **UNTRACKED** machine-specific paths
+- `venv/` — Python virtual environment (install via `pip install -r requirements.txt`)
+- `.git/` — Git internals (never edit by hand)
+- `reports/raw/` — Raw JSON output (auto-generated)
+- `data/` — Cached market data (auto-generated, 24-hour TTL)
+- `logs/` — Scheduler logs (auto-generated)
+
+---
+
+## 9. Load-Bearing Path (Critical, Do Not Break)
+
+**If you remove any of these, the system stops:**
+
+1. `schedule_daily.py` — Entry point
+2. `agents/orchestrator.py` — Delegates to all sub-tasks
+3. `agents/watchlist_watcher.py` — Primary VIF analysis
+4. `agents/weekend_catalyst_agent.py` — Weekend briefing
+5. `scripts/catalyst_analysis.py` — Catalyst detection
+6. `scripts/swing_trade_screener_v2.py` — Swing setups
+7. `scripts/daily_watchlist_analysis.py` — Conviction model
+8. `scripts/html_report_generator.py` — Report output
+9. `.claude/agents/` directory — Agent definitions
+
+**Safe to remove/archive:** Everything in `scripts/archive/` and `agents/archive/` (already done).
+
+---
+
+## 10. How to Use This File
+
+1. **To give Claude context:** Copy/paste this file or upload it to Claude Desktop/browser at session start
+2. **To understand the system:** Read Section 5 (Pipeline Flow) and Section 9 (Load-Bearing Path)
+3. **To add features:** Refer to Section 6 (High-Priority Improvements) and Section 7 (New Agents)
+4. **To debug:** Check Section 8 (What NOT to Edit) and Section 4 (Technical Debt Note)
+
+**Last updated:** 2026-05-07  
+**Status:** All 7 automated jobs functional. 8 dead-weight scripts archived.

@@ -72,6 +72,7 @@ class NativeFinVizScreenerAgent(SpecialistAgent):
             agent_type="finviz-screener",
             role_description="19-screener institutional discovery (Hunt, CANSLIM, Kell variants, gap patterns)"
         )
+        self.logger = logging.getLogger(__name__)
         self.kv_cache_binding = kv_cache_binding
         self.cache_path = _REPO_ROOT / "data" / "finviz_cache"
         self.cache_path.mkdir(parents=True, exist_ok=True)

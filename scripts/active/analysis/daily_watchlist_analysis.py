@@ -5,6 +5,17 @@ import pandas as pd
 import yfinance as yf
 from datetime import datetime
 from pathlib import Path
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/daily_watchlist_analysis.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 class DailyWatchlistAnalyzer:
     """Standardized analysis model: trend + momentum + technicals + narrative + setup"""

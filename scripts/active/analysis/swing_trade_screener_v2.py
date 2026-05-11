@@ -9,6 +9,17 @@ import pandas as pd
 import yfinance as yf
 from datetime import datetime
 from pathlib import Path
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/swing_trade_screener.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 class SwingTradeScreenerV2:
     """Identifies confirmed swing trade buy setups with realistic quality filters"""
@@ -16,7 +27,7 @@ class SwingTradeScreenerV2:
     def __init__(self):
         self.tickers = self.load_all_watchlists()
         self.results = []
-        print(f"[INFO] Loaded {len(self.tickers)} unique tickers across 3 watchlists")
+        logger.info(f"Loaded {len(self.tickers)} unique tickers across 3 watchlists")
 
     def load_all_watchlists(self):
         """Load and consolidate all three watchlists"""

@@ -96,6 +96,29 @@ save_html_report("report_name", html)
 
 ---
 
+## Standard Operating Procedures (SOP)
+
+### Unattended Operation Mode
+
+This repository runs across multiple parallel terminal windows in `bypassPermissions` mode (configured in `.claude/settings.local.json`). Permission prompts should not appear for trusted operations.
+
+**If a tool call is unexpectedly blocked:**
+- Report the exact rule that fired and stop.
+- Do **not** retry with different flags or invoke `--resume` (that is a session-launch flag, not a recovery mechanism).
+- Do **not** write to `.env` or push to remote without explicit user instruction.
+
+**For long-running tasks** (19 screeners, async agents, scheduled jobs):
+- Write all progress and errors to `logs/<task_name>.log` with timestamps.
+- This allows parallel terminal sessions to read task state without coordination through Claude.
+- Each agent/script should configure `logging.FileHandler(f'logs/<task_name>.log')` at startup.
+
+**Cross-terminal synchronization:**
+- Do **not** rely on fictional state files (e.g., `.claude_state` UUID). Claude Code does not read such files.
+- For resuming a session across terminals, use: `claude --resume <session-id>` or `claude --continue`
+- Real state should live in `logs/` (JSON activity logs) or actual files your scripts read.
+
+---
+
 ## High-Level Architecture
 
 ### Three-Tier Agent Pipeline

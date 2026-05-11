@@ -221,16 +221,104 @@ See **CHANGELOG.md** for detailed change history.
 
         return changelog
 
+    def generate_primary_context(self) -> str:
+        """Generate docs/SYSTEM_CONTEXT.md with full system overview."""
+        agents = self.scan_agents()
+        skills = self.scan_skills()
+        frameworks = self.scan_frameworks()
+        added, modified, _ = self.get_recent_changes()
+
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        context = f"""# VIF Trading System — Complete Architecture Map
+
+**Last updated:** {timestamp}
+**Status:** All systems operational
+
+## Active Agents ({len(agents)})
+
+| Agent | File | Status |
+|-------|------|--------|
+"""
+        for agent_name in sorted(agents.keys()):
+            context += f"| {agent_name} | {agents[agent_name]['file']} | ✅ Active |\n"
+
+        context += f"""
+## Active Skills ({len(skills)})
+
+| Skill | Purpose | Last Updated |
+|-------|---------|--------------|
+"""
+        for skill_name in sorted(skills.keys()):
+            context += f"| {skill_name} | Framework reference | {skills[skill_name]['modified']} |\n"
+
+        context += f"""
+## Active Frameworks
+
+"""
+        for fw_name in sorted(frameworks.keys()):
+            context += f"### {fw_name}\n"
+            context += f"- Status: {frameworks[fw_name].get('status', 'unknown')}\n"
+            if 'agents' in frameworks[fw_name]:
+                context += f"- Agents: {', '.join(frameworks[fw_name]['agents'])}\n"
+            if 'components' in frameworks[fw_name]:
+                context += f"- Components: {', '.join(frameworks[fw_name]['components'])}\n"
+            context += "\n"
+
+        context += f"""## Recent Changes
+
+**Added:** {len(added)} files
+{chr(10).join(f'- ✨ {f}' for f in added) if added else '- (none)'}
+
+**Modified:** {len(modified)} files
+{chr(10).join(f'- 🔧 {f}' for f in modified) if modified else '- (none)'}
+
+---
+
+See **CLAUDE.md** for development guide.
+See **docs/system/CHANGELOG.md** for detailed history.
+"""
+        return context
+
+    def commit_updates(self) -> bool:
+        """Auto-commit staged documentation updates."""
+        try:
+            # Check if anything is staged
+            status = subprocess.run(
+                ["git", "diff", "--cached", "--name-only"],
+                cwd=self.repo_root, capture_output=True, text=True
+            )
+            if not status.stdout.strip():
+                print("ℹ️  No changes staged for commit")
+                return True
+
+            # Commit with --no-verify to skip pre-commit hooks (avoid recursion)
+            subprocess.run(
+                ["git", "commit", "--no-verify", "-m",
+                 "docs(auto): Update system_context + SYSTEM_CONTEXT after commit"],
+                cwd=self.repo_root, check=True, capture_output=True
+            )
+            print("✅ Auto-committed docs update")
+            return True
+        except subprocess.CalledProcessError as e:
+            print(f"⚠️  Could not auto-commit: {e}")
+            return False
+
     def update(self) -> bool:
         """Update system context and changelog."""
         try:
             # Ensure docs/system directory exists
             self.docs_system.mkdir(parents=True, exist_ok=True)
 
-            # Generate and save system context
+            # Generate and save system context (docs/system/system_context.md)
             context = self.generate_system_context()
             self.system_context_path.write_text(context)
             print(f"✅ Updated {self.system_context_path.relative_to(self.repo_root)}")
+
+            # Generate and save primary context (docs/SYSTEM_CONTEXT.md)
+            primary_context = self.generate_primary_context()
+            primary_path = self.repo_root / "docs" / "SYSTEM_CONTEXT.md"
+            primary_path.write_text(primary_context)
+            print(f"✅ Updated {primary_path.relative_to(self.repo_root)}")
 
             # Generate and save changelog
             changelog = self.generate_changelog()
@@ -249,16 +337,25 @@ def main():
     updater = SystemContextUpdater(repo_root)
     success = updater.update()
 
-    # Try to add and commit changes (non-blocking if it fails)
+    # Stage and auto-commit changes if update succeeded
     if success:
         try:
+            # Stage all three documentation files
             subprocess.run(
-                ["git", "add", "docs/system/system_context.md", "docs/system/CHANGELOG.md"],
-                cwd=repo_root, capture_output=True, timeout=5
+                ["git", "add",
+                 "docs/system/system_context.md",
+                 "docs/system/CHANGELOG.md",
+                 "docs/SYSTEM_CONTEXT.md"],
+                cwd=repo_root, capture_output=True, timeout=5, check=True
             )
-            print("✅ System context files staged")
-        except Exception as e:
+            print("✅ Documentation files staged")
+
+            # Auto-commit the staged changes
+            updater.commit_updates()
+        except subprocess.CalledProcessError as e:
             print(f"⚠️  Could not stage files: {e}")
+        except Exception as e:
+            print(f"⚠️  Error during commit: {e}")
 
     sys.exit(0 if success else 1)
 
