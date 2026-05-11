@@ -61,6 +61,7 @@ try:
         CriticAgent,
         NativeSwingScreenerAgent,
         NativeVectorBTAgent,
+        NativeAutoResearchAgent,
         RiskAgent,
     )
 except ImportError as e:
@@ -158,7 +159,7 @@ def initialize_swarm():
 
     # Create framework components
     kv_cache = KVCacheManager(max_cache_mb=500, max_recompute_layers=3)
-    latent_memory = LatentWorkingMemory(layers_to_share=[8, 16, 24])
+    latent_memory = LatentWorkingMemory(layers_to_share=[8, 16, 24, 32, 40])
     gossip_router = GossipRouter(gossip_timeout_ms=500, max_agents_per_subtask=2)
     consensus = ConfidenceWeightedConsensus(
         signal_priority={"BUY": 3, "SELL": 2, "HOLD": 1}
@@ -171,7 +172,8 @@ def initialize_swarm():
     # 4. VectorBT backtester — validates post-critic signals via 6mo Sharpe/drawdown (layer 32)
     # 5. Swing screener — reuses market data from VIF's KV cache layer-1
     # 6. FinViz screener — local discovery (0 tokens), compares with VIF signals
-    # 7. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
+    # 7. Autoresearch agent — iterative research synthesis (layer 40), signal validation
+    # 8. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
     agent_pool = {
         "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
         "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
@@ -179,6 +181,7 @@ def initialize_swarm():
         "vectorbt-backtester": NativeVectorBTAgent("vectorbt-backtester"),
         "swing-screener": NativeSwingScreenerAgent("swing-screener"),
         "finviz-screener": NativeFinVizScreenerAgent("finviz-screener"),
+        "autoresearch": NativeAutoResearchAgent("autoresearch"),
         "risk-agent": RiskAgent("risk-agent"),
     }
 
@@ -192,13 +195,13 @@ def initialize_swarm():
     )
 
     logger.info(f"  ✓ KV Cache Manager initialized (500MB, 3-layer recomputation)")
-    logger.info(f"  ✓ Latent Working Memory initialized (layers: 8, 16, 24)")
+    logger.info(f"  ✓ Latent Working Memory initialized (layers: 8, 16, 24, 32, 40)")
     logger.info(f"  ✓ Gossip Router initialized (500ms timeout, 2 agents/subtask)")
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
     logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
     logger.info(f"    Phase 1: Catalyst → VIF → Critic (Planner-Critic-Executor)")
     logger.info(f"    Phase 2: VectorBT (signal validation, layer 32) → SwingScreener → FinViz")
-    logger.info(f"    Phase 3: Risk (Circuit Breaker + LATS mitigation)")
+    logger.info(f"    Phase 3: Autoresearch (iterative synthesis, layer 40) → Risk (Circuit Breaker)")
 
     return orchestrator, kv_cache, latent_memory, consensus
 

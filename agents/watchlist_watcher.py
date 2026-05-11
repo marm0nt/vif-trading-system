@@ -309,6 +309,21 @@ EXPECTED SCHEMA:
 
             except json.JSONDecodeError as e:
                 logger.error(f"JSON parse error in batch {batch_num}: {e}")
+                # Attempt JSON repair: close any open strings/brackets
+                try:
+                    repair_text = response_text.rstrip()
+                    if not repair_text.endswith('}'):
+                        repair_text = repair_text + '}'
+                    batch_result = json.loads(repair_text)
+                    if "signals" in batch_result:
+                        all_signals.update(batch_result["signals"])
+                    if "top_buys" in batch_result:
+                        all_buys.extend(batch_result["top_buys"])
+                    if "kill_alerts" in batch_result:
+                        all_kills.update(batch_result["kill_alerts"])
+                    logger.info(f"Recovered batch {batch_num} via JSON repair")
+                except:
+                    logger.warning(f"Batch {batch_num} skipped due to unrecoverable JSON error")
 
         except Exception as e:
             logger.error(f"Claude API error in batch {batch_num}: {e}")

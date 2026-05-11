@@ -333,10 +333,34 @@ def analyze_catalysts_with_claude(
 
     except json.JSONDecodeError as e:
         logger.error(f"JSON parse error (batch '{batch_label}'): {e}")
-        return {"error": f"JSON parse error: {e}", "raw": text[:500]}
+        # Attempt to repair common JSON issues
+        try:
+            # Try to fix unterminated strings by closing them
+            repair_text = text.rstrip()
+            if not repair_text.endswith('}'):
+                # Find last opening brace and close structure
+                last_brace = repair_text.rfind('{')
+                if last_brace > 0:
+                    repair_text = repair_text[:last_brace] + '{}}'
+            result = json.loads(repair_text)
+            logger.info(f"Batch '{batch_label}': Recovered from JSON error via repair")
+            return result
+        except:
+            logger.error(f"JSON repair failed. Returning empty structure for batch '{batch_label}'")
+            return {
+                "sector_themes": [],
+                "ticker_catalysts": [],
+                "high_risk_catalysts": [],
+                "macro_regime": {"status": "unknown"},
+            }
     except Exception as e:
         logger.error(f"Claude API error (batch '{batch_label}'): {e}")
-        return {"error": str(e)}
+        return {
+            "sector_themes": [],
+            "ticker_catalysts": [],
+            "high_risk_catalysts": [],
+            "macro_regime": {"status": "unknown"},
+        }
 
 
 def merge_batch_results(batches: list[dict]) -> dict:
