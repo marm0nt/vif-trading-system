@@ -195,14 +195,20 @@ class NativeSignalVerifierAgent(SpecialistAgent):
         else:
             gates["sentiment"] = "PASS"
 
-        # ── Gate 4: Macro ─────────────────────────────────────────────────────
-        # Proxy: use 5-day change direction alignment with signal
+        # ── Gate 4: Macro + IV% ───────────────────────────────────────────────
+        # Uses 5-day change alignment + implied volatility as macro regime proxy
+        iv_pct = signal_data.get("iv_pct", None)
+
         if signal == "BUY" and change_pct < -5:
-            gates["macro"] = "FAIL"    # Buying into 5%+ decline without catalyst
+            gates["macro"] = "FAIL"     # Buying into 5%+ decline without catalyst
         elif signal == "SELL" and change_pct > 5:
-            gates["macro"] = "FLAG"    # Selling after 5%+ run-up — possible late signal
+            gates["macro"] = "FLAG"     # Selling after 5%+ run-up — late signal risk
         elif signal == "BUY" and change_pct > 8:
-            gates["macro"] = "FLAG"    # Chasing a 8%+ move — momentum risk
+            gates["macro"] = "FLAG"     # Chasing 8%+ move — momentum risk
+        elif iv_pct is not None and signal == "BUY" and iv_pct > 80:
+            gates["macro"] = "FLAG"     # IV >80% on BUY — options market pricing in risk
+        elif iv_pct is not None and signal == "SELL" and iv_pct < 15:
+            gates["macro"] = "FLAG"     # IV <15% on SELL — market complacent, low conviction
         else:
             gates["macro"] = "PASS"
 
