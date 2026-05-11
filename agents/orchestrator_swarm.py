@@ -349,8 +349,9 @@ def run_pipeline(mode: str):
 
         logger.info(f"Signals: {buy_count} BUY, {sell_count} SELL, {hold_count} HOLD")
 
-        # Save results
-        output_file = Path("reports") / f"swarm_result_{mode}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        # Save results (JSON)
+        ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+        output_file = Path("reports") / f"swarm_result_{mode}_{ts}.json"
         output_file.write_text(json.dumps({
             "mode": mode,
             "trace_id": trace_id,
@@ -360,6 +361,51 @@ def run_pipeline(mode: str):
             "metrics": metrics,
         }, indent=2))
         logger.info(f"\nResults saved -> {output_file}")
+
+        # Save HTML report (includes Greeks/IV% table if options data available)
+        try:
+            from scripts.active.reporting.html_report_generator import (
+                create_html_template, build_greeks_table, save_html_report
+            )
+
+            buy_signals  = {t: s for t, s in consensus_signals.items() if s.get("signal") == "BUY"}
+            sell_signals = {t: s for t, s in consensus_signals.items() if s.get("signal") == "SELL"}
+            hold_signals = {t: s for t, s in consensus_signals.items() if s.get("signal") == "HOLD"}
+
+            def _signal_table(sigs):
+                if not sigs:
+                    return "<p>No signals.</p>"
+                rows = "".join(
+                    f"<tr><td><strong>{t}</strong></td>"
+                    f"<td>{s.get('signal','—')}</td>"
+                    f"<td>{s.get('confidence','—')}%</td>"
+                    f"<td>{s.get('iv_pct','—')}</td>"
+                    f"<td>{s.get('delta','—')}</td>"
+                    f"<td>{s.get('gamma_regime','—')}</td>"
+                    f"<td>{s.get('verifier_verdict', s.get('note','—'))}</td></tr>"
+                    for t, s in sorted(sigs.items(), key=lambda x: x[1].get("confidence", 0), reverse=True)
+                )
+                return f"""<table><thead><tr>
+                    <th>Ticker</th><th>Signal</th><th>Confidence</th>
+                    <th>IV%</th><th>Delta</th><th>Gamma Regime</th><th>Note</th>
+                </tr></thead><tbody>{rows}</tbody></table>"""
+
+            sections = [
+                {"heading": f"SELL Signals ({sell_count})", "html": _signal_table(sell_signals)},
+                {"heading": f"BUY Signals ({buy_count})",  "html": _signal_table(buy_signals)},
+                {"heading": f"HOLD ({hold_count})",        "html": _signal_table(hold_signals)},
+                {"heading": "Options Greeks & IV%",         "html": build_greeks_table(consensus_signals)},
+            ]
+
+            html = create_html_template(
+                title=f"VIF Swarm Report — {mode.upper()} — {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+                content_sections=sections,
+                metadata={"author": "VIF Swarm Orchestrator", "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+            )
+            html_path = save_html_report(f"swarm_{mode}_{ts}", html)
+            logger.info(f"HTML report saved -> {html_path}")
+        except Exception as e:
+            logger.warning(f"HTML report generation skipped: {e}")
 
         return 0 if metrics.get("agents_executed", 0) == metrics.get("agents_total", 0) else 1
 

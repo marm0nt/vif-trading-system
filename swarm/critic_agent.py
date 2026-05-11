@@ -205,12 +205,21 @@ class CriticAgent(SpecialistAgent):
                     "reason": "Strong volume on SELL (bullish reversal?) — downgrade"
                 }
 
-            # Downgrade SELL if RSI is extremely oversold
+            # RSI <20: either full veto (if IV confirms downside already priced) or downgrade
             if rsi < 20:
+                iv_pct = signal_data.get("iv_pct", 0) or 0
+                if iv_pct > 60:
+                    # High IV + extreme oversold = downside already priced into options premium.
+                    # Entering SELL here risks IV crush on any bounce.
+                    return {
+                        "veto": True,
+                        "downgrade": False,
+                        "reason": f"SELL vetoed: RSI {rsi:.0f} oversold + IV {iv_pct:.0f}% (downside priced in, IV crush risk)"
+                    }
                 return {
                     "veto": False,
                     "downgrade": True,
-                    "reason": "RSI <20 (extreme oversold, potential bounce) — downgrade"
+                    "reason": f"RSI <20 (extreme oversold, potential bounce) — downgrade"
                 }
 
         # Any existing kill switch: veto
