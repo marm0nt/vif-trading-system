@@ -143,41 +143,61 @@ class SwarmOrchestrator:
             "subtasks": [{"agent_type": "generic", "context": task_context}]
         }
 
+    # Canonical execution order — agents run sequentially so each can read prior results
+    AGENT_EXECUTION_ORDER = [
+        "catalyst-monitor",   # 1. K4 kill-switch flags → LoRA cache layer 2
+        "vif-analyst-1",      # 2. Signals → task_context["vif_signals"] + KV layer 1
+        "critic",             # 3. Reads vif_signals, vetoes/downgrades → task_context["critic_signals"]
+        "vectorbt-backtester",# 4. Backtests critic-passed signals → flags poor Sharpe/drawdown
+        "signal-verifier",    # 5. 4-gate PUBLISH/DOWNGRADE/REJECT → task_context["verified_signals"]
+        "swing-screener",     # 6. Reuses KV layer 1 market data
+        "finviz-screener",    # 7. Local discovery (0 tokens)
+        "autoresearch",       # 8. Iterative synthesis for low-confidence signals
+        "risk-agent",         # 9. Circuit breaker + risk mitigation (final gate)
+    ]
+
     def _execute_swarm(self, dispatch_map: Dict, cache_binding: Any, task_context: Dict) -> Dict[str, Any]:
         """
-        Execute all agents in parallel with KV cache + latent sharing.
+        Execute agents sequentially in AGENT_EXECUTION_ORDER so each agent
+        can read prior agents' results via task_context injection.
 
         Args:
-            dispatch_map: {agent_id: [subtasks]}
+            dispatch_map: {agent_id: [subtasks]} from gossip router
             cache_binding: Shared KV cache binding
-            task_context: Task-level context dict
+            task_context: Task-level context dict (mutated in-place with agent outputs)
 
         Returns:
             {agent_id: result}
         """
         results = {}
+        live_context = dict(task_context)  # mutable copy — accumulates inter-agent signals
 
-        # In production, use asyncio.gather() for true parallelism
-        # For now, sequential (but agents share cache + latent state)
-        for agent_id, subtasks in dispatch_map.items():
+        for agent_id in self.AGENT_EXECUTION_ORDER:
             if agent_id not in self.agents:
                 continue
+            subtasks = dispatch_map.get(agent_id, [{}])
 
             agent = self.agents[agent_id]
-
-            # Execute agent with cache binding + latent memory context
             try:
                 result = agent.execute(
                     subtasks=subtasks,
                     kv_cache_binding=cache_binding,
                     latent_memory=self.latent_memory,
-                    task_context=task_context
+                    task_context=live_context,
                 )
                 results[agent_id] = {
                     "status": "success",
                     "result": result,
                     "timestamp": datetime.utcnow().isoformat(),
                 }
+                # Inject this agent's signals into live_context for downstream agents
+                if isinstance(result, dict) and result.get("signals"):
+                    if agent_id == "vif-analyst-1":
+                        live_context["vif_signals"] = result["signals"]
+                    elif agent_id == "critic":
+                        live_context["critic_signals"] = result["signals"]
+                    elif agent_id == "signal-verifier":
+                        live_context["verified_signals"] = result["signals"]
             except Exception as e:
                 results[agent_id] = {
                     "status": "failed",

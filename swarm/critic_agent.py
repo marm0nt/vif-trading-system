@@ -65,18 +65,18 @@ class CriticAgent(SpecialistAgent):
         try:
             self.logger.info(f"{self.agent_id}: Starting critic review")
 
-            # Get VIF signals from latent context or subtask context
-            vif_signals = subtasks[0].get("signals", {}) if subtasks else {}
+            # Get VIF signals — priority: task_context injection > subtask > latent memory
+            vif_signals = {}
+            if self.task_context and self.task_context.get("vif_signals"):
+                vif_signals = self.task_context["vif_signals"]
+            elif subtasks and subtasks[0].get("signals"):
+                vif_signals = subtasks[0]["signals"]
+            elif self.latent_memory:
+                # Fallback: read latent memory (hidden states, not direct signals)
+                self.latent_memory.read_hidden_states(self.agent_id, source_agents=["vif-analyst-1"])
+
             if not vif_signals:
-                # Try reading from latent memory (VIF analyst wrote them)
-                if self.latent_memory:
-                    vif_context = self.latent_memory.read_hidden_states(
-                        self.agent_id,
-                        source_agents=["vif-analyst-1"]
-                    )
-                    # Note: hidden states are numpy arrays, not signals
-                    # In real execution, signals come via task context
-                vif_signals = {}
+                self.logger.warning(f"{self.agent_id}: No VIF signals found in context — critic has nothing to review")
 
             # Read K4 risks from catalyst's LoRA cache
             k4_tickers = set()

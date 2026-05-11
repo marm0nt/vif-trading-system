@@ -62,6 +62,7 @@ try:
         NativeSwingScreenerAgent,
         NativeVectorBTAgent,
         NativeAutoResearchAgent,
+        NativeSignalVerifierAgent,
         RiskAgent,
     )
 except ImportError as e:
@@ -165,20 +166,22 @@ def initialize_swarm():
         signal_priority={"BUY": 3, "SELL": 2, "HOLD": 1}
     )
 
-    # Create agent pool (CRITICAL: order matters for latent context propagation)
+    # Create agent pool (order defined in SwarmOrchestrator.AGENT_EXECUTION_ORDER)
     # 1. Catalyst monitor — writes K4 tickers to layer-2 LoRA cache
-    # 2. VIF analyst — reads K4 from catalyst's LoRA cache
-    # 3. Critic agent — vetoes/downgrades via latent context + Munger audit
+    # 2. VIF analyst — reads K4, outputs signals → task_context["vif_signals"]
+    # 3. Critic agent — vetoes/downgrades → task_context["critic_signals"]
     # 4. VectorBT backtester — validates post-critic signals via 6mo Sharpe/drawdown (layer 32)
-    # 5. Swing screener — reuses market data from VIF's KV cache layer-1
-    # 6. FinViz screener — local discovery (0 tokens), compares with VIF signals
-    # 7. Autoresearch agent — iterative research synthesis (layer 40), signal validation
-    # 8. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
+    # 5. Signal verifier — 4-gate PUBLISH/DOWNGRADE/REJECT → task_context["verified_signals"]
+    # 6. Swing screener — reuses market data from VIF's KV cache layer-1
+    # 7. FinViz screener — local discovery (0 tokens), compares with VIF signals
+    # 8. Autoresearch agent — iterative research synthesis (layer 40), signal validation
+    # 9. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
     agent_pool = {
         "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
         "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
         "critic": CriticAgent("critic"),
         "vectorbt-backtester": NativeVectorBTAgent("vectorbt-backtester"),
+        "signal-verifier": NativeSignalVerifierAgent("signal-verifier"),
         "swing-screener": NativeSwingScreenerAgent("swing-screener"),
         "finviz-screener": NativeFinVizScreenerAgent("finviz-screener"),
         "autoresearch": NativeAutoResearchAgent("autoresearch"),
@@ -200,7 +203,7 @@ def initialize_swarm():
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
     logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
     logger.info(f"    Phase 1: Catalyst → VIF → Critic (Planner-Critic-Executor)")
-    logger.info(f"    Phase 2: VectorBT (signal validation, layer 32) → SwingScreener → FinViz")
+    logger.info(f"    Phase 2: VectorBT → SignalVerifier (4-gate: Vol/Fund/Sent/Macro) → SwingScreener → FinViz")
     logger.info(f"    Phase 3: Autoresearch (iterative synthesis, layer 40) → Risk (Circuit Breaker)")
 
     return orchestrator, kv_cache, latent_memory, consensus
