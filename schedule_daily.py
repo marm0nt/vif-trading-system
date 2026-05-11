@@ -43,7 +43,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ── Venv-aware python path ────────────────────────────────────────────────────
-VENV_PYTHON = str(Path("venv") / "Scripts" / "python.exe")
+SCRIPT_DIR = Path(__file__).parent.resolve()
+VENV_PYTHON = str(SCRIPT_DIR / "venv" / "Scripts" / "python.exe")
 PYTHON = VENV_PYTHON if Path(VENV_PYTHON).exists() else "python"
 
 
