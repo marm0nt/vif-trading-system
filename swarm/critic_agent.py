@@ -252,12 +252,17 @@ class CriticAgent(SpecialistAgent):
         if signal_type not in ("BUY", "SELL"):
             return signal_data
 
+        # Pull FinViz confirmation from task_context (0 extra tokens — data already fetched)
+        finviz_tickers = getattr(self, 'task_context', {}).get('finviz_tickers_from_vif', [])
+        finviz_line = f"FinViz Confirmation: {'YES - independently surfaced' if ticker in finviz_tickers else 'No - not in FinViz scan'}"
+
         invalidation_prompt = f"""Analyze this {signal_type} signal and identify exactly 3 specific reasons it could fail:
 
 Ticker: {ticker}
 Signal: {signal_type} | Confidence: {signal_data['confidence']}
 RSI: {signal_data.get('rsi', 'N/A')} | Gamma: {signal_data.get('gamma_regime', 'N/A')}
 Volume: {signal_data.get('volume_signal', 'N/A')} | Kill Switch: {signal_data.get('kill_switch', 'None')}
+{finviz_line}
 
 For EACH reason, classify severity as "strong" (likely invalidation) or "weak" (minor risk).
 

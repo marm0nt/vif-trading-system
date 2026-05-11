@@ -1,0 +1,14 @@
+{
+  "2026-05-10": {
+    "timestamp": "2026-05-10T18:59:55.345078",
+    "screeners_executed": 19,
+    "screeners_with_results": 19,
+    "cache_hit_rate": 0.0
+  },
+  "2026-05-11": {
+    "timestamp": "2026-05-11T00:29:39.528414",
+    "screeners_executed": 19,
+    "screeners_with_results": 19,
+    "cache_hit_rate": 0.0
+  }
+}

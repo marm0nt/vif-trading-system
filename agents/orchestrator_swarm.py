@@ -57,8 +57,10 @@ try:
         ConfidenceWeightedConsensus,
         NativeCatalystMonitorAgent,
         NativeVIFAnalystAgent,
+        NativeFinVizScreenerAgent,
         CriticAgent,
         NativeSwingScreenerAgent,
+        NativeVectorBTAgent,
         RiskAgent,
     )
 except ImportError as e:
@@ -142,6 +144,18 @@ def initialize_swarm():
     """Initialize swarm framework components."""
     logger.info("Initializing swarm intelligence framework...")
 
+    # ── AGENT ONBOARDING PROTOCOL ────────────────────────────────────────────
+    # To add a new agent to the VIF council, follow ALL 4 steps:
+    #  1. Create swarm/native_<name>_agent.py — implement execute() with the
+    #     standard swarm signature: execute(subtasks, kv_cache_binding,
+    #     latent_memory, task_context) -> Dict
+    #  2. Export from swarm/__init__.py (add to import + __all__ list)
+    #  3. Add @tool wrapper in swarm/smolagents_bridge.py (both Production
+    #     and Research bridges) so the primary smolagents path can call it
+    #  4. Add to agent_pool dict below with a string key
+    # SwarmOrchestrator is the lead agent — all execution must flow through it.
+    # ─────────────────────────────────────────────────────────────────────────
+
     # Create framework components
     kv_cache = KVCacheManager(max_cache_mb=500, max_recompute_layers=3)
     latent_memory = LatentWorkingMemory(layers_to_share=[8, 16, 24])
@@ -151,16 +165,20 @@ def initialize_swarm():
     )
 
     # Create agent pool (CRITICAL: order matters for latent context propagation)
-    # 1. Catalyst monitor runs first, writes K4 tickers to layer-2 LoRA cache
-    # 2. VIF analyst runs second, reads K4 from catalyst's LoRA cache
-    # 3. Critic agent runs third, reviews VIF signals and vetoes/downgrades via latent context
-    # 4. Swing screener runs fourth, reuses market data from VIF's KV cache layer-1
-    # 5. Risk agent runs fifth (final), applies circuit breaker (-5% drawdown) and risk mitigation
+    # 1. Catalyst monitor — writes K4 tickers to layer-2 LoRA cache
+    # 2. VIF analyst — reads K4 from catalyst's LoRA cache
+    # 3. Critic agent — vetoes/downgrades via latent context + Munger audit
+    # 4. VectorBT backtester — validates post-critic signals via 6mo Sharpe/drawdown (layer 32)
+    # 5. Swing screener — reuses market data from VIF's KV cache layer-1
+    # 6. FinViz screener — local discovery (0 tokens), compares with VIF signals
+    # 7. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
     agent_pool = {
         "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
         "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
         "critic": CriticAgent("critic"),
+        "vectorbt-backtester": NativeVectorBTAgent("vectorbt-backtester"),
         "swing-screener": NativeSwingScreenerAgent("swing-screener"),
+        "finviz-screener": NativeFinVizScreenerAgent("finviz-screener"),
         "risk-agent": RiskAgent("risk-agent"),
     }
 
@@ -179,63 +197,46 @@ def initialize_swarm():
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
     logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
     logger.info(f"    Phase 1: Catalyst → VIF → Critic (Planner-Critic-Executor)")
-    logger.info(f"    Phase 2: SwingScreener → Risk (Circuit Breaker + LATS mitigation)")
+    logger.info(f"    Phase 2: VectorBT (signal validation, layer 32) → SwingScreener → FinViz")
+    logger.info(f"    Phase 3: Risk (Circuit Breaker + LATS mitigation)")
 
     return orchestrator, kv_cache, latent_memory, consensus
 
 
 def _run_finviz_pipeline(pipeline_cfg: dict):
-    """Run FinViz discovery scan independently (not swarm-orchestrated)."""
+    """Run FinViz discovery scan in-process via NativeFinVizScreenerAgent."""
+    import time
+
     logger.info(f"{'='*65}")
     logger.info(f"  FINVIZ DISCOVERY SCREENER: {pipeline_cfg['description']}")
     logger.info(f"  Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'='*65}")
-
-    import subprocess
-    import time
 
     start_time = time.time()
     trace_id = str(uuid.uuid4())
     logger.info(f"\nTrace-ID: {trace_id}")
 
     try:
-        # Run finviz screener agent with daily mode
-        logger.info("Executing FinViz discovery scan...")
-        result = subprocess.run(
-            [sys.executable, "agents/finviz_screener_agent.py", "--mode", "daily"],
-            capture_output=True,
-            text=True,
-            timeout=300,
-        )
+        from swarm.native_finviz_screener_agent import execute_finviz_screening
 
-        if result.returncode != 0:
-            logger.error(f"Finviz agent failed: {result.stderr}")
-            return 1
-
-        # Parse finviz results
-        try:
-            finviz_output = json.loads(result.stdout)
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse finviz output: {e}")
-            return 1
+        logger.info("Executing FinViz discovery scan (in-process, 0 tokens)...")
+        finviz_output = execute_finviz_screening(use_parallel=True)
 
         duration_ms = int((time.time() - start_time) * 1000)
 
-        # Aggregate results
-        screeners_executed = finviz_output.get("screeners_executed", 0)
+        # Aggregate unique tickers
         total_tickers = set()
-        for screener_result in finviz_output.get("screeners", {}).values():
+        for screener_result in finviz_output.get("results", {}).values():
             total_tickers.update(screener_result.get("tickers", []))
 
         logger.info(f"\n{'='*65}")
         logger.info(f"  FINVIZ SCAN COMPLETE")
         logger.info(f"{'='*65}")
-        logger.info(f"Duration: {duration_ms}ms")
-        logger.info(f"Screeners Executed: {screeners_executed}")
-        logger.info(f"Unique Tickers Discovered: {len(total_tickers)}")
-        logger.info(f"Top Discoveries: {list(total_tickers)[:10]}")
+        logger.info(f"Duration: {duration_ms}ms | Cache hit: {finviz_output.get('cache_hit', False)}")
+        logger.info(f"Screeners with results: {finviz_output.get('screeners_with_results', 0)}/{finviz_output.get('screeners_executed', 19)}")
+        logger.info(f"Unique Tickers: {len(total_tickers)} | Token cost: 0")
+        logger.info(f"Top Discoveries: {sorted(list(total_tickers))[:10]}")
 
-        # Save results
         output_file = Path("reports") / f"finviz_screen_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         output_file.write_text(json.dumps({
             "mode": "finviz_screen",
@@ -250,9 +251,6 @@ def _run_finviz_pipeline(pipeline_cfg: dict):
 
         return 0
 
-    except subprocess.TimeoutExpired:
-        logger.error("Finviz scan timed out (>300s)")
-        return 1
     except Exception as e:
         logger.error(f"Finviz pipeline failed: {e}", exc_info=True)
         return 1
@@ -281,6 +279,17 @@ def run_pipeline(mode: str):
     # Generate trace ID
     trace_id = str(uuid.uuid4())
     logger.info(f"\nTrace-ID: {trace_id}")
+
+    # Inject FinViz discoveries from today's cached scan into task_context
+    # Enables critic agent to reference FinViz tickers during Munger audit
+    finviz_reports = sorted(Path("reports").glob("finviz_screen_*.json"))
+    if finviz_reports:
+        try:
+            fv = json.loads(finviz_reports[-1].read_text())
+            pipeline_cfg["task_context"]["finviz_tickers_from_vif"] = fv.get("unique_tickers", [])
+            logger.info(f"  FinViz context loaded: {len(fv.get('unique_tickers', []))} tickers from {finviz_reports[-1].name}")
+        except Exception as e:
+            logger.warning(f"  Could not load FinViz context: {e}")
 
     # Execute swarm task
     logger.info(f"\nExecuting task: {pipeline_cfg['task_prompt']}")

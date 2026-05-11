@@ -1,6 +1,11 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Master development guide for VIF Trading System. For new LLM instances (Claude.ai, Cursor, Gemini), **start here → then read [`ONBOARDING.md`](ONBOARDING.md) → then `.ai-context.yaml`**.
+
+**Zero-Friction Context Layer (May 11, 2026):**
+- **`.ai-context.yaml`** — Portable project metadata for Cursor, Gemini, Claude.ai (414 lines, all core concepts)
+- **`ONBOARDING.md`** — New contributor guide (5-min read, hands-on tasks)
+- **CLAUDE.md** — This file (deep technical reference, architecture details)
 
 **Note:** At the start of every session, Claude reads all files in `.claude/memory/` for project context continuity. This enables memory and conversation history to sync across desktop and laptop.
 

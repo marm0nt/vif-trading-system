@@ -145,6 +145,86 @@ def screen_swing_setups() -> str:
 
 
 @tool
+def run_finviz_discovery() -> str:
+    """
+    Run all 19 FinViz institutional screeners and return discovered tickers.
+
+    Screeners include Hunt, CANSLIM A+/B+, Kell V1-V4, Gap Up/Down,
+    Shorted-to-Breakouts, Earnings Gap Ups, David Ryan Core, and more.
+    Results are cached 24h; empty screeners are automatically skipped.
+    Token cost: 0 (fully local execution, no API calls).
+
+    Returns:
+        JSON string with unique tickers discovered and screener metrics
+    """
+    try:
+        from swarm.native_finviz_screener_agent import execute_finviz_screening
+        result = execute_finviz_screening()
+        unique_tickers: list = []
+        for screener_result in result.get("results", {}).values():
+            unique_tickers.extend(screener_result.get("tickers", []))
+        return json.dumps({
+            "status": "success",
+            "screeners_with_results": result.get("screeners_with_results", 0),
+            "screeners_skipped": result.get("screeners_skipped", 0),
+            "unique_tickers": sorted(set(unique_tickers)),
+            "cache_hit": result.get("cache_hit", False),
+            "token_cost": 0,
+        })
+    except Exception as e:
+        return json.dumps({"error": str(e), "tool": "run_finviz_discovery"})
+
+
+@tool
+def run_signal_backtest(ticker_signals_json: str = "{}") -> str:
+    """
+    Backtest VIF signals using vectorbt — validates historical Sharpe ratio, max drawdown,
+    and win rate for each ticker via 6-month RSI+SMA momentum simulation.
+
+    Signals with Sharpe < 0.5 or drawdown > 20% are flagged.
+    Results cached 24h per ticker. Token cost: 0 (Numba-accelerated local computation).
+    Falls back to pandas computation if vectorbt not installed.
+
+    Args:
+        ticker_signals_json: JSON string of {ticker: {signal, confidence}} pairs.
+                             If empty, reads from latest VIF signal output.
+
+    Returns:
+        JSON string with per-ticker backtest metrics, flagged tickers, and summary stats
+    """
+    try:
+        from swarm.native_vectorbt_agent import run_signal_backtest as _run_backtest
+        import json as _json
+
+        signals = _json.loads(ticker_signals_json) if ticker_signals_json.strip() != "{}" else {}
+        result = _run_backtest(signals=signals or None)
+
+        # Summarize for smolagents consumption
+        flagged = result.get("flagged_tickers", [])
+        bt = result.get("backtest_results", {})
+        summary = {t: {
+            "sharpe": r.get("sharpe_ratio"),
+            "max_drawdown": r.get("max_drawdown"),
+            "win_rate": r.get("win_rate"),
+            "flagged": r.get("flagged"),
+            "engine": r.get("engine"),
+        } for t, r in bt.items() if r.get("status") == "completed"}
+
+        return _json.dumps({
+            "status": "success",
+            "signals_validated": result.get("signals_validated", 0),
+            "signals_flagged": result.get("signals_flagged", 0),
+            "flagged_tickers": flagged,
+            "backtest_summary": summary,
+            "execution_time_ms": result.get("execution_time_ms", 0),
+            "cache_hits": result.get("cache_hits", 0),
+            "token_cost": 0,
+        })
+    except Exception as e:
+        return json.dumps({"error": str(e), "tool": "run_signal_backtest"})
+
+
+@tool
 def get_kv_cache_metrics() -> str:
     """
     Get current KV cache hit rate and latent memory metrics.
@@ -201,12 +281,28 @@ class ProductionSwarmBridge:
             description="2-4 week swing trade setup identifier"
         )
 
+        self.finviz_agent = ToolCallingAgent(
+            tools=[run_finviz_discovery],
+            model=MODEL_PROD,
+            name="finviz_screener",
+            description="19-screener FinViz institutional discovery (Hunt, CANSLIM, Kell, etc.)"
+        )
+
+        self.backtest_agent = ToolCallingAgent(
+            tools=[run_signal_backtest],
+            model=MODEL_PROD,
+            name="vectorbt_backtester",
+            description="Validates VIF signals via 6-month historical backtest (Sharpe, drawdown, win rate). Flags underperforming signals before execution."
+        )
+
         # Create orchestrator that delegates to sub-agents
         self.orchestrator = ToolCallingAgent(
             tools=[
                 ManagedAgent(self.catalyst_agent, name="catalyst_monitor", description="Run catalyst scan first"),
                 ManagedAgent(self.vif_agent, name="vif_analyst", description="Run VIF analysis second"),
-                ManagedAgent(self.swing_agent, name="swing_screener", description="Run swing screener third"),
+                ManagedAgent(self.backtest_agent, name="vectorbt_backtester", description="Run signal backtest third — validates Sharpe/drawdown before acting on signals"),
+                ManagedAgent(self.swing_agent, name="swing_screener", description="Run swing screener fourth"),
+                ManagedAgent(self.finviz_agent, name="finviz_screener", description="Run FinViz discovery fifth"),
                 get_kv_cache_metrics,
             ],
             model=MODEL_PROD,
@@ -252,12 +348,14 @@ class ResearchSwarmBridge:
                 analyze_watchlist_vif,
                 scan_macro_catalysts,
                 screen_swing_setups,
+                run_finviz_discovery,
+                run_signal_backtest,
                 get_kv_cache_metrics,
             ],
             model=MODEL_RESEARCH,
             name="vif_research_agent",
             description="VIF trading system research and analysis agent",
-            additional_authorized_imports=["json", "pandas", "numpy", "pathlib", "datetime"],
+            additional_authorized_imports=["json", "pandas", "numpy", "pathlib", "datetime", "vectorbt"],
         )
 
     def run(self, query: str) -> str:

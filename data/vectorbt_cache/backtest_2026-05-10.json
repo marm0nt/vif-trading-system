@@ -1,0 +1,27 @@
+{
+  "NVDA": {
+    "ticker": "NVDA",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 5,
+    "total_return": 0.1391,
+    "sharpe_ratio": 2.165,
+    "max_drawdown": -0.1214,
+    "win_rate": 0.75,
+    "flagged": false,
+    "flag_reason": null,
+    "vif_signal": "BUY",
+    "vif_confidence": 78,
+    "timestamp": "2026-05-10T23:54:03.693138"
+  },
+  "MSFT": {
+    "ticker": "MSFT",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-10T23:54:04.190806"
+  }
+}

@@ -18,8 +18,10 @@ from .consensus import ConfidenceWeightedConsensus
 from .orchestrator import SwarmOrchestrator
 from .native_catalyst_monitor_agent import NativeCatalystMonitorAgent
 from .native_vif_analyst_agent import NativeVIFAnalystAgent
+from .native_finviz_screener_agent import NativeFinVizScreenerAgent
 from .critic_agent import CriticAgent
 from .native_swing_screener_agent import NativeSwingScreenerAgent
+from .native_vectorbt_agent import NativeVectorBTAgent
 from .risk_agent import RiskAgent
 
 __all__ = [
@@ -33,7 +35,9 @@ __all__ = [
     "SwarmOrchestrator",
     "NativeCatalystMonitorAgent",
     "NativeVIFAnalystAgent",
+    "NativeFinVizScreenerAgent",
     "CriticAgent",
     "NativeSwingScreenerAgent",
+    "NativeVectorBTAgent",
     "RiskAgent",
 ]

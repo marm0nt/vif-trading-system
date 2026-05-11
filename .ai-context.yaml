@@ -1,0 +1,414 @@
+---
+# AI Context Layer — VIF Trading System
+# Last updated: 2026-05-11
+# Purpose: Enable instant portability across Claude Code, Cursor, Gemini, Claude.ai
+
+project:
+  name: VIF Trading System
+  version: "4.0"
+  description: |
+    AI-powered watchlist monitoring engine using Volatility Imbalance Framework (v4.0).
+    Generates BUY/SELL/HOLD signals for swing trades (2-4 week horizon) via Claude API.
+    Cost-optimized: ~$0.13/day across 170 institutional tickers.
+
+  owner: Martin Adadey
+  core_contact: martinadadey47@gmail.com
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TECHNOLOGY STACK
+# ─────────────────────────────────────────────────────────────────────────────
+
+tech_stack:
+  language: Python 3.14
+
+  core_dependencies:
+    - anthropic>=0.97.0              # Claude API (signal generation)
+    - yfinance>=1.0.0                # Market data (free, no API key)
+    - finvizfinance>=1.3.0           # Institutional screener (Jan 2026)
+    - pandas>=2.0.0                  # DataFrames
+    - numpy>=1.24.0                  # Numerical computing
+    - ta>=0.11.0                     # Technical indicators (pure-Python: RSI, MACD, BB, EMA, ATR)
+    - PyYAML>=6.0                    # Config loading
+    - schedule>=1.2.0                # Cron-style jobs
+    - smolagents>=1.10.0             # Multi-agent framework
+    - dspy-ai>=2.5.0                 # Offline prompt optimizer
+    - requests>=2.31.0               # HTTP
+    - beautifulsoup4>=4.12.0         # HTML parsing (news catalysts)
+
+  external_services:
+    - Claude API (Anthropic) — Sonnet 4.6 (analyst), Haiku 4.5 (router), Opus 4.7 (synthesizer)
+    - Yahoo Finance — Free OHLCV data, 24-hr cache
+    - Finviz API — Institutional screener data
+
+  model_routing:
+    router: claude-haiku-4-5         # Cost-efficient dispatch
+    analyst: claude-sonnet-4-6       # Main signal logic (temperature=0, deterministic)
+    synthesizer: claude-opus-4-7     # Macro synthesis (on-demand)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CORE AGENTS & RESPONSIBILITIES
+# ─────────────────────────────────────────────────────────────────────────────
+
+agents:
+  watchlist_watcher:
+    file: agents/watchlist_watcher.py
+    role: "VIF Analyst (core)"
+    purpose: |
+      Parses tickers, fetches OHLCV, computes RSI/MACD/BB/EMA/ATR, applies VIF v4.0 framework.
+      Outputs: BUY/SELL/HOLD signals with confidence scores (0-100).
+      Filters via K1-K6 kill switches before publishing.
+
+  orchestrator_swarm:
+    file: agents/orchestrator_swarm.py
+    role: "Master Pipeline Controller"
+    purpose: |
+      Phase 3 swarm-based orchestration. Routes signals through:
+      catalyst_monitor → vif_analyst → swing_screener → signal_verifier → report_builder.
+      Supports modes: premarket, market_open, afterhours, weekend, full.
+
+  indicators:
+    file: agents/indicators.py
+    role: "Shared Technical Engine"
+    purpose: |
+      Single source of truth for all indicator calculations.
+      Wraps: RSI, MACD, Bollinger Bands, EMA, ATR, Volume Profile, Gamma Regime.
+      Caches results (24-hr TTL) to minimize yfinance calls.
+
+  weekend_catalyst_agent:
+    file: agents/weekend_catalyst_agent.py
+    role: "Macro & Earnings Briefing"
+    purpose: |
+      Scans government policy, regulatory decisions, sector themes, earnings catalysts.
+      Runs Sat 08:00 and Sun 18:00 CT. Outputs Monday morning briefing.
+
+  external_alpha_auditor:
+    file: agents/external_alpha_auditor.py
+    role: "External Research Validator"
+    purpose: |
+      GitHub + Hugging Face MCP integration for low-confidence signals (<55%).
+      Searches academic papers, compares factors to VIF baseline.
+      Boosts/downgrades confidence based on external validation.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WATCHLIST STRUCTURE (6 Institutional, 170 Tickers, 4-Tier)
+# ─────────────────────────────────────────────────────────────────────────────
+
+watchlists:
+  institutional_watchlists:
+    - name: "AI Physical Layer & Power Infrastructure"
+      id: WL1
+      tickers: 47
+      regime: Risk-On
+      primary_driver: Tape + CapEx
+      file: watchlists/AI Physical Layer & Power Infrastructure.txt
+
+    - name: "AI Verticals (Supply Chain)"
+      id: WL2
+      tickers: 31
+      regime: Risk-On
+      primary_driver: CapEx + Tape
+      file: watchlists/AI Verticals (Supply Chain).txt
+
+    - name: "Core Growth & Macro Indices"
+      id: WL3
+      tickers: 56
+      regime: Both
+      primary_driver: Earnings + Macro
+      file: watchlists/Core Growth & Macro Indices (Large-Cap Anchors).txt
+
+    - name: "Energy & AI (Power Convergence)"
+      id: WL4
+      tickers: 13
+      regime: Risk-On
+      primary_driver: Contract + CapEx
+      file: watchlists/Energy & AI (Power Convergence).txt
+
+    - name: "Speculative & High-Beta"
+      id: WL5
+      tickers: 10
+      regime: Risk-On ONLY
+      primary_driver: Momentum
+      file: watchlists/Speculative _ High-Beta.txt
+
+    - name: "Trump Admin: Onshoring"
+      id: WL6
+      tickers: 13
+      regime: Risk-On
+      primary_driver: Contract + Macro
+      file: watchlists/Trump Admin_ Onshoring.txt
+
+  tier_structure: |
+    All 6 watchlists follow identical 4-tier hierarchy:
+
+    ###01_MACRO_VANGUARD
+      → Regime-read instruments (2–9 per list)
+      → Check first before any entry
+
+    ###02_PRIMARY_CONVICTION
+      → High-conviction entries (60–70% capital)
+      → Pass all VIF framework checks
+      → Default scanning tier
+
+    ###03_SPECULATIVE_SCOUTS
+      → Setup confirmation needed (20–30% capital)
+      → Lower conviction, higher risk/reward
+      → For experienced traders only
+
+    ###04_WAITING_LIST
+      → Monitor only, no active positions
+      → Pre-screened for future entry
+
+# ─────────────────────────────────────────────────────────────────────────────
+# VIF FRAMEWORK v4.0 — Kill Switches & Rules
+# ─────────────────────────────────────────────────────────────────────────────
+
+vif_framework:
+  core_logic: |
+    Layer 1: Gamma regime detection (positive/negative/transition from price action)
+    Layer 2: Structural levels (support/resistance from 20-day lookback)
+    Layer 3: Volume confirmation (current vol vs 20-day MA, threshold 1.5x)
+    Layer 4: Kill switch validation (K1-K6 override conditions)
+
+  kill_switches:
+    K1: "Extreme Volatility — RSI >80 or <20 → REJECT"
+    K2: "Gap Risk — 5-day range >10% → DOWNGRADE"
+    K3: "Low Liquidity — Volume <1M shares → REJECT"
+    K4: "News Risk — Earnings within 5 days → DOWNGRADE"
+    K5: "Correlation Risk — >0.8 with major index → DOWNGRADE"
+    K6: "Technical Breakdown — Below 20-day MA + declining vol → REJECT"
+
+  signal_output:
+    types: ["BUY", "SELL", "HOLD"]
+    confidence_range: 0-100 (0 = uncertain, 100 = maximum conviction)
+    temperature: 0 (deterministic, reproducible across runs)
+
+  framework_parameters: |
+    Configured in: config/vif_config.yml
+    - gamma_regime.positive_threshold: 0.5
+    - structural_levels.lookback_days: 20
+    - volume.ma_period: 20
+    - volume.strong_threshold: 1.5x average
+    - data_fetching.batch_size: 15 tickers per Claude call
+    - data_fetching.cache_ttl_hours: 24
+    - api.max_tokens: 1024 per call
+    - api.temperature: 0 (deterministic)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PIPELINE MODES & SCHEDULING
+# ─────────────────────────────────────────────────────────────────────────────
+
+execution_modes:
+  premarket:
+    when: "08:45 ET (weekdays)"
+    sequence: catalyst_monitor → vif_analyst (1mo period) → signal_verifier → report_builder
+    output: JSON + HTML to reports/premarket/
+
+  market_open:
+    when: "09:35 ET (weekdays)"
+    sequence: swing_trade_screener (2-4 week setups)
+    output: Setup rankings by risk/reward ratio
+
+  afterhours:
+    when: "16:05 ET (weekdays)"
+    sequence: vif_analyst (5d period) → postmarket_debrief (signal hit rate) → alpha_extractor
+    output: Daily conviction + 5%+ mover analysis
+
+  weekend:
+    when: "Sat 08:00 CT, Sun 18:00 CT"
+    sequence: weekend_catalyst_analyst (macro + earnings + sector rotation)
+    output: Monday morning briefing
+
+  full_pipeline:
+    when: "On-demand via CLI"
+    sequence: All modes run sequentially
+    entry_point: "python schedule_daily.py"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DIRECTORY STRUCTURE & PRIORITIES FOR AI
+# ─────────────────────────────────────────────────────────────────────────────
+
+directory_priorities:
+  read_first:
+    - CLAUDE.md                              # Master dev guide (this file is the summary)
+    - config/vif_config.yml                  # All framework parameters
+    - agents/watchlist_watcher.py            # Core VIF signal logic
+    - agents/orchestrator_swarm.py           # Pipeline orchestration
+
+  read_second:
+    - docs/SWARM_ORCHESTRATOR_GUIDE.md       # Multi-agent patterns
+    - docs/AGENTS.md                         # Agent inventory + workflows
+    - docs/QUICKSTART.md                     # 5-min onboarding
+    - .claude/memory/watchlist_structure.md  # Tier explanation
+
+  reference_only:
+    - docs/                                  # 50+ docs (architecture, setup, guides)
+    - .claude/skills/                        # 12 skills (catalyst monitoring, swing screening)
+    - .claude/memory/                        # Auto-memory (user prefs, arch decisions)
+
+  ignore_completely:
+    - venv/                                  # Python virtual environment
+    - .git/                                  # Version control metadata
+    - data/cache/                            # Temporary cache files
+    - reports/raw/                           # Output JSON (check .html instead)
+    - scripts/archive/                       # Deprecated implementations
+    - logs/                                  # Execution traces (check if debugging)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# QUICK COMMAND REFERENCE
+# ─────────────────────────────────────────────────────────────────────────────
+
+quick_commands:
+  setup: |
+    pip install -r requirements.txt
+    cp .env.example .env
+    # Edit .env: add ANTHROPIC_API_KEY=sk-ant-...
+
+  verify: |
+    python tests/test_api_key.py          # Validate API credentials
+    python tests/test_harness.py          # Offline mock analysis (no credits)
+
+  single_watchlist: |
+    python agents/watchlist_watcher.py --watchlist vantage_portfolio
+    python agents/watchlist_watcher.py --watchlist ai_verticals
+
+  full_pipeline: |
+    python schedule_daily.py               # Run all modes once
+    # Output: reports/premarket/*.json + .html
+
+  cost_check: |
+    python scripts/active/utilities/check_usage.py
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MCP INTEGRATIONS (External Knowledge Sources)
+# ─────────────────────────────────────────────────────────────────────────────
+
+mcp_integrations:
+  github:
+    purpose: "External alpha audit — search repos for factor validation"
+    status: "Phase 1 complete (May 9, 2026)"
+    integration: "agents/external_alpha_auditor.py"
+    setup: |
+      ~/.claude/mcp.json:
+        "github": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-github"],
+          "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "..." }
+        }
+
+  huggingface:
+    purpose: "Academic paper research (30-day cache, low overhead)"
+    status: "Phase 1 complete"
+    integration: "agents/external_alpha_auditor.py"
+    setup: |
+      ~/.claude/mcp.json:
+        "huggingface": {
+          "command": "npx",
+          "args": ["-y", "hf-mcp-server"],
+          "env": { "HF_TOKEN": "..." }
+        }
+
+  tradingview:
+    purpose: "Live chart control (78 tools: screenshot, Pine Script, replay, alerts)"
+    status: "Standalone node module in tradingview-mcp-jackson/"
+    integration: "CLI-based, separate from Python pipeline"
+    docs: "docs/TradingView-MCP-Setup.md"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# COST & PERFORMANCE METRICS
+# ─────────────────────────────────────────────────────────────────────────────
+
+cost:
+  daily_budget: "$0.13 USD (~13,000 tokens)"
+  monthly_budget: "$3.90 USD (~390,000 tokens)"
+
+  cost_optimization:
+    - Batching: 15 tickers per Claude call (not individual calls)
+    - Caching: Local disk storage (24-hr TTL, yfinance data)
+    - Model routing: Haiku (cheap dispatch) → Sonnet (analyst) → Opus (synthesis)
+    - Summaries: Pass indicator snapshots, not raw OHLCV
+    - Selective: Only analyze tickers meeting volatility thresholds
+
+  monitoring: |
+    Run daily: python scripts/active/utilities/check_usage.py
+    Check: logs/cost_tracker.json
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AI AGENT BEST PRACTICES
+# ─────────────────────────────────────────────────────────────────────────────
+
+ai_guidelines:
+  signal_generation:
+    - Generate signals with temperature=0 (deterministic)
+    - Always validate confidence scores against K1-K6 kill switches
+    - Prefer precision over volume (3 high-conviction > 30 low-confidence)
+    - Document WHY a signal fired, not just what it is
+
+  documentation:
+    - Edit CLAUDE.md for architectural changes
+    - Update config/vif_config.yml for framework tuning
+    - Keep docs/AGENTS.md synchronized with new agent roles
+    - Use markdown for docs, JSON for data, HTML for reports (user preference)
+
+  testing:
+    - Use test_harness.py for offline iteration (no API credits)
+    - Use test_api_key.py to validate connectivity before live runs
+    - Test with small watchlists first (ai_verticals, energy_ai)
+
+  code_standards:
+    - Type hints required (Python 3.14)
+    - Modular signal logic (filters, indicators, validation separate)
+    - Standardized data ingestion (watchlist parser → indicators → analyst)
+    - All outputs: JSON for machine use, Markdown/HTML for human reading
+
+# ─────────────────────────────────────────────────────────────────────────────
+# COMMON AI WORKFLOWS
+# ─────────────────────────────────────────────────────────────────────────────
+
+common_workflows:
+  "Run full institutional analysis":
+    command: python schedule_daily.py
+    scope: All 6 watchlists, all 4 tiers, full pipeline
+    output: reports/premarket/, reports/catalysts/, reports/swing-trades/, reports/weekend/
+
+  "Quick check: Are my signals valid?":
+    entry: orchestrator_swarm.py → signal_verifier (4 gates: volume, fundamental, sentiment, macro)
+    output: PUBLISH / DOWNGRADE / REJECT per ticker
+
+  "Understand why signal X fired":
+    read: agents/watchlist_watcher.py (VIF analyst prompt)
+    check: logs/ → run_history.json (trace reasoning)
+    research: agents/external_alpha_auditor.py (GitHub/HF validation)
+
+  "Find setup type for ticker Y":
+    script: scripts/active/analysis/swing_trade_screener_v2.py
+    types: PULLBACK_TO_MA20, BULLISH_MA_MOMENTUM, SUPPORT_BOUNCE, CONSOLIDATION_BREAKOUT, OVERSOLD_BOUNCE
+    output: Risk/reward ranking
+
+  "Monitor macro catalysts":
+    agent: agents/weekend_catalyst_agent.py
+    scope: Government policy, earnings dates, sector themes, earnings catalysts
+    frequency: Sat 08:00, Sun 18:00 CT
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CONTEXT LAYER MAINTENANCE
+# ─────────────────────────────────────────────────────────────────────────────
+
+maintenance:
+  update_frequency: "Weekly (or after major feature additions)"
+  last_updated: "2026-05-11"
+  next_review: "2026-05-18 (weekly check)"
+
+  files_to_keep_in_sync:
+    - CLAUDE.md                    (master guide — source of truth)
+    - config/vif_config.yml        (all framework parameters)
+    - .ai-context.yaml             (this file — portable AI context)
+    - ONBOARDING.md                (new contributor guide)
+    - docs/AGENTS.md               (agent inventory)
+
+  changes_that_require_update:
+    - New agent added
+    - Framework parameter changed (vif_config.yml)
+    - Kill switch logic modified
+    - Watchlist structure reorganized
+    - MCP integration configured
+    - New external data source added

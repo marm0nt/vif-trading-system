@@ -1,0 +1,20 @@
+{
+  "AAPL": {
+    "ticker": "AAPL",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-11T00:34:03.451651"
+  },
+  "TSLA": {
+    "ticker": "TSLA",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-11T00:34:03.757164"
+  }
+}

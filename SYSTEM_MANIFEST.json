@@ -1,0 +1,917 @@
+{
+  "agents": [
+    {
+      "name": "claude_research_agent",
+      "file": "agents/claude_research_agent.py",
+      "type": "agent",
+      "description": "Knowledge: - Layer 1: Gamma regime (positive/negative/transition) - Layer 2: Structural levels (supp",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "external_alpha_auditor",
+      "file": "agents/external_alpha_auditor.py",
+      "type": "agent",
+      "description": "External Alpha Auditor \u2014 GitHub & Hugging Face MCP Integration  Critic agent uses this module to: 1.",
+      "last_commit": "cc22b2f",
+      "last_modified": "2026-05-09 23:01:27 -0500"
+    },
+    {
+      "name": "finviz_orchestrator_coordinator",
+      "file": "agents/finviz_orchestrator_coordinator.py",
+      "type": "agent",
+      "description": "FinViz Orchestrator-Coordinator \u2014 Swarm Integration Layer  Manages FinViz screener execution as part",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "finviz_screener_agent",
+      "file": "agents/finviz_screener_agent.py",
+      "type": "agent",
+      "description": "FinViz Screener Agent \u2014 Custom Screener Framework  Runs independently from VIF pipeline. Provides \"S",
+      "last_commit": "b189e8f",
+      "last_modified": "2026-05-10 12:43:18 -0500"
+    },
+    {
+      "name": "indicators",
+      "file": "agents/indicators.py",
+      "type": "agent",
+      "description": "Shared Technical Indicator Engine \u2013 VIF Trading System =============================================",
+      "last_commit": "e543075",
+      "last_modified": "2026-05-09 20:34:30 -0500"
+    },
+    {
+      "name": "orchestrator",
+      "file": "agents/orchestrator.py",
+      "type": "agent",
+      "description": "VIF Orchestrator - Master Delegation Agent ========================================== Master pipelin",
+      "last_commit": "523c027",
+      "last_modified": "2026-05-07 19:41:54 -0500"
+    },
+    {
+      "name": "orchestrator_swarm",
+      "file": "agents/orchestrator_swarm.py",
+      "type": "agent",
+      "description": "Swarm Intelligence Orchestrator - Phase 3 Integration  Replaces sequential subprocess orchestration ",
+      "last_commit": "b189e8f",
+      "last_modified": "2026-05-10 12:43:18 -0500"
+    },
+    {
+      "name": "watchlist_watcher",
+      "file": "agents/watchlist_watcher.py",
+      "type": "agent",
+      "description": "try: with open(watchlist_file, 'r') as f: ",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "weekend_catalyst_agent",
+      "file": "agents/weekend_catalyst_agent.py",
+      "type": "agent",
+      "description": "Weekend Catalyst Agent \u2013 VIF Trading System Scans for macro news, earnings catalysts, and sector eve",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    }
+  ],
+  "skills": [
+    {
+      "name": "agent-design-principles",
+      "file": ".claude/skills/agent-design-principles.md",
+      "type": "skill",
+      "description": ">",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "analyzing-vif-signals",
+      "file": ".claude/skills/analyzing-vif-signals.md",
+      "type": "skill",
+      "description": "Skill: Analyzing VIF Signals",
+      "last_commit": "abfe693",
+      "last_modified": "2026-05-09 22:51:10 -0500"
+    },
+    {
+      "name": "briefing-weekend-macro",
+      "file": ".claude/skills/briefing-weekend-macro.md",
+      "type": "skill",
+      "description": "Skill: Briefing Weekend Macro",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "computing-indicators",
+      "file": ".claude/skills/computing-indicators.md",
+      "type": "skill",
+      "description": "Skill: Computing Indicators",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "fetching-market-data",
+      "file": ".claude/skills/fetching-market-data.md",
+      "type": "skill",
+      "description": "Skill: Fetching Market Data",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "file-organizer",
+      "file": ".claude/skills/file-organizer.md",
+      "type": "skill",
+      "description": "Organizes files and folders locally using bash analysis and categorization. Use ",
+      "last_commit": "ad29c0e",
+      "last_modified": "2026-05-07 19:31:51 -0500"
+    },
+    {
+      "name": "github-feature-extraction",
+      "file": ".claude/skills/github-feature-extraction.md",
+      "type": "skill",
+      "description": "End-to-end workflow for discovering, evaluating, extracting, and integrating fea",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "monitoring-catalysts",
+      "file": ".claude/skills/monitoring-catalysts.md",
+      "type": "skill",
+      "description": "Run or interpret catalyst scan results from scripts/catalyst_analysis.py. Use wh",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "orchestrating-pipelines",
+      "file": ".claude/skills/orchestrating-pipelines.md",
+      "type": "skill",
+      "description": "Skill: Orchestrating Pipelines",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "parsing-watchlists",
+      "file": ".claude/skills/parsing-watchlists.md",
+      "type": "skill",
+      "description": "Skill: Parsing Watchlists",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "screening-swing-setups",
+      "file": ".claude/skills/screening-swing-setups.md",
+      "type": "skill",
+      "description": "Skill: Screening Swing Setups",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "skill-creator",
+      "file": ".claude/skills/skill-creator.md",
+      "type": "skill",
+      "description": "Guides the creation and packaging of Claude skills. Use when creating new skills",
+      "last_commit": "ad29c0e",
+      "last_modified": "2026-05-07 19:31:51 -0500"
+    }
+  ],
+  "scripts": [
+    {
+      "name": "catalyst_analysis",
+      "file": "scripts/active/analysis/catalyst_analysis.py",
+      "type": "script",
+      "category": "active",
+      "description": "Catalyst Analysis Agent \u2014 VIF Trading System ============================================= Live Clau",
+      "last_commit": "0556873",
+      "last_modified": "2026-05-07 19:40:52 -0500"
+    },
+    {
+      "name": "daily_watchlist_analysis",
+      "file": "scripts/active/analysis/daily_watchlist_analysis.py",
+      "type": "script",
+      "category": "active",
+      "description": "import json import pandas as pd import yfinance as yf from datetime import datetime from pathlib imp",
+      "last_commit": "0556873",
+      "last_modified": "2026-05-07 19:40:52 -0500"
+    },
+    {
+      "name": "swing_trade_screener_v2",
+      "file": "scripts/active/analysis/swing_trade_screener_v2.py",
+      "type": "script",
+      "category": "active",
+      "description": "Swing Trade Screener V2 - Confirmed Buy Setups (2-4 Week Horizon) Backtested investment firm models:",
+      "last_commit": "0556873",
+      "last_modified": "2026-05-07 19:40:52 -0500"
+    },
+    {
+      "name": "build_may8_report",
+      "file": "scripts/active/reporting/build_may8_report.py",
+      "type": "script",
+      "category": "active",
+      "description": "Full Pipeline Report Builder \u2014 May 8, 2026 Applies VIF v4.0 framework to live market data already fe",
+      "last_commit": "7855139",
+      "last_modified": "2026-05-09 03:21:44 -0500"
+    },
+    {
+      "name": "generate_vif_master_report",
+      "file": "scripts/active/reporting/generate_vif_master_report.py",
+      "type": "script",
+      "category": "active",
+      "description": "VIF Master Interactive Report Generator ======================================== Reads the latest an",
+      "last_commit": "0556873",
+      "last_modified": "2026-05-07 19:40:52 -0500"
+    },
+    {
+      "name": "html_report_generator",
+      "file": "scripts/active/reporting/html_report_generator.py",
+      "type": "script",
+      "category": "active",
+      "description": "HTML Report Generator - Creates professional, readable reports Converts analysis data into formatted",
+      "last_commit": "0556873",
+      "last_modified": "2026-05-07 19:40:52 -0500"
+    },
+    {
+      "name": "check_usage",
+      "file": "scripts/active/utilities/check_usage.py",
+      "type": "script",
+      "category": "active",
+      "description": "Quick usage check and cost projection. Run this daily to monitor API spending. if not USAGE_DIR.exis",
+      "last_commit": "0556873",
+      "last_modified": "2026-05-07 19:40:52 -0500"
+    },
+    {
+      "name": "advanced_analysis",
+      "file": "scripts/archive/advanced_analysis.py",
+      "type": "script",
+      "category": "archive",
+      "description": "import json import pandas as pd import yfinance as yf from datetime import datetime, timedelta from ",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    },
+    {
+      "name": "autonomous_improvements",
+      "file": "scripts/archive/autonomous_improvements.py",
+      "type": "script",
+      "category": "archive",
+      "description": "Autonomous Improvement Tracker Implements and tracks GitHub repo integrations and API optimizations ",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    },
+    {
+      "name": "daily_changelog_generator",
+      "file": "scripts/archive/daily_changelog_generator.py",
+      "type": "script",
+      "category": "archive",
+      "description": "Daily Changelog & Summary Report Generator Tracks changes, improvements, and important updates from ",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    },
+    {
+      "name": "daily_news_monitor",
+      "file": "scripts/archive/daily_news_monitor.py",
+      "type": "script",
+      "category": "archive",
+      "description": "Daily News & Updates Monitor Tracks Anthropic API updates, market catalyst news, technical analysis ",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    },
+    {
+      "name": "generate_daily_html_report",
+      "file": "scripts/archive/generate_daily_html_report.py",
+      "type": "script",
+      "category": "archive",
+      "description": "<tr> <td><strong>{ticker}</strong></td> <td class=\"sell\">{data.get('signal')}</td> <td>{data.get('co",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    },
+    {
+      "name": "options_execution_plan",
+      "file": "scripts/archive/options_execution_plan.py",
+      "type": "script",
+      "category": "archive",
+      "description": "Options Trading Execution Plan - FCEL & MRVL Automated tracking and execution monitoring for no-spre",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    },
+    {
+      "name": "tqqq_options_analysis",
+      "file": "scripts/archive/tqqq_options_analysis.py",
+      "type": "script",
+      "category": "archive",
+      "description": "TQQQ Options Analysis - $500 Capital Optimization Analyzes option chains for TQQQ (Nasdaq 3x Leverag",
+      "last_commit": "ae27c0c",
+      "last_modified": "2026-05-07 12:56:36 -0500"
+    }
+  ],
+  "configs": [
+    {
+      "name": "cache_config",
+      "file": "config/cache_config.yml",
+      "type": "config",
+      "description": "Configuration file (.yml)",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "finviz_screeners",
+      "file": "config/finviz_screeners.yml",
+      "type": "config",
+      "description": "Configuration file (.yml)",
+      "last_commit": "b189e8f",
+      "last_modified": "2026-05-10 12:43:18 -0500"
+    },
+    {
+      "name": "prompts_compiled",
+      "file": "config/prompts_compiled.json",
+      "type": "config",
+      "description": "Configuration file (.json)",
+      "last_commit": "92d50ca",
+      "last_modified": "2026-05-09 14:11:46 -0500"
+    },
+    {
+      "name": "vif_config",
+      "file": "config/vif_config.yml",
+      "type": "config",
+      "description": "Configuration file (.yml)",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    }
+  ],
+  "watchlists": [
+    {
+      "name": "AI Physical Layer & Power Infrastructure",
+      "file": "watchlists/AI Physical Layer & Power Infrastructure.txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "aa36821",
+      "last_modified": "2026-05-05 19:08:36 -0500"
+    },
+    {
+      "name": "AI Verticals (Supply Chain)",
+      "file": "watchlists/AI Verticals (Supply Chain).txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "aa36821",
+      "last_modified": "2026-05-05 19:08:36 -0500"
+    },
+    {
+      "name": "Core Growth & Macro Indices (Large-Cap Anchors)",
+      "file": "watchlists/Core Growth & Macro Indices (Large-Cap Anchors).txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "c7f8fe0",
+      "last_modified": "2026-05-09 18:58:17 -0500"
+    },
+    {
+      "name": "Energy & AI (Power Convergence)",
+      "file": "watchlists/Energy & AI (Power Convergence).txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "aa36821",
+      "last_modified": "2026-05-05 19:08:36 -0500"
+    },
+    {
+      "name": "Speculative _ High-Beta",
+      "file": "watchlists/Speculative _ High-Beta.txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "aa36821",
+      "last_modified": "2026-05-05 19:08:36 -0500"
+    },
+    {
+      "name": "Trump Admin_ Onshoring",
+      "file": "watchlists/Trump Admin_ Onshoring.txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "c7f8fe0",
+      "last_modified": "2026-05-09 18:58:17 -0500"
+    },
+    {
+      "name": "ai_verticals",
+      "file": "watchlists/legacy/ai_verticals.txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "693b5b4",
+      "last_modified": "2026-05-05 17:19:36 -0500"
+    },
+    {
+      "name": "energy_ai",
+      "file": "watchlists/legacy/energy_ai.txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "693b5b4",
+      "last_modified": "2026-05-05 17:19:36 -0500"
+    },
+    {
+      "name": "vantage_portfolio",
+      "file": "watchlists/legacy/vantage_portfolio.txt",
+      "type": "watchlist",
+      "tickers": 1,
+      "last_commit": "693b5b4",
+      "last_modified": "2026-05-05 17:19:36 -0500"
+    }
+  ],
+  "docs": [
+    {
+      "name": "AGENTS",
+      "file": "docs/AGENTS.md",
+      "type": "documentation",
+      "last_commit": "4a92ebc",
+      "last_modified": "2026-04-30 04:43:28 -0500"
+    },
+    {
+      "name": "DEPLOYMENT_STATUS",
+      "file": "docs/DEPLOYMENT_STATUS.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "FINVIZ_COMMAND_REFERENCE",
+      "file": "docs/FINVIZ_COMMAND_REFERENCE.md",
+      "type": "documentation",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "FINVIZ_SCREENER_EXECUTION_PLAN",
+      "file": "docs/FINVIZ_SCREENER_EXECUTION_PLAN.md",
+      "type": "documentation",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "FINVIZ_SWARM_INTEGRATION_GUIDE",
+      "file": "docs/FINVIZ_SWARM_INTEGRATION_GUIDE.md",
+      "type": "documentation",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "FOLDER_OPERATIONS_CHECKLIST",
+      "file": "docs/FOLDER_OPERATIONS_CHECKLIST.md",
+      "type": "documentation",
+      "last_commit": "f63718e",
+      "last_modified": "2026-05-02 22:21:14 -0500"
+    },
+    {
+      "name": "GITHUB_AGENT_WORKFLOW_STATUS",
+      "file": "docs/GITHUB_AGENT_WORKFLOW_STATUS.md",
+      "type": "documentation",
+      "last_commit": "3c98662",
+      "last_modified": "2026-05-02 22:30:54 -0500"
+    },
+    {
+      "name": "GITHUB_MCP_SETUP",
+      "file": "docs/GITHUB_MCP_SETUP.md",
+      "type": "documentation",
+      "last_commit": "cc22b2f",
+      "last_modified": "2026-05-09 23:01:27 -0500"
+    },
+    {
+      "name": "IMPROVEMENT_RECOMMENDATIONS",
+      "file": "docs/IMPROVEMENT_RECOMMENDATIONS.md",
+      "type": "documentation",
+      "last_commit": "14c1183",
+      "last_modified": "2026-05-07 19:32:53 -0500"
+    },
+    {
+      "name": "INDEX",
+      "file": "docs/INDEX.md",
+      "type": "documentation",
+      "last_commit": "0572efb",
+      "last_modified": "2026-05-09 13:45:42 -0500"
+    },
+    {
+      "name": "LAPTOP_SETUP",
+      "file": "docs/LAPTOP_SETUP.md",
+      "type": "documentation",
+      "last_commit": "f3f2778",
+      "last_modified": "2026-05-06 00:38:20 -0500"
+    },
+    {
+      "name": "MARKET_DATA_SOURCE_ANALYSIS",
+      "file": "docs/MARKET_DATA_SOURCE_ANALYSIS.md",
+      "type": "documentation",
+      "last_commit": "f63718e",
+      "last_modified": "2026-05-02 22:21:14 -0500"
+    },
+    {
+      "name": "MASTER_DOCUMENTATION_INDEX",
+      "file": "docs/MASTER_DOCUMENTATION_INDEX.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "META_TOOLS_GUIDE",
+      "file": "docs/META_TOOLS_GUIDE.md",
+      "type": "documentation",
+      "last_commit": "14c1183",
+      "last_modified": "2026-05-07 19:32:53 -0500"
+    },
+    {
+      "name": "OBSERVABILITY_GUIDE",
+      "file": "docs/OBSERVABILITY_GUIDE.md",
+      "type": "documentation",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "PHASE_1_3_IMPLEMENTATION",
+      "file": "docs/PHASE_1_3_IMPLEMENTATION.md",
+      "type": "documentation",
+      "last_commit": "13ac07f",
+      "last_modified": "2026-05-09 14:40:58 -0500"
+    },
+    {
+      "name": "PHASE_4_DEPLOYMENT_SUMMARY",
+      "file": "docs/PHASE_4_DEPLOYMENT_SUMMARY.md",
+      "type": "documentation",
+      "last_commit": "cc22b2f",
+      "last_modified": "2026-05-09 23:01:27 -0500"
+    },
+    {
+      "name": "QUICKSTART",
+      "file": "docs/QUICKSTART.md",
+      "type": "documentation",
+      "last_commit": "4a92ebc",
+      "last_modified": "2026-04-30 04:43:28 -0500"
+    },
+    {
+      "name": "QUICK_START_FRIDAY_PREP",
+      "file": "docs/QUICK_START_FRIDAY_PREP.md",
+      "type": "documentation",
+      "last_commit": "c714253",
+      "last_modified": "2026-05-04 00:08:57 -0500"
+    },
+    {
+      "name": "SETUP",
+      "file": "docs/SETUP.md",
+      "type": "documentation",
+      "last_commit": "4a92ebc",
+      "last_modified": "2026-04-30 04:43:28 -0500"
+    },
+    {
+      "name": "SKILLS",
+      "file": "docs/SKILLS.md",
+      "type": "documentation",
+      "last_commit": "4a92ebc",
+      "last_modified": "2026-04-30 04:43:28 -0500"
+    },
+    {
+      "name": "SWARM_ORCHESTRATOR_GUIDE",
+      "file": "docs/SWARM_ORCHESTRATOR_GUIDE.md",
+      "type": "documentation",
+      "last_commit": "5bb4b8c",
+      "last_modified": "2026-05-09 13:00:14 -0500"
+    },
+    {
+      "name": "SYSTEM_CONTEXT",
+      "file": "docs/SYSTEM_CONTEXT.md",
+      "type": "documentation",
+      "last_commit": "fc52955",
+      "last_modified": "2026-05-07 12:57:17 -0500"
+    },
+    {
+      "name": "SYSTEM_HEALTH",
+      "file": "docs/SYSTEM_HEALTH.md",
+      "type": "documentation",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "Session-Log-2026-05-04-to-05",
+      "file": "docs/Session-Log-2026-05-04-to-05.md",
+      "type": "documentation",
+      "last_commit": "b273bbd",
+      "last_modified": "2026-05-05 15:52:40 -0500"
+    },
+    {
+      "name": "TA_LIBRARY_INTEGRATION_COMPLETE",
+      "file": "docs/TA_LIBRARY_INTEGRATION_COMPLETE.md",
+      "type": "documentation",
+      "last_commit": "2bc7b95",
+      "last_modified": "2026-05-02 22:48:52 -0500"
+    },
+    {
+      "name": "TODAYS_REPORTS_SUMMARY",
+      "file": "docs/TODAYS_REPORTS_SUMMARY.md",
+      "type": "documentation",
+      "last_commit": "c714253",
+      "last_modified": "2026-05-04 00:08:57 -0500"
+    },
+    {
+      "name": "TOP_10_SWARM_PROMPT_TRIGGERS",
+      "file": "docs/TOP_10_SWARM_PROMPT_TRIGGERS.md",
+      "type": "documentation",
+      "last_commit": "d1670a4",
+      "last_modified": "2026-05-09 16:42:43 -0500"
+    },
+    {
+      "name": "TradingView-MCP-Setup",
+      "file": "docs/TradingView-MCP-Setup.md",
+      "type": "documentation",
+      "last_commit": "b273bbd",
+      "last_modified": "2026-05-05 15:52:40 -0500"
+    },
+    {
+      "name": "DAILY_TASK_SCHEDULE_AND_AGENT_WORKFLOW",
+      "file": "docs/agent-documentation/DAILY_TASK_SCHEDULE_AND_AGENT_WORKFLOW.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "API_STATUS_REPORT",
+      "file": "docs/archive/API_STATUS_REPORT.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "AUTONOMOUS_SYSTEM_SETUP",
+      "file": "docs/archive/AUTONOMOUS_SYSTEM_SETUP.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "DOCUMENTATION_CREATED_20260502",
+      "file": "docs/archive/DOCUMENTATION_CREATED_20260502.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "IMPLEMENTATION_COMPLETE",
+      "file": "docs/archive/IMPLEMENTATION_COMPLETE.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "TRIPLE_EXCEL_DIAGNOSIS",
+      "file": "docs/archive/TRIPLE_EXCEL_DIAGNOSIS.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "analysis_20260428_051025",
+      "file": "docs/archive/analysis_20260428_051025.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "EXCEL_COLUMN_GUIDE_AND_ALPHA_EXTRACTION",
+      "file": "docs/guides/EXCEL_COLUMN_GUIDE_AND_ALPHA_EXTRACTION.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "QUICK_RECIPES",
+      "file": "docs/guides/QUICK_RECIPES.md",
+      "type": "documentation",
+      "last_commit": "0572efb",
+      "last_modified": "2026-05-09 13:45:42 -0500"
+    },
+    {
+      "name": "optimization-checklist",
+      "file": "docs/guides/optimization-checklist.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "report-format",
+      "file": "docs/guides/report-format.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "usage-tracking",
+      "file": "docs/guides/usage-tracking.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "orchestrator_framework",
+      "file": "docs/orchestrator_framework.md",
+      "type": "documentation",
+      "last_commit": "3351fd0",
+      "last_modified": "2026-05-09 03:22:01 -0500"
+    },
+    {
+      "name": "01-cursor-desktop-setup",
+      "file": "docs/setup-guides/01-cursor-desktop-setup.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "02-desktop-python-setup",
+      "file": "docs/setup-guides/02-desktop-python-setup.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "03-configuration-reference",
+      "file": "docs/setup-guides/03-configuration-reference.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "04-troubleshooting",
+      "file": "docs/setup-guides/04-troubleshooting.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "QUICK_SETUP",
+      "file": "docs/setup-guides/QUICK_SETUP.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "README",
+      "file": "docs/setup-guides/README.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "desktop-setup",
+      "file": "docs/setup-guides/desktop-setup.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "ide-setup",
+      "file": "docs/setup-guides/ide-setup.md",
+      "type": "documentation",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "external-alpha-audit",
+      "file": "docs/skills/external-alpha-audit.md",
+      "type": "documentation",
+      "last_commit": "cc22b2f",
+      "last_modified": "2026-05-09 23:01:27 -0500"
+    },
+    {
+      "name": "finviz-custom-screeners",
+      "file": "docs/skills/finviz-custom-screeners.md",
+      "type": "documentation",
+      "last_commit": "b189e8f",
+      "last_modified": "2026-05-10 12:43:18 -0500"
+    },
+    {
+      "name": "repo-navigation",
+      "file": "docs/skills/repo-navigation.md",
+      "type": "documentation",
+      "last_commit": "cc22b2f",
+      "last_modified": "2026-05-09 23:01:27 -0500"
+    },
+    {
+      "name": "AGENT_COMBINATIONS",
+      "file": "docs/system/AGENT_COMBINATIONS.md",
+      "type": "documentation",
+      "last_commit": "0572efb",
+      "last_modified": "2026-05-09 13:45:42 -0500"
+    },
+    {
+      "name": "CHANGELOG",
+      "file": "docs/system/CHANGELOG.md",
+      "type": "documentation",
+      "last_commit": "0572efb",
+      "last_modified": "2026-05-09 13:45:42 -0500"
+    },
+    {
+      "name": "LEVERAGE_GUIDE",
+      "file": "docs/system/LEVERAGE_GUIDE.md",
+      "type": "documentation",
+      "last_commit": "0572efb",
+      "last_modified": "2026-05-09 13:45:42 -0500"
+    },
+    {
+      "name": "system_context",
+      "file": "docs/system/system_context.md",
+      "type": "documentation",
+      "last_commit": "0572efb",
+      "last_modified": "2026-05-09 13:45:42 -0500"
+    },
+    {
+      "name": "~$ENT_COMBINATIONS",
+      "file": "docs/system/~$ENT_COMBINATIONS.md",
+      "type": "documentation",
+      "last_commit": "d1670a4",
+      "last_modified": "2026-05-09 16:42:43 -0500"
+    },
+    {
+      "name": "~$stem_context",
+      "file": "docs/system/~$stem_context.md",
+      "type": "documentation",
+      "last_commit": "d1670a4",
+      "last_modified": "2026-05-09 16:42:43 -0500"
+    },
+    {
+      "name": "OPTIMIZED_DAILY_TRADING_WORKFLOW",
+      "file": "docs/workflows/OPTIMIZED_DAILY_TRADING_WORKFLOW.md",
+      "type": "documentation",
+      "last_commit": "c714253",
+      "last_modified": "2026-05-04 00:08:57 -0500"
+    },
+    {
+      "name": "~$ASE_4_DEPLOYMENT_SUMMARY",
+      "file": "docs/~$ASE_4_DEPLOYMENT_SUMMARY.md",
+      "type": "documentation",
+      "last_commit": "cc22b2f",
+      "last_modified": "2026-05-09 23:01:27 -0500"
+    },
+    {
+      "name": "~$INDEX",
+      "file": "docs/~$INDEX.md",
+      "type": "documentation",
+      "last_commit": "d1670a4",
+      "last_modified": "2026-05-09 16:42:43 -0500"
+    },
+    {
+      "name": "~$STEM_CONTEXT",
+      "file": "docs/~$STEM_CONTEXT.md",
+      "type": "documentation",
+      "last_commit": "74848fb",
+      "last_modified": "2026-05-09 12:46:48 -0500"
+    },
+    {
+      "name": "~$THUB_MCP_SETUP",
+      "file": "docs/~$THUB_MCP_SETUP.md",
+      "type": "documentation",
+      "last_commit": "b189e8f",
+      "last_modified": "2026-05-10 12:43:18 -0500"
+    },
+    {
+      "name": "~$adingView-MCP-Setup",
+      "file": "docs/~$adingView-MCP-Setup.md",
+      "type": "documentation",
+      "last_commit": "aa36821",
+      "last_modified": "2026-05-05 19:08:36 -0500"
+    }
+  ],
+  "utilities": [
+    {
+      "name": "cost_tracker",
+      "file": "utils/cost_tracker.py",
+      "type": "utility",
+      "description": " import json from datetime import datetime, timedelta from pathlib import Path i",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "error_recovery",
+      "file": "utils/error_recovery.py",
+      "type": "utility",
+      "description": "Error recovery and fallback logic for VIF Trading System. Handles API failures, ",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "signal_tracker",
+      "file": "utils/signal_tracker.py",
+      "type": "utility",
+      "description": " import sqlite3 import json from datetime import datetime, timedelta from pathli",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "structured_logging",
+      "file": "utils/structured_logging.py",
+      "type": "utility",
+      "description": "Structured logging setup for VIF Trading System. Provides consistent logging wit",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    },
+    {
+      "name": "telemetry",
+      "file": "utils/telemetry.py",
+      "type": "utility",
+      "description": "Unified telemetry system for VIF Trading System. Logs ALL system events (agents,",
+      "last_commit": "",
+      "last_modified": ""
+    },
+    {
+      "name": "usage_tracker",
+      "file": "utils/usage_tracker.py",
+      "type": "utility",
+      "description": "Token usage tracking and monitoring for VIF Trading System. Logs all Claude API ",
+      "last_commit": "a8018d0",
+      "last_modified": "2026-05-02 21:22:20 -0500"
+    }
+  ]
+}
