@@ -1,0 +1,824 @@
+{
+  "agent_id": "finviz-screener",
+  "timestamp": "2026-05-13T00:25:27.913074",
+  "screeners_executed": 19,
+  "screeners_with_results": 19,
+  "screeners_skipped": 0,
+  "results": {
+    "gap_up_screener": {
+      "screener_name": "gap_up_screener",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $5",
+        "Gap = Up 5%"
+      ],
+      "tickers": [
+        "ALHC",
+        "AMTM",
+        "ARMK",
+        "ASTN",
+        "ATEC",
+        "AVEX",
+        "BMNZ",
+        "CORD",
+        "FABC",
+        "GDXD",
+        "HALO",
+        "HLIT",
+        "HTCO",
+        "KOPN",
+        "LZ"
+      ],
+      "metadata": {
+        "total_results": 31,
+        "top_k": 15,
+        "execution_time_ms": 1430,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ALHC": 0.8,
+        "AMTM": 0.8200000000000001,
+        "ARMK": 0.8400000000000001,
+        "ASTN": 0.8600000000000001,
+        "ATEC": 0.88,
+        "AVEX": 0.9,
+        "BMNZ": 0.92,
+        "CORD": 0.9400000000000001,
+        "FABC": 0.9600000000000001,
+        "GDXD": 0.98,
+        "HALO": 1.0,
+        "HLIT": 1.02,
+        "HTCO": 1.04,
+        "KOPN": 1.06,
+        "LZ": 1.08
+      },
+      "timestamp": "2026-05-13T00:24:05.795168"
+    },
+    "shorted_to_breakouts": {
+      "screener_name": "shorted_to_breakouts",
+      "filters_applied": [
+        "Float Short = Over 20%",
+        "Average Volume = Over 500K",
+        "Price = Over $5",
+        "RSI (14) = Oversold (30)"
+      ],
+      "tickers": [
+        "ABR",
+        "CERT",
+        "CHTR",
+        "HROW",
+        "TMDX",
+        "UAA",
+        "UPWK",
+        "VITL",
+        "XPOF"
+      ],
+      "metadata": {
+        "total_results": 9,
+        "top_k": 10,
+        "execution_time_ms": 182,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ABR": 0.8,
+        "CERT": 0.8200000000000001,
+        "CHTR": 0.8400000000000001,
+        "HROW": 0.8600000000000001,
+        "TMDX": 0.88,
+        "UAA": 0.9,
+        "UPWK": 0.92,
+        "VITL": 0.9400000000000001,
+        "XPOF": 0.9600000000000001
+      },
+      "timestamp": "2026-05-13T00:24:02.075110"
+    },
+    "hunt_1_3": {
+      "screener_name": "hunt_1_3",
+      "filters_applied": [
+        "Market Cap. = +Large (over $10bln)",
+        "Average Volume = Over 1M",
+        "Price = Over $20",
+        "RSI (14) = Overbought (70)"
+      ],
+      "tickers": [
+        "AAON",
+        "AAPL",
+        "ADM",
+        "AKAM",
+        "AMD",
+        "ARMK",
+        "ASX",
+        "BEN",
+        "BHP",
+        "BTSG"
+      ],
+      "metadata": {
+        "total_results": 53,
+        "top_k": 10,
+        "execution_time_ms": 2972,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAON": 0.8,
+        "AAPL": 0.8200000000000001,
+        "ADM": 0.8400000000000001,
+        "AKAM": 0.8600000000000001,
+        "AMD": 0.88,
+        "ARMK": 0.9,
+        "ASX": 0.92,
+        "BEN": 0.9400000000000001,
+        "BHP": 0.9600000000000001,
+        "BTSG": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:04.363961"
+    },
+    "gap_down_screener": {
+      "screener_name": "gap_down_screener",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $5",
+        "Gap = Down 5%"
+      ],
+      "tickers": [
+        "AAOX",
+        "AGRO",
+        "AIXI",
+        "AKAN",
+        "AMPY",
+        "ARMG",
+        "ASTS",
+        "ASTX",
+        "BKKT",
+        "BMNG",
+        "CLSK",
+        "CRDU",
+        "CRWG",
+        "CRWU",
+        "CWVX"
+      ],
+      "metadata": {
+        "total_results": 61,
+        "top_k": 15,
+        "execution_time_ms": 3967,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAOX": 0.8,
+        "AGRO": 0.8200000000000001,
+        "AIXI": 0.8400000000000001,
+        "AKAN": 0.8600000000000001,
+        "AMPY": 0.88,
+        "ARMG": 0.9,
+        "ASTS": 0.92,
+        "ASTX": 0.9400000000000001,
+        "BKKT": 0.9600000000000001,
+        "BMNG": 0.98,
+        "CLSK": 1.0,
+        "CRDU": 1.02,
+        "CRWG": 1.04,
+        "CRWU": 1.06,
+        "CWVX": 1.08
+      },
+      "timestamp": "2026-05-13T00:24:09.763257"
+    },
+    "backtested_6mo_top1": {
+      "screener_name": "backtested_6mo_top1",
+      "filters_applied": [
+        "Market Cap. = Mid ($2bln to $10bln)",
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "P/E = Low (<15)"
+      ],
+      "tickers": [
+        "ABCB",
+        "ACAD",
+        "ACM",
+        "AEO",
+        "AERO",
+        "AGCO",
+        "ALV",
+        "ANF",
+        "APAM",
+        "ARR"
+      ],
+      "metadata": {
+        "total_results": 179,
+        "top_k": 10,
+        "execution_time_ms": 10013,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ABCB": 0.8,
+        "ACAD": 0.8200000000000001,
+        "ACM": 0.8400000000000001,
+        "AEO": 0.8600000000000001,
+        "AERO": 0.88,
+        "AGCO": 0.9,
+        "ALV": 0.92,
+        "ANF": 0.9400000000000001,
+        "APAM": 0.9600000000000001,
+        "ARR": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:12.406999"
+    },
+    "kell_v1_vol_rsi": {
+      "screener_name": "kell_v1_vol_rsi",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Relative Volume = Over 1.5",
+        "RSI (14) = Overbought (70)"
+      ],
+      "tickers": [
+        "AAON",
+        "AIP",
+        "ALKS",
+        "ARMK",
+        "BUFR",
+        "BWA",
+        "CEVA",
+        "CON",
+        "CPER",
+        "CPRX"
+      ],
+      "metadata": {
+        "total_results": 53,
+        "top_k": 10,
+        "execution_time_ms": 2866,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAON": 0.8,
+        "AIP": 0.8200000000000001,
+        "ALKS": 0.8400000000000001,
+        "ARMK": 0.8600000000000001,
+        "BUFR": 0.88,
+        "BWA": 0.9,
+        "CEVA": 0.92,
+        "CON": 0.9400000000000001,
+        "CPER": 0.9600000000000001,
+        "CPRX": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:12.630420"
+    },
+    "kell_v2_52w_beta_vol": {
+      "screener_name": "kell_v2_52w_beta_vol",
+      "filters_applied": [
+        "Average Volume = Over 1M",
+        "Price = Over $20",
+        "Beta = Over 1.5",
+        "Change from Open = Up"
+      ],
+      "tickers": [
+        "AA",
+        "AAOI",
+        "AAPU",
+        "ACMR",
+        "AKAN",
+        "ALAB",
+        "ALGN",
+        "ANET",
+        "APLD",
+        "APO"
+      ],
+      "metadata": {
+        "total_results": 102,
+        "top_k": 10,
+        "execution_time_ms": 6175,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AA": 0.8,
+        "AAOI": 0.8200000000000001,
+        "AAPU": 0.8400000000000001,
+        "ACMR": 0.8600000000000001,
+        "AKAN": 0.88,
+        "ALAB": 0.9,
+        "ALGN": 0.92,
+        "ANET": 0.9400000000000001,
+        "APLD": 0.9600000000000001,
+        "APO": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:18.582599"
+    },
+    "kell_v4_gap_3pct": {
+      "screener_name": "kell_v4_gap_3pct",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Gap = Up 3%"
+      ],
+      "tickers": [
+        "AMTM",
+        "ARMK",
+        "AVEX",
+        "BNAI",
+        "BNO",
+        "DUST",
+        "ETHD",
+        "GDXD",
+        "HALO",
+        "HAWK"
+      ],
+      "metadata": {
+        "total_results": 22,
+        "top_k": 10,
+        "execution_time_ms": 1397,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AMTM": 0.8,
+        "ARMK": 0.8200000000000001,
+        "AVEX": 0.8400000000000001,
+        "BNAI": 0.8600000000000001,
+        "BNO": 0.88,
+        "DUST": 0.9,
+        "ETHD": 0.92,
+        "GDXD": 0.9400000000000001,
+        "HALO": 0.9600000000000001,
+        "HAWK": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:19.980835"
+    },
+    "combo_kell_all": {
+      "screener_name": "combo_kell_all",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Relative Volume = Over 1.5",
+        "RSI (14) = Overbought (70)"
+      ],
+      "tickers": [
+        "AAON",
+        "AIP",
+        "ALKS",
+        "ARMK",
+        "BUFR",
+        "BWA",
+        "CEVA",
+        "CON",
+        "CPER",
+        "CPRX"
+      ],
+      "metadata": {
+        "total_results": 53,
+        "top_k": 10,
+        "execution_time_ms": 2790,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAON": 0.8,
+        "AIP": 0.8200000000000001,
+        "ALKS": 0.8400000000000001,
+        "ARMK": 0.8600000000000001,
+        "BUFR": 0.88,
+        "BWA": 0.9,
+        "CEVA": 0.92,
+        "CON": 0.9400000000000001,
+        "CPER": 0.9600000000000001,
+        "CPRX": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:22.771810"
+    },
+    "kell_v3_100pct_perf_vol": {
+      "screener_name": "kell_v3_100pct_perf_vol",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Performance 2 = Year +100%"
+      ],
+      "tickers": [
+        "AA",
+        "AAOI",
+        "AAUC",
+        "ABVX",
+        "ACLS",
+        "ACMR",
+        "ADEA",
+        "AEHR",
+        "AEIS",
+        "AG"
+      ],
+      "metadata": {
+        "total_results": 288,
+        "top_k": 10,
+        "execution_time_ms": 16981,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AA": 0.8,
+        "AAOI": 0.8200000000000001,
+        "AAUC": 0.8400000000000001,
+        "ABVX": 0.8600000000000001,
+        "ACLS": 0.88,
+        "ACMR": 0.9,
+        "ADEA": 0.92,
+        "AEHR": 0.9400000000000001,
+        "AEIS": 0.9600000000000001,
+        "AG": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:29.612565"
+    },
+    "a_edge_ib_obv_7_25": {
+      "screener_name": "a_edge_ib_obv_7_25",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "Relative Volume = Over 1.5",
+        "Performance = Week Up"
+      ],
+      "tickers": [
+        "AAON",
+        "AAOX",
+        "ACMR",
+        "ACYN",
+        "ADEA",
+        "AEVA",
+        "AIP",
+        "AIPO",
+        "ALHC",
+        "ALKS"
+      ],
+      "metadata": {
+        "total_results": 174,
+        "top_k": 10,
+        "execution_time_ms": 9849,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAON": 0.8,
+        "AAOX": 0.8200000000000001,
+        "ACMR": 0.8400000000000001,
+        "ACYN": 0.8600000000000001,
+        "ADEA": 0.88,
+        "AEVA": 0.9,
+        "AIP": 0.92,
+        "AIPO": 0.9400000000000001,
+        "ALHC": 0.9600000000000001,
+        "ALKS": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:32.621957"
+    },
+    "new_signal_pre_breakout_a_7_25": {
+      "screener_name": "new_signal_pre_breakout_a_7_25",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = $10 to $50",
+        "Relative Volume = Over 1"
+      ],
+      "tickers": [
+        "AEVA",
+        "AGRO",
+        "AHCO",
+        "AIP",
+        "ALKT",
+        "ALMU",
+        "AMLX",
+        "AMN",
+        "AMPH",
+        "AORT"
+      ],
+      "metadata": {
+        "total_results": 139,
+        "top_k": 10,
+        "execution_time_ms": 7318,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AEVA": 0.8,
+        "AGRO": 0.8200000000000001,
+        "AHCO": 0.8400000000000001,
+        "AIP": 0.8600000000000001,
+        "ALKT": 0.88,
+        "ALMU": 0.9,
+        "AMLX": 0.92,
+        "AMN": 0.9400000000000001,
+        "AMPH": 0.9600000000000001,
+        "AORT": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:39.941152"
+    },
+    "sr_pre_breakout_a_7_25": {
+      "screener_name": "sr_pre_breakout_a_7_25",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = $10 to $50",
+        "Relative Volume = Over 0.75"
+      ],
+      "tickers": [
+        "ADNT",
+        "ADTN",
+        "AEVA",
+        "AGRO",
+        "AHCO",
+        "AIP",
+        "ALKT",
+        "ALMU",
+        "AMLX",
+        "AMN"
+      ],
+      "metadata": {
+        "total_results": 202,
+        "top_k": 10,
+        "execution_time_ms": 12385,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ADNT": 0.8,
+        "ADTN": 0.8200000000000001,
+        "AEVA": 0.8400000000000001,
+        "AGRO": 0.8600000000000001,
+        "AHCO": 0.88,
+        "AIP": 0.9,
+        "ALKT": 0.92,
+        "ALMU": 0.9400000000000001,
+        "AMLX": 0.9600000000000001,
+        "AMN": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:52.326995"
+    },
+    "vol_momentum_7_30": {
+      "screener_name": "vol_momentum_7_30",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = $10 to $50",
+        "Relative Volume = Over 1.5"
+      ],
+      "tickers": [
+        "AEVA",
+        "AGRO",
+        "AIP",
+        "AMPH",
+        "AORT",
+        "AOSL",
+        "ARLO",
+        "BKSY",
+        "BZH",
+        "CCRN"
+      ],
+      "metadata": {
+        "total_results": 48,
+        "top_k": 10,
+        "execution_time_ms": 2677,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AEVA": 0.8,
+        "AGRO": 0.8200000000000001,
+        "AIP": 0.8400000000000001,
+        "AMPH": 0.8600000000000001,
+        "AORT": 0.88,
+        "AOSL": 0.9,
+        "ARLO": 0.92,
+        "BKSY": 0.9400000000000001,
+        "BZH": 0.9600000000000001,
+        "CCRN": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:55.004357"
+    },
+    "er_gap_ups": {
+      "screener_name": "er_gap_ups",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "Gap = Up 2%"
+      ],
+      "tickers": [
+        "BCSF",
+        "FCEL",
+        "GDOT",
+        "GSIT",
+        "HLIT",
+        "KRP",
+        "NVRI",
+        "RVI",
+        "SIBN",
+        "SWMR"
+      ],
+      "metadata": {
+        "total_results": 12,
+        "top_k": 10,
+        "execution_time_ms": 237,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "BCSF": 0.8,
+        "FCEL": 0.8200000000000001,
+        "GDOT": 0.8400000000000001,
+        "GSIT": 0.8600000000000001,
+        "HLIT": 0.88,
+        "KRP": 0.9,
+        "NVRI": 0.92,
+        "RVI": 0.9400000000000001,
+        "SIBN": 0.9600000000000001,
+        "SWMR": 0.98
+      },
+      "timestamp": "2026-05-13T00:24:55.242969"
+    },
+    "canslim_b_plus": {
+      "screener_name": "canslim_b_plus",
+      "filters_applied": [
+        "P/E = Low (<15)",
+        "Dividend Yield = Over 1%",
+        "Price = Over $10",
+        "Average Volume = Over 500K"
+      ],
+      "tickers": [
+        "ACM",
+        "ACN",
+        "AEO",
+        "AER",
+        "AES",
+        "AFG",
+        "AFL",
+        "AGCO",
+        "AGNC",
+        "AIG",
+        "ALL",
+        "ALLY",
+        "ALV",
+        "AMP",
+        "AOD"
+      ],
+      "metadata": {
+        "total_results": 271,
+        "top_k": 15,
+        "execution_time_ms": 16306,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ACM": 0.8,
+        "ACN": 0.8200000000000001,
+        "AEO": 0.8400000000000001,
+        "AER": 0.8600000000000001,
+        "AES": 0.88,
+        "AFG": 0.9,
+        "AFL": 0.92,
+        "AGCO": 0.9400000000000001,
+        "AGNC": 0.9600000000000001,
+        "AIG": 0.98,
+        "ALL": 1.0,
+        "ALLY": 1.02,
+        "ALV": 1.04,
+        "AMP": 1.06,
+        "AOD": 1.08
+      },
+      "timestamp": "2026-05-13T00:25:11.550280"
+    },
+    "canslim_1_a_plus": {
+      "screener_name": "canslim_1_a_plus",
+      "filters_applied": [
+        "P/E = Low (<15)",
+        "Dividend Yield = Positive (>0%)",
+        "Return on Equity = Over +15%",
+        "Price = Over $10"
+      ],
+      "tickers": [
+        "AB",
+        "ACGL",
+        "ACIC",
+        "ACM",
+        "ACN",
+        "AER",
+        "AES",
+        "AFG",
+        "AFL",
+        "AFYA",
+        "AGCO",
+        "AIZ",
+        "AKO-A",
+        "AKO-B",
+        "ALL"
+      ],
+      "metadata": {
+        "total_results": 243,
+        "top_k": 15,
+        "execution_time_ms": 14838,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AB": 0.8,
+        "ACGL": 0.8200000000000001,
+        "ACIC": 0.8400000000000001,
+        "ACM": 0.8600000000000001,
+        "ACN": 0.88,
+        "AER": 0.9,
+        "AES": 0.92,
+        "AFG": 0.9400000000000001,
+        "AFL": 0.9600000000000001,
+        "AFYA": 0.98,
+        "AGCO": 1.0,
+        "AIZ": 1.02,
+        "AKO-A": 1.04,
+        "AKO-B": 1.06,
+        "ALL": 1.08
+      },
+      "timestamp": "2026-05-13T00:25:26.389140"
+    },
+    "david_ryan_core": {
+      "screener_name": "david_ryan_core",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "EPS growthnext 5 years = Over 25%",
+        "Return on Equity = Over +15%",
+        "Price = Over $10"
+      ],
+      "tickers": [
+        "ATLC",
+        "BWMX",
+        "GLP",
+        "PGY",
+        "PICS",
+        "QNST",
+        "TOYO",
+        "TREE",
+        "XPEL",
+        "YB"
+      ],
+      "metadata": {
+        "total_results": 10,
+        "top_k": 15,
+        "execution_time_ms": 193,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ATLC": 0.8,
+        "BWMX": 0.8200000000000001,
+        "GLP": 0.8400000000000001,
+        "PGY": 0.8600000000000001,
+        "PICS": 0.88,
+        "QNST": 0.9,
+        "TOYO": 0.92,
+        "TREE": 0.9400000000000001,
+        "XPEL": 0.9600000000000001,
+        "YB": 0.98
+      },
+      "timestamp": "2026-05-13T00:25:26.583041"
+    },
+    "b_edge_loose_ib_obv_7_25": {
+      "screener_name": "b_edge_loose_ib_obv_7_25",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "Relative Volume = Over 1"
+      ],
+      "tickers": [
+        "AAOI",
+        "AAON",
+        "AAOX",
+        "AAP",
+        "ABT",
+        "ACGL",
+        "ACI",
+        "ACM",
+        "ACMR",
+        "ACYN"
+      ],
+      "metadata": {
+        "total_results": 978,
+        "top_k": 10,
+        "execution_time_ms": 58299,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAOI": 0.8,
+        "AAON": 0.8200000000000001,
+        "AAOX": 0.8400000000000001,
+        "AAP": 0.8600000000000001,
+        "ABT": 0.88,
+        "ACGL": 0.9,
+        "ACI": 0.92,
+        "ACM": 0.9400000000000001,
+        "ACMR": 0.9600000000000001,
+        "ACYN": 0.98
+      },
+      "timestamp": "2026-05-13T00:25:27.912191"
+    }
+  },
+  "comparison": null,
+  "novel_discoveries": null,
+  "token_cost": 0
+}
