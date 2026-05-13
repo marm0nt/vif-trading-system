@@ -276,7 +276,7 @@ EXPECTED SCHEMA:
         try:
             message = client.messages.create(
                 model=model_to_use,
-                max_tokens=3000,
+                max_tokens=6000,  # Increased to avoid truncation
                 system=[
                     {
                         "type": "text",
@@ -311,9 +311,21 @@ EXPECTED SCHEMA:
                 logger.error(f"JSON parse error in batch {batch_num}: {e}")
                 # Attempt JSON repair: close any open strings/brackets
                 try:
+                    import re
                     repair_text = response_text.rstrip()
-                    if not repair_text.endswith('}'):
-                        repair_text = repair_text + '}'
+
+                    # Fix unterminated strings
+                    repair_text = re.sub(r'": "[^"]*$', '": "TRUNCATED"}', repair_text)
+
+                    # Close unclosed brackets/braces
+                    open_braces = repair_text.count('{') - repair_text.count('}')
+                    open_brackets = repair_text.count('[') - repair_text.count(']')
+
+                    if open_braces > 0:
+                        repair_text += '}' * open_braces
+                    if open_brackets > 0:
+                        repair_text += ']' * open_brackets
+
                     batch_result = json.loads(repair_text)
                     if "signals" in batch_result:
                         all_signals.update(batch_result["signals"])
