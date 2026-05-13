@@ -44,8 +44,14 @@ logger = logging.getLogger(__name__)
 
 # ── Venv-aware python path ────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).parent.resolve()
-VENV_PYTHON = str(SCRIPT_DIR / "venv" / "Scripts" / "python.exe")
-PYTHON = VENV_PYTHON if Path(VENV_PYTHON).exists() else "python"
+# Try venv first (absolute path for subprocess), fallback to system python
+VENV_PYTHON_PATH = SCRIPT_DIR / "venv" / "Scripts" / "python.exe"
+if VENV_PYTHON_PATH.exists():
+    PYTHON = str(VENV_PYTHON_PATH)
+else:
+    # Use system python as fallback
+    PYTHON = "python"
+    logger.info(f"Venv not found at {VENV_PYTHON_PATH}, using system python instead")
 
 
 # ── Job runner ────────────────────────────────────────────────────────────────
@@ -84,6 +90,7 @@ def run_job(label: str, cmd: list[str], timeout: int = 600) -> bool:
             capture_output=True,
             text=True,
             timeout=timeout,
+            cwd=SCRIPT_DIR,  # Ensure subprocess runs in correct directory
         )
         if result.returncode == 0:
             logger.info(f"  ✓ COMPLETED: {label}")
