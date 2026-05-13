@@ -1,6 +1,6 @@
 # VIF Trading System — Complete Architecture Map
 
-**Last updated:** 2026-05-12 21:52:56
+**Last updated:** 2026-05-12 21:52:57
 **Status:** All systems operational
 
 ## Active Agents (9)
@@ -46,8 +46,9 @@
 **Added:** 0 files
 - (none)
 
-**Modified:** 0 files
-- (none)
+**Modified:** 2 files
+- 🔧 agents/watchlist_watcher.py
+- 🔧 scripts/active/analysis/catalyst_analysis.py
 
 ---
 
