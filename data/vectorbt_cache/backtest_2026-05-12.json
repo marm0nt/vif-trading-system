@@ -1,0 +1,133 @@
+{
+  "EXE": {
+    "ticker": "EXE",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-12T22:00:54.250738"
+  },
+  "NEE": {
+    "ticker": "NEE",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 2,
+    "total_return": 0.0663,
+    "sharpe_ratio": 1.118,
+    "max_drawdown": -0.0488,
+    "win_rate": 1.0,
+    "flagged": false,
+    "flag_reason": null,
+    "vif_signal": "HOLD",
+    "vif_confidence": 50,
+    "timestamp": "2026-05-12T22:00:54.501264"
+  },
+  "NYSE:EQT": {
+    "ticker": "NYSE:EQT",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-12T22:00:55.576883"
+  },
+  "AMEX:ASHR": {
+    "ticker": "AMEX:ASHR",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-12T22:00:56.650681"
+  },
+  "NASDAQ:SPY": {
+    "ticker": "NASDAQ:SPY",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-12T22:00:57.293824"
+  },
+  "NASDAQ:MSFT": {
+    "ticker": "NASDAQ:MSFT",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-12T22:00:57.914299"
+  },
+  "NASDAQ:IWM": {
+    "ticker": "NASDAQ:IWM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-12T22:00:58.598793"
+  },
+  "BA": {
+    "ticker": "BA",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 2,
+    "total_return": 0.0552,
+    "sharpe_ratio": 1.103,
+    "max_drawdown": -0.0926,
+    "win_rate": 0.0,
+    "flagged": false,
+    "flag_reason": null,
+    "vif_signal": "HOLD",
+    "vif_confidence": 48,
+    "timestamp": "2026-05-12T22:00:58.903221"
+  },
+  "APD": {
+    "ticker": "APD",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 3,
+    "total_return": 0.1969,
+    "sharpe_ratio": 2.975,
+    "max_drawdown": -0.0407,
+    "win_rate": 1.0,
+    "flagged": false,
+    "flag_reason": null,
+    "vif_signal": "HOLD",
+    "vif_confidence": 42,
+    "timestamp": "2026-05-12T22:01:00.232865"
+  },
+  "MMM": {
+    "ticker": "MMM",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 2,
+    "total_return": -0.0912,
+    "sharpe_ratio": -2.406,
+    "max_drawdown": -0.0912,
+    "win_rate": 0.0,
+    "flagged": true,
+    "flag_reason": "Sharpe -2.41 < 0.5",
+    "vif_signal": "HOLD",
+    "vif_confidence": 35,
+    "timestamp": "2026-05-12T22:01:00.519065"
+  },
+  "NPWR": {
+    "ticker": "NPWR",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-12T22:01:00.733510"
+  },
+  "PENG": {
+    "ticker": "PENG",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-12T22:01:00.911144"
+  }
+}
