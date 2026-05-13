@@ -184,17 +184,21 @@ class NativeFinVizScreenerAgent(SpecialistAgent):
         return self._add_execution_metadata(result, cache_hit=False, start_time=start_time)
 
     def _execute_screeners_parallel(self) -> Dict:
-        """Execute all screeners in parallel (ThreadPoolExecutor)."""
+        """Execute all screeners in parallel (ThreadPoolExecutor) with rate limiting."""
         from agents.finviz_screener_agent import _screener
+        import time
 
         results = {}
         failed = []
 
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            futures = {
-                executor.submit(_screener.run_named_screener, screener_name): screener_name
-                for screener_name in FINVIZ_SCREENERS
-            }
+        # Reduce max_workers to avoid rate limiting
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = {}
+            for i, screener_name in enumerate(FINVIZ_SCREENERS):
+                # Stagger submissions to avoid overwhelming FinViz
+                if i > 0:
+                    time.sleep(0.5)
+                futures[executor.submit(_screener.run_named_screener, screener_name)] = screener_name
 
             for future in as_completed(futures):
                 screener_name = futures[future]

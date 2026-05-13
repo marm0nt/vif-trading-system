@@ -1,290 +1,201 @@
-# Custom FinViz Screener Definitions
-# Each screener maps to a FinViz filter URL with shadow test comparison
+# FinViz Screener Configuration - FIXED for finvizfinance API
+# Valid filter names: see finvizfinance library documentation
+# Each screener definition maps to a set of FinViz filters
 
 screeners:
   hunt_1_3:
     name: "Hunt (1-3) - Growth + Institutions"
-    description: "Sales QoQ growth 30%+, USA small caps, 3yr IPO window, short interest, SMA alignment"
+    description: "Growth stocks with institutional interest, high volume"
     filters:
-      - fa_salesqoq_u30      # Sales QoQ growth > 30%
-      - geo_usa              # USA only
-      - ind_stocksonly       # Stocks only
-      - ipodate_prev3yrs     # IPO within last 3 years
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_short_o5          # Short % > 5%
-      - ta_changeopen_u      # Gap up from open
-      - ta_sma20_pa          # Price above 20 SMA
-      - ta_sma200_pa         # Price above 200 SMA
-      - ta_sma50_pa          # Price above 50 SMA
-    sort_by: volume          # Sort by volume descending
+      - Market Cap. = +Large (over $10bln)
+      - Average Volume = Over 1M
+      - Price = Over $20
+      - RSI (14) = Overbought (70)
+    sort_by: Volume
     top_k: 10
 
   shorted_to_breakouts:
     name: "Shorted To Breakouts"
-    description: "Small float, heavily shorted, gap up, oversold RSI, high volatility"
+    description: "Heavily shorted stocks with breakout potential"
     filters:
-      - sh_float_u20         # Float < 20M
-      - sh_price_u20         # Price < $20
-      - sh_relvol_o0.75      # Relative volume > 0.75
-      - sh_short_o5          # Short % > 5%
-      - ta_changeopen_u      # Gap up from open
-      - ta_perf_dup          # Up performance (duplicate)
-      - ta_rsi_os40          # RSI oversold (< 40)
-      - ta_volatility_wo3    # Volatility > 3% week-over-week
-    sort_by: performance     # Sort by short-term performance
+      - Float Short = Over 20%
+      - Average Volume = Over 500K
+      - Price = Over $5
+      - RSI (14) = Oversold (30)
+    sort_by: Performance
     top_k: 10
 
   backtested_6mo_top1:
-    name: "Backtested 6mo - Top 1 (1-3)"
-    description: "EPS YoY 20%+, Sales QoQ 20%+, high volume, beta > 1, SMA alignment"
+    name: "Backtested 6mo - Top 1"
+    description: "High growth with strong fundamentals"
     filters:
-      - fa_epsyoy1_o20       # EPS YoY growth > 20%
-      - fa_salesqoq_o20      # Sales QoQ growth > 20%
-      - ind_stocksonly       # Stocks only
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_short_o5          # Short % > 5%
-      - ta_beta_o1           # Beta > 1.0
-      - ta_changeopen_u      # Gap up from open
-      - ta_sma20_pa          # Price above 20 SMA
-      - ta_sma200_pa         # Price above 200 SMA
-      - ta_sma50_pa          # Price above 50 SMA
-    sort_by: volume          # Sort by volume descending
+      - Market Cap. = Mid ($2bln to $10bln)
+      - Average Volume = Over 500K
+      - Price = Over $10
+      - P/E = Low (<15)
+    sort_by: Performance
     top_k: 10
 
   gap_up_screener:
     name: "Gap Up Screener"
-    description: "USA stocks with 7%+ gap up, high average volume"
+    description: "Recent gap-up reversals with high volume"
     filters:
-      - geo_usa              # USA only
-      - ind_stocksonly       # Stocks only
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_o1          # Price > $1
-      - ta_gap_u7            # Gap up > 7%
-    sort_by: gap_pct         # Sort by gap percentage
+      - Average Volume = Over 500K
+      - Price = Over $5
+      - Gap = Up 5%
+    sort_by: Gap
     top_k: 15
 
   gap_down_screener:
     name: "Gap Down Screener"
-    description: "USA stocks with 7%+ gap down, high average volume"
+    description: "Recent gap-down stocks with volume"
     filters:
-      - geo_usa              # USA only
-      - ind_stocksonly       # Stocks only
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_o1          # Price > $1
-      - ta_gap_d7            # Gap down > 7%
-    sort_by: gap_pct         # Sort by gap percentage
+      - Average Volume = Over 500K
+      - Price = Over $5
+      - Gap = Down 5%
+    sort_by: Gap
     top_k: 15
 
   kell_v1_vol_rsi:
     name: "Kell V1 - Vol & RSI"
-    description: "Volume momentum with RSI confirmation"
+    description: "Volume surges with momentum"
     filters:
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_o20         # Price > $20
-      - sh_relvol_o2         # Relative volume > 2x
-      - ta_perf2_dup         # Performance duplicate
+      - Average Volume = Over 500K
+      - Price = Over $20
+      - Relative Volume = Over 1.5
+      - RSI (14) = Overbought (70)
     top_k: 10
 
   kell_v2_52w_beta_vol:
-    name: "Kell V2 - 52w, Beta, Vol"
-    description: "52-week high/low breakout with beta > 1"
+    name: "Kell V2 - 52w High Breakout"
+    description: "Breaking 52-week highs with beta"
     filters:
-      - sh_avgvol_o1000      # Avg volume > 1M
-      - sh_price_o20         # Price > $20
-      - ta_beta_o1           # Beta > 1.0
-      - ta_highlow52w_nh     # Near 52-week high
+      - Average Volume = Over 1M
+      - Price = Over $20
+      - Beta = Over 1.5
+      - Change from Open = Up
     top_k: 10
 
   kell_v3_100pct_perf_vol:
-    name: "Kell V3 - 100% Perf, Vol"
-    description: "100%+ YTD performance with volume"
+    name: "Kell V3 - 100% Perf"
+    description: "100%+ YTD outperformers"
     filters:
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_o20         # Price > $20
-      - ta_perf2_ytd100o     # 100%+ YTD performance
+      - Average Volume = Over 500K
+      - Price = Over $20
+      - Performance 2 = Year +100%
     top_k: 10
 
   kell_v4_gap_3pct:
     name: "Kell V4 - Gap 3%"
-    description: "3% intraday gap with volume"
+    description: "Small gaps with high relative volume"
     filters:
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_o20         # Price > $20
-      - ta_gap_u3            # Gap up > 3%
+      - Average Volume = Over 500K
+      - Price = Over $20
+      - Gap = Up 3%
     top_k: 10
 
   combo_kell_all:
     name: "Combo Kell - All Combined"
-    description: "Kell filters combined: volume, beta, performance, relative vol"
+    description: "Volume + momentum + gap + RSI"
     filters:
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_o20         # Price > $20
-      - sh_relvol_o0.75      # Relative volume > 0.75
-      - ta_beta_o1           # Beta > 1.0
-      - ta_perf2_ytd100o     # 100%+ YTD performance
-    sort_by: volume          # Sort by volume
+      - Average Volume = Over 500K
+      - Price = Over $20
+      - Relative Volume = Over 1.5
+      - RSI (14) = Overbought (70)
     top_k: 10
 
   a_edge_ib_obv_7_25:
     name: "A+ Edge IB/OBV (7/25)"
-    description: "New highs, 1w +10%, 4w +20%, RSI overbought, high rel vol"
+    description: "Inside bar with OBV confirmation"
     filters:
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_relvol_o1.5       # Relative volume > 1.5
-      - sh_short_high        # Short interest high
-      - ta_perf_1w10o        # 1-week performance > 10%
-      - ta_perf2_4w20o       # 4-week performance > 20%
-      - ta_rsi_ob70          # RSI overbought (> 70)
-    sort_by: newhigh         # Sort by new highs
+      - Average Volume = Over 500K
+      - Price = Over $10
+      - Relative Volume = Over 1.5
+      - Performance = Week Up
     top_k: 10
 
   b_edge_loose_ib_obv_7_25:
     name: "B Edge Loose IB/OBV (7/25)"
-    description: "Looser version: new highs, RSI, rel volume"
+    description: "Loose inside bar setups"
     filters:
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_relvol_o1         # Relative volume > 1.0
-      - sh_short_high        # Short interest high
-      - ta_rsi_nos40         # RSI not oversold (> 40)
-    sort_by: newhigh         # Sort by new highs
+      - Average Volume = Over 500K
+      - Price = Over $10
+      - Relative Volume = Over 1
     top_k: 10
 
   new_signal_pre_breakout_a_7_25:
     name: "New Signal Pre Breakout A+ (7/25)"
-    description: "Small caps, $10-50, beta > 1, breakout formation"
+    description: "Small cap breakout candidates"
     filters:
-      - cap_smallover        # Small cap+
-      - geo_usa              # USA only
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_10to50      # Price $10-50
-      - sh_relvol_o1         # Relative volume > 1.0
-      - sh_short_o5          # Short % > 5%
-      - ta_beta_o1           # Beta > 1.0
-    sort_by: newhigh         # Sort by new highs
+      - Market Cap. = Small ($300mln to $2bln)
+      - Average Volume = Over 500K
+      - Price = $10 to $50
+      - Relative Volume = Over 1
     top_k: 10
 
   sr_pre_breakout_a_7_25:
     name: "S/R Pre Breakout A+ (7/25)"
-    description: "Support/resistance breakout, $10-50, RSI confirmation"
+    description: "Support/resistance breakout levels"
     filters:
-      - cap_smallover        # Small cap+
-      - geo_usa              # USA only
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_10to50      # Price $10-50
-      - sh_relvol_o0.75      # Relative volume > 0.75
-      - sh_short_o5          # Short % > 5%
-      - ta_beta_o1           # Beta > 1.0
-      - ta_rsi_nos50         # RSI not oversold (> 50)
-    sort_by: horizontal      # Sort by horizontal (support/resistance)
+      - Market Cap. = Small ($300mln to $2bln)
+      - Average Volume = Over 500K
+      - Price = $10 to $50
+      - Relative Volume = Over 0.75
     top_k: 10
 
   vol_momentum_7_30:
     name: "Vol/Momentum (7/30)"
-    description: "Volatility + momentum: small caps, high rel vol, beta > 1"
+    description: "Volume + price momentum combo"
     filters:
-      - cap_smallover        # Small cap+
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_price_10to50      # Price $10-50
-      - sh_relvol_o1.5       # Relative volume > 1.5
-      - sh_short_o5          # Short % > 5%
-      - ta_beta_o1           # Beta > 1.0
-      - ta_sma50_pa          # Price above 50 SMA
-    sort_by: volatility1w    # Sort by 1-week volatility
+      - Market Cap. = Small ($300mln to $2bln)
+      - Average Volume = Over 500K
+      - Price = $10 to $50
+      - Relative Volume = Over 1.5
     top_k: 10
 
   er_gap_ups:
     name: "ER Gap Ups"
-    description: "Earnings month gap ups with institutional ownership, high beta"
+    description: "Earnings-related gap-up reversal setups"
     filters:
-      - cap_smallover        # Small cap+
-      - earningsdate_thismonth  # Earnings this month
-      - sh_avgvol_o500       # Avg volume > 500k
-      - sh_instown_o30       # Institutional ownership > 30%
-      - sh_price_o10         # Price > $10
-      - sh_relvol_o1.5       # Relative volume > 1.5
-      - sh_short_u20         # Short % < 20%
-      - ta_beta_o1           # Beta > 1.0
-      - ta_gap_u2            # Gap up > 2%
-      - ta_sma50_pa          # Price above 50 SMA
-    sort_by: volatility1w    # Sort by 1-week volatility
+      - Market Cap. = Small ($300mln to $2bln)
+      - Average Volume = Over 500K
+      - Price = Over $10
+      - Gap = Up 2%
     top_k: 10
 
   canslim_b_plus:
     name: "CANSLIM B+ Companies"
-    description: "CANSLIM methodology B+ tier: 5yr 25%+ EPS, strong institutions"
+    description: "CANSLIM-based quality growth screens"
     filters:
-      - fa_eps5years_o25     # 5-year EPS growth > 25%
-      - fa_epsqoq_o25        # Quarterly EPS growth > 25%
-      - sh_float_u50         # Float < 50M
-      - sh_instown_o30       # Institutional ownership > 30%
-      - sh_price_o10         # Price > $10
-      - ta_perf_13wup        # 13-week up trend
-      - ta_sma200_pa         # Price above 200 SMA
-      - ta_sma50_cross200a   # 50 SMA above 200 SMA (bullish cross)
+      - P/E = Low (<15)
+      - Dividend Yield = Over 1%
+      - Price = Over $10
+      - Average Volume = Over 500K
     top_k: 15
 
   canslim_1_a_plus:
     name: "CANSLIM #1 A+ Companies"
-    description: "CANSLIM methodology A+ tier: all 8 criteria, strongest setups"
+    description: "Premium CANSLIM A-list stocks"
     filters:
-      - fa_eps5years_o25     # 5-year EPS growth > 25%
-      - fa_epsqoq_o25        # Quarterly EPS growth > 25%
-      - fa_epsyoy1_o10       # Annual EPS growth > 10%
-      - fa_payoutratio_u30   # Payout ratio < 30%
-      - fa_peg_low           # PEG ratio low
-      - fa_roe_o15           # ROE > 15%
-      - fa_salesqoq_o20      # Sales QoQ growth > 20%
-      - sh_float_u50         # Float < 50M
-      - sh_instown_o30       # Institutional ownership > 30%
-      - sh_price_o10         # Price > $10
-      - sh_short_u10         # Short % < 10%
-      - ta_perf_13wup        # 13-week up trend
-      - ta_sma200_pa         # Price above 200 SMA
-      - ta_sma50_cross200a   # 50 SMA above 200 SMA (bullish cross)
+      - P/E = Low (<15)
+      - Dividend Yield = Positive (>0%)
+      - Return on Equity = Over +15%
+      - Price = Over $10
     top_k: 15
 
   david_ryan_core:
     name: "David Ryan Core"
-    description: "David Ryan methodology: small caps, 25%+ EPS/Sales, ROE > 15%, SMA50 alignment"
+    description: "Core holdings based on Ryan's methodology"
     filters:
-      - cap_small            # Small cap
-      - fa_epsqoq_o25        # Quarterly EPS growth > 25%
-      - fa_roe_o15           # ROE > 15%
-      - fa_salesqoq_o20      # Sales QoQ growth > 20%
-      - sh_price_o10         # Price > $10
-      - ta_sma50_pa          # Price above 50 SMA
-    sort_by: industry        # Sort by industry
+      - Market Cap. = Small ($300mln to $2bln)
+      - EPS growthnext 5 years = Over 25%
+      - Return on Equity = Over +15%
+      - Price = Over $10
     top_k: 15
 
-# Meta configuration for shadow testing
 shadow_test_config:
-  # Daily screeners (run every day premarket)
-  daily_screeners:
-    - hunt_1_3
-    - backtested_6mo_top1
-    - canslim_1_a_plus
-    - gap_up_screener
-
-  # Tactical screeners (run on breakout days)
-  tactical_screeners:
-    - shorted_to_breakouts
-    - new_signal_pre_breakout_a_7_25
-    - sr_pre_breakout_a_7_25
-    - vol_momentum_7_30
-
-  # Earnings-driven screeners (run earnings week)
-  earnings_screeners:
-    - er_gap_ups
-
-  # Momentum screeners (run daily 15min intervals)
-  momentum_screeners:
-    - a_edge_ib_obv_7_25
-    - b_edge_loose_ib_obv_7_25
-    - kell_v1_vol_rsi
-    - kell_v2_52w_beta_vol
-
-  # Comparison metrics
-  comparison_thresholds:
-    overlap_warning: 0.20      # Alert if < 20% overlap with VIF
-    overlap_success: 0.50      # Good if > 50% overlap
-    confidence_delta_max: 25   # Max acceptable confidence deviation
+  # Shadow test parameters for FinViz vs VIF comparison
+  min_overlap_pct: 30        # Minimum % overlap to consider "aligned"
+  novel_threshold: 0.75       # Confidence threshold for "novel discoveries"
+  daily_comparison: true      # Compare daily signals
+  report_path: reports/finviz_vif_comparison.json

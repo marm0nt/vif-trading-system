@@ -29,14 +29,24 @@ logger = logging.getLogger(__name__)
 
 try:
     from smolagents import tool, ToolCallingAgent, CodeAgent, ManagedAgent, AnthropicModel
+    SMOLAGENTS_AVAILABLE = True
 except ImportError:
-    # graceful degradation: orchestrator_swarm.py catches this
-    raise ImportError("smolagents not installed. Install with: pip install smolagents")
+    SMOLAGENTS_AVAILABLE = False
+    # Define dummy tool decorator and classes for graceful degradation
+    def tool(func):
+        return func
+    ToolCallingAgent = None
+    CodeAgent = None
+    ManagedAgent = None
+    AnthropicModel = None
 
-
-# Initialize Claude model (Sonnet 4.6 for production, Opus 4.7 for research)
-MODEL_PROD = AnthropicModel(model_id="claude-sonnet-4-6", temperature=0)
-MODEL_RESEARCH = AnthropicModel(model_id="claude-opus-4-7", temperature=0.2)
+# Initialize Claude model only if smolagents is available
+if SMOLAGENTS_AVAILABLE:
+    MODEL_PROD = AnthropicModel(model_id="claude-sonnet-4-6", temperature=0)
+    MODEL_RESEARCH = AnthropicModel(model_id="claude-opus-4-7", temperature=0.2)
+else:
+    MODEL_PROD = None
+    MODEL_RESEARCH = None
 
 
 # ── Shared Tools (both production and research use these) ──────────────────────
@@ -301,6 +311,8 @@ class ProductionSwarmBridge:
 
     def __init__(self):
         """Initialize production swarm with ToolCallingAgent agents."""
+        if not SMOLAGENTS_AVAILABLE:
+            raise ImportError("ProductionSwarmBridge requires smolagents. Install with: pip install smolagents")
         logger.info("Initializing ProductionSwarmBridge (ToolCallingAgent mode)")
 
         # Create individual tool-calling agents
@@ -393,6 +405,8 @@ class ResearchSwarmBridge:
 
     def __init__(self):
         """Initialize research agent with CodeAgent (code execution enabled)."""
+        if not SMOLAGENTS_AVAILABLE:
+            raise ImportError("ResearchSwarmBridge requires smolagents. Install with: pip install smolagents")
         logger.info("Initializing ResearchSwarmBridge (CodeAgent mode)")
 
         self.agent = CodeAgent(

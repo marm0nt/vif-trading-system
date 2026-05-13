@@ -1,839 +1,809 @@
 {
   "agent_id": "finviz-screener-native",
-  "timestamp": "2026-05-11T00:29:39.527316",
+  "timestamp": "2026-05-11T09:39:52.365232",
   "screeners_executed": 19,
   "screeners_with_results": 19,
   "screeners_skipped": 0,
   "results": {
+    "gap_down_screener": {
+      "screener_name": "gap_down_screener",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $5",
+        "Gap = Down 5%"
+      ],
+      "tickers": [
+        "ADVB",
+        "APPX",
+        "ARMG",
+        "ASTN",
+        "CERT",
+        "CUE",
+        "ELPW",
+        "IONL",
+        "IONX",
+        "IRE",
+        "IREN",
+        "IREX",
+        "MUD",
+        "MVLL",
+        "PBM"
+      ],
+      "metadata": {
+        "total_results": 18,
+        "top_k": 15,
+        "execution_time_ms": 232,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ADVB": 0.8,
+        "APPX": 0.8200000000000001,
+        "ARMG": 0.8400000000000001,
+        "ASTN": 0.8600000000000001,
+        "CERT": 0.88,
+        "CUE": 0.9,
+        "ELPW": 0.92,
+        "IONL": 0.9400000000000001,
+        "IONX": 0.9600000000000001,
+        "IRE": 0.98,
+        "IREN": 1.0,
+        "IREX": 1.02,
+        "MUD": 1.04,
+        "MVLL": 1.06,
+        "PBM": 1.08
+      },
+      "timestamp": "2026-05-11T09:38:26.073027"
+    },
     "hunt_1_3": {
       "screener_name": "hunt_1_3",
       "filters_applied": [
-        "fa_salesqoq_u30",
-        "geo_usa",
-        "ind_stocksonly",
-        "ipodate_prev3yrs",
-        "sh_avgvol_o500",
-        "sh_short_o5",
-        "ta_changeopen_u",
-        "ta_sma20_pa",
-        "ta_sma200_pa",
-        "ta_sma50_pa"
+        "Market Cap. = +Large (over $10bln)",
+        "Average Volume = Over 1M",
+        "Price = Over $20",
+        "RSI (14) = Overbought (70)"
       ],
       "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
         "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
+        "AKAM",
+        "AMD",
+        "AMZN",
+        "APLD",
+        "ASX",
+        "BEN",
+        "BIDU",
+        "CDNS",
+        "CGNX"
       ],
       "metadata": {
-        "total_results": 47,
+        "total_results": 61,
         "top_k": 10,
-        "execution_time_ms": 1,
+        "execution_time_ms": 4355,
         "quality_gate_applied": true,
-        "data_source": "mock"
+        "data_source": "finviz_live"
       },
       "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
+        "AAPL": 0.8,
+        "AKAM": 0.8200000000000001,
+        "AMD": 0.8400000000000001,
+        "AMZN": 0.8600000000000001,
+        "APLD": 0.88,
+        "ASX": 0.9,
+        "BEN": 0.92,
+        "BIDU": 0.9400000000000001,
+        "CDNS": 0.9600000000000001,
+        "CGNX": 0.98
       },
-      "timestamp": "2026-05-11T00:29:39.519848"
-    },
-    "shorted_to_breakouts": {
-      "screener_name": "shorted_to_breakouts",
-      "filters_applied": [
-        "sh_float_u20",
-        "sh_price_u20",
-        "sh_relvol_o0.75",
-        "sh_short_o5",
-        "ta_changeopen_u",
-        "ta_perf_dup",
-        "ta_rsi_os40",
-        "ta_volatility_wo3"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 1,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.520217"
-    },
-    "backtested_6mo_top1": {
-      "screener_name": "backtested_6mo_top1",
-      "filters_applied": [
-        "fa_epsyoy1_o20",
-        "fa_salesqoq_o20",
-        "ind_stocksonly",
-        "sh_avgvol_o500",
-        "sh_short_o5",
-        "ta_beta_o1",
-        "ta_changeopen_u",
-        "ta_sma20_pa",
-        "ta_sma200_pa",
-        "ta_sma50_pa"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 1,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.520838"
+      "timestamp": "2026-05-11T09:38:23.297913"
     },
     "gap_up_screener": {
       "screener_name": "gap_up_screener",
       "filters_applied": [
-        "geo_usa",
-        "ind_stocksonly",
-        "sh_avgvol_o500",
-        "sh_price_o1",
-        "ta_gap_u7"
+        "Average Volume = Over 500K",
+        "Price = Over $5",
+        "Gap = Up 5%"
       ],
       "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
+        "ADTN",
+        "AGQ",
+        "ASTX",
+        "ATRA",
+        "BEX",
+        "BNAI",
+        "BW",
+        "CCUP",
+        "COHX",
+        "CRCA",
+        "CRCG",
+        "DGXX",
+        "DXYZ",
+        "GLWG",
+        "GSIT"
       ],
       "metadata": {
         "total_results": 47,
         "top_k": 15,
-        "execution_time_ms": 2,
+        "execution_time_ms": 2542,
         "quality_gate_applied": true,
-        "data_source": "mock"
+        "data_source": "finviz_live"
       },
       "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
+        "ADTN": 0.8,
+        "AGQ": 0.8200000000000001,
+        "ASTX": 0.8400000000000001,
+        "ATRA": 0.8600000000000001,
+        "BEX": 0.88,
+        "BNAI": 0.9,
+        "BW": 0.92,
+        "CCUP": 0.9400000000000001,
+        "COHX": 0.9600000000000001,
+        "CRCA": 0.98,
+        "CRCG": 1.0,
+        "DGXX": 1.02,
+        "DXYZ": 1.04,
+        "GLWG": 1.06,
+        "GSIT": 1.08
       },
-      "timestamp": "2026-05-11T00:29:39.521603"
+      "timestamp": "2026-05-11T09:38:25.840208"
     },
-    "kell_v3_100pct_perf_vol": {
-      "screener_name": "kell_v3_100pct_perf_vol",
+    "shorted_to_breakouts": {
+      "screener_name": "shorted_to_breakouts",
       "filters_applied": [
-        "sh_avgvol_o500",
-        "sh_price_o20",
-        "ta_perf2_ytd100o"
+        "Float Short = Over 20%",
+        "Average Volume = Over 500K",
+        "Price = Over $5",
+        "RSI (14) = Oversold (30)"
       ],
       "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
+        "CHTR",
+        "TMDX",
+        "VITL"
       ],
       "metadata": {
-        "total_results": 47,
+        "total_results": 3,
         "top_k": 10,
-        "execution_time_ms": 0,
+        "execution_time_ms": 365,
         "quality_gate_applied": true,
-        "data_source": "mock"
+        "data_source": "finviz_live"
       },
       "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
+        "CHTR": 0.8,
+        "TMDX": 0.8200000000000001,
+        "VITL": 0.8400000000000001
       },
-      "timestamp": "2026-05-11T00:29:39.521973"
+      "timestamp": "2026-05-11T09:38:19.808478"
     },
-    "kell_v4_gap_3pct": {
-      "screener_name": "kell_v4_gap_3pct",
+    "backtested_6mo_top1": {
+      "screener_name": "backtested_6mo_top1",
       "filters_applied": [
-        "sh_avgvol_o500",
-        "sh_price_o20",
-        "ta_gap_u3"
+        "Market Cap. = Mid ($2bln to $10bln)",
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "P/E = Low (<15)"
       ],
       "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
+        "ABCB",
+        "ACAD",
+        "AEO",
+        "AERO",
+        "AGCO",
+        "ALV",
+        "ANF",
+        "APAM",
+        "ARR",
+        "ASB"
       ],
       "metadata": {
-        "total_results": 47,
+        "total_results": 175,
         "top_k": 10,
-        "execution_time_ms": 0,
+        "execution_time_ms": 9671,
         "quality_gate_applied": true,
-        "data_source": "mock"
+        "data_source": "finviz_live"
       },
       "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
+        "ABCB": 0.8,
+        "ACAD": 0.8200000000000001,
+        "AEO": 0.8400000000000001,
+        "AERO": 0.8600000000000001,
+        "AGCO": 0.88,
+        "ALV": 0.9,
+        "ANF": 0.92,
+        "APAM": 0.9400000000000001,
+        "ARR": 0.9600000000000001,
+        "ASB": 0.98
       },
-      "timestamp": "2026-05-11T00:29:39.522343"
-    },
-    "combo_kell_all": {
-      "screener_name": "combo_kell_all",
-      "filters_applied": [
-        "sh_avgvol_o500",
-        "sh_price_o20",
-        "sh_relvol_o0.75",
-        "ta_beta_o1",
-        "ta_perf2_ytd100o"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.522663"
-    },
-    "a_edge_ib_obv_7_25": {
-      "screener_name": "a_edge_ib_obv_7_25",
-      "filters_applied": [
-        "sh_avgvol_o500",
-        "sh_relvol_o1.5",
-        "sh_short_high",
-        "ta_perf_1w10o",
-        "ta_perf2_4w20o",
-        "ta_rsi_ob70"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.522978"
-    },
-    "new_signal_pre_breakout_a_7_25": {
-      "screener_name": "new_signal_pre_breakout_a_7_25",
-      "filters_applied": [
-        "cap_smallover",
-        "geo_usa",
-        "sh_avgvol_o500",
-        "sh_price_10to50",
-        "sh_relvol_o1",
-        "sh_short_o5",
-        "ta_beta_o1"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.523536"
-    },
-    "b_edge_loose_ib_obv_7_25": {
-      "screener_name": "b_edge_loose_ib_obv_7_25",
-      "filters_applied": [
-        "sh_avgvol_o500",
-        "sh_relvol_o1",
-        "sh_short_high",
-        "ta_rsi_nos40"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 1,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.524135"
-    },
-    "sr_pre_breakout_a_7_25": {
-      "screener_name": "sr_pre_breakout_a_7_25",
-      "filters_applied": [
-        "cap_smallover",
-        "geo_usa",
-        "sh_avgvol_o500",
-        "sh_price_10to50",
-        "sh_relvol_o0.75",
-        "sh_short_o5",
-        "ta_beta_o1",
-        "ta_rsi_nos50"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.524565"
-    },
-    "vol_momentum_7_30": {
-      "screener_name": "vol_momentum_7_30",
-      "filters_applied": [
-        "cap_smallover",
-        "sh_avgvol_o500",
-        "sh_price_10to50",
-        "sh_relvol_o1.5",
-        "sh_short_o5",
-        "ta_beta_o1",
-        "ta_sma50_pa"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.524978"
-    },
-    "er_gap_ups": {
-      "screener_name": "er_gap_ups",
-      "filters_applied": [
-        "cap_smallover",
-        "earningsdate_thismonth",
-        "sh_avgvol_o500",
-        "sh_instown_o30",
-        "sh_price_o10",
-        "sh_relvol_o1.5",
-        "sh_short_u20",
-        "ta_beta_o1",
-        "ta_gap_u2",
-        "ta_sma50_pa"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.525359"
-    },
-    "canslim_b_plus": {
-      "screener_name": "canslim_b_plus",
-      "filters_applied": [
-        "fa_eps5years_o25",
-        "fa_epsqoq_o25",
-        "sh_float_u50",
-        "sh_instown_o30",
-        "sh_price_o10",
-        "ta_perf_13wup",
-        "ta_sma200_pa",
-        "ta_sma50_cross200a"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 15,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.525703"
-    },
-    "canslim_1_a_plus": {
-      "screener_name": "canslim_1_a_plus",
-      "filters_applied": [
-        "fa_eps5years_o25",
-        "fa_epsqoq_o25",
-        "fa_epsyoy1_o10",
-        "fa_payoutratio_u30",
-        "fa_peg_low",
-        "fa_roe_o15",
-        "fa_salesqoq_o20",
-        "sh_float_u50",
-        "sh_instown_o30",
-        "sh_price_o10",
-        "sh_short_u10",
-        "ta_perf_13wup",
-        "ta_sma200_pa",
-        "ta_sma50_cross200a"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 15,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.526090"
-    },
-    "david_ryan_core": {
-      "screener_name": "david_ryan_core",
-      "filters_applied": [
-        "cap_small",
-        "fa_epsqoq_o25",
-        "fa_roe_o15",
-        "fa_salesqoq_o20",
-        "sh_price_o10",
-        "ta_sma50_pa"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 15,
-        "execution_time_ms": 0,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.526338"
-    },
-    "kell_v2_52w_beta_vol": {
-      "screener_name": "kell_v2_52w_beta_vol",
-      "filters_applied": [
-        "sh_avgvol_o1000",
-        "sh_price_o20",
-        "ta_beta_o1",
-        "ta_highlow52w_nh"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 10,
-        "execution_time_ms": 6,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.526592"
-    },
-    "gap_down_screener": {
-      "screener_name": "gap_down_screener",
-      "filters_applied": [
-        "geo_usa",
-        "ind_stocksonly",
-        "sh_avgvol_o500",
-        "sh_price_o1",
-        "ta_gap_d7"
-      ],
-      "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
-      ],
-      "metadata": {
-        "total_results": 47,
-        "top_k": 15,
-        "execution_time_ms": 7,
-        "quality_gate_applied": true,
-        "data_source": "mock"
-      },
-      "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
-      },
-      "timestamp": "2026-05-11T00:29:39.526836"
+      "timestamp": "2026-05-11T09:38:29.615649"
     },
     "kell_v1_vol_rsi": {
       "screener_name": "kell_v1_vol_rsi",
       "filters_applied": [
-        "sh_avgvol_o500",
-        "sh_price_o20",
-        "sh_relvol_o2",
-        "ta_perf2_dup"
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Relative Volume = Over 1.5",
+        "RSI (14) = Overbought (70)"
       ],
       "tickers": [
-        "NVDA",
-        "MSFT",
-        "TSLA",
-        "AAPL",
-        "AVGO",
-        "ASML",
-        "META",
-        "GOOGL",
-        "MU",
-        "AMAT"
+        "AAPU",
+        "AIP",
+        "AIQ",
+        "AKAM",
+        "AMBA",
+        "AMD",
+        "AMDL",
+        "AMN",
+        "AMZU",
+        "APLD"
       ],
       "metadata": {
-        "total_results": 47,
+        "total_results": 91,
         "top_k": 10,
-        "execution_time_ms": 6,
+        "execution_time_ms": 5028,
         "quality_gate_applied": true,
-        "data_source": "mock"
+        "data_source": "finviz_live"
       },
       "quality_scores": {
-        "NVDA": 0.92,
-        "MSFT": 0.9,
-        "TSLA": 0.88,
-        "AAPL": 0.8600000000000001,
-        "AVGO": 0.8400000000000001,
-        "ASML": 0.8200000000000001,
-        "META": 0.8,
-        "GOOGL": 0.78,
-        "MU": 0.76,
-        "AMAT": 0.74
+        "AAPU": 0.8,
+        "AIP": 0.8200000000000001,
+        "AIQ": 0.8400000000000001,
+        "AKAM": 0.8600000000000001,
+        "AMBA": 0.88,
+        "AMD": 0.9,
+        "AMDL": 0.92,
+        "AMN": 0.9400000000000001,
+        "AMZU": 0.9600000000000001,
+        "APLD": 0.98
       },
-      "timestamp": "2026-05-11T00:29:39.527045"
+      "timestamp": "2026-05-11T09:38:31.101416"
+    },
+    "kell_v2_52w_beta_vol": {
+      "screener_name": "kell_v2_52w_beta_vol",
+      "filters_applied": [
+        "Average Volume = Over 1M",
+        "Price = Over $20",
+        "Beta = Over 1.5",
+        "Change from Open = Up"
+      ],
+      "tickers": [
+        "AA",
+        "AAOI",
+        "AAPU",
+        "ACMR",
+        "AEHR",
+        "ALAB",
+        "AMAT",
+        "AMD",
+        "AMDL",
+        "AMKR"
+      ],
+      "metadata": {
+        "total_results": 153,
+        "top_k": 10,
+        "execution_time_ms": 8648,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AA": 0.8,
+        "AAOI": 0.8200000000000001,
+        "AAPU": 0.8400000000000001,
+        "ACMR": 0.8600000000000001,
+        "AEHR": 0.88,
+        "ALAB": 0.9,
+        "AMAT": 0.92,
+        "AMD": 0.9400000000000001,
+        "AMDL": 0.9600000000000001,
+        "AMKR": 0.98
+      },
+      "timestamp": "2026-05-11T09:38:38.264748"
+    },
+    "kell_v4_gap_3pct": {
+      "screener_name": "kell_v4_gap_3pct",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Gap = Up 3%"
+      ],
+      "tickers": [
+        "AAOX",
+        "AG",
+        "AGQ",
+        "ALB",
+        "AMBA",
+        "APA",
+        "ASTS",
+        "ASTX",
+        "AXTX",
+        "B"
+      ],
+      "metadata": {
+        "total_results": 71,
+        "top_k": 10,
+        "execution_time_ms": 3809,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAOX": 0.8,
+        "AG": 0.8200000000000001,
+        "AGQ": 0.8400000000000001,
+        "ALB": 0.8600000000000001,
+        "AMBA": 0.88,
+        "APA": 0.9,
+        "ASTS": 0.92,
+        "ASTX": 0.9400000000000001,
+        "AXTX": 0.9600000000000001,
+        "B": 0.98
+      },
+      "timestamp": "2026-05-11T09:38:42.074368"
+    },
+    "combo_kell_all": {
+      "screener_name": "combo_kell_all",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Relative Volume = Over 1.5",
+        "RSI (14) = Overbought (70)"
+      ],
+      "tickers": [
+        "AAPU",
+        "AIP",
+        "AIQ",
+        "AKAM",
+        "AMBA",
+        "AMD",
+        "AMDL",
+        "AMN",
+        "AMZU",
+        "APLD"
+      ],
+      "metadata": {
+        "total_results": 91,
+        "top_k": 10,
+        "execution_time_ms": 5050,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAPU": 0.8,
+        "AIP": 0.8200000000000001,
+        "AIQ": 0.8400000000000001,
+        "AKAM": 0.8600000000000001,
+        "AMBA": 0.88,
+        "AMD": 0.9,
+        "AMDL": 0.92,
+        "AMN": 0.9400000000000001,
+        "AMZU": 0.9600000000000001,
+        "APLD": 0.98
+      },
+      "timestamp": "2026-05-11T09:38:47.125268"
+    },
+    "kell_v3_100pct_perf_vol": {
+      "screener_name": "kell_v3_100pct_perf_vol",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $20",
+        "Performance 2 = Year +100%"
+      ],
+      "tickers": [
+        "AA",
+        "AAOI",
+        "AAUC",
+        "ABVX",
+        "ACLS",
+        "ACMR",
+        "ADEA",
+        "AEHR",
+        "AEIS",
+        "AG"
+      ],
+      "metadata": {
+        "total_results": 318,
+        "top_k": 10,
+        "execution_time_ms": 18482,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AA": 0.8,
+        "AAOI": 0.8200000000000001,
+        "AAUC": 0.8400000000000001,
+        "ABVX": 0.8600000000000001,
+        "ACLS": 0.88,
+        "ACMR": 0.9,
+        "ADEA": 0.92,
+        "AEHR": 0.9400000000000001,
+        "AEIS": 0.9600000000000001,
+        "AG": 0.98
+      },
+      "timestamp": "2026-05-11T09:38:49.584555"
+    },
+    "a_edge_ib_obv_7_25": {
+      "screener_name": "a_edge_ib_obv_7_25",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "Relative Volume = Over 1.5",
+        "Performance = Week Up"
+      ],
+      "tickers": [
+        "AAPU",
+        "ACMR",
+        "AEHR",
+        "AG",
+        "AGQ",
+        "AIP",
+        "AIPO",
+        "AIQ",
+        "AKAM",
+        "ALB"
+      ],
+      "metadata": {
+        "total_results": 309,
+        "top_k": 10,
+        "execution_time_ms": 19176,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAPU": 0.8,
+        "ACMR": 0.8200000000000001,
+        "AEHR": 0.8400000000000001,
+        "AG": 0.8600000000000001,
+        "AGQ": 0.88,
+        "AIP": 0.9,
+        "AIPO": 0.92,
+        "AIQ": 0.9400000000000001,
+        "AKAM": 0.9600000000000001,
+        "ALB": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:06.302372"
+    },
+    "new_signal_pre_breakout_a_7_25": {
+      "screener_name": "new_signal_pre_breakout_a_7_25",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = $10 to $50",
+        "Relative Volume = Over 1"
+      ],
+      "tickers": [
+        "ADTN",
+        "AEVA",
+        "AIP",
+        "ALMU",
+        "AMLX",
+        "AMN",
+        "AMPH",
+        "AOD",
+        "AORT",
+        "AOSL"
+      ],
+      "metadata": {
+        "total_results": 126,
+        "top_k": 10,
+        "execution_time_ms": 7374,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ADTN": 0.8,
+        "AEVA": 0.8200000000000001,
+        "AIP": 0.8400000000000001,
+        "ALMU": 0.8600000000000001,
+        "AMLX": 0.88,
+        "AMN": 0.9,
+        "AMPH": 0.92,
+        "AOD": 0.9400000000000001,
+        "AORT": 0.9600000000000001,
+        "AOSL": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:13.676673"
+    },
+    "sr_pre_breakout_a_7_25": {
+      "screener_name": "sr_pre_breakout_a_7_25",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = $10 to $50",
+        "Relative Volume = Over 0.75"
+      ],
+      "tickers": [
+        "ADNT",
+        "ADTN",
+        "AEVA",
+        "AHCO",
+        "AIP",
+        "ALMU",
+        "AMLX",
+        "AMN",
+        "AMPH",
+        "AOD"
+      ],
+      "metadata": {
+        "total_results": 157,
+        "top_k": 10,
+        "execution_time_ms": 8634,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ADNT": 0.8,
+        "ADTN": 0.8200000000000001,
+        "AEVA": 0.8400000000000001,
+        "AHCO": 0.8600000000000001,
+        "AIP": 0.88,
+        "ALMU": 0.9,
+        "AMLX": 0.92,
+        "AMN": 0.9400000000000001,
+        "AMPH": 0.9600000000000001,
+        "AOD": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:22.312403"
+    },
+    "vol_momentum_7_30": {
+      "screener_name": "vol_momentum_7_30",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = $10 to $50",
+        "Relative Volume = Over 1.5"
+      ],
+      "tickers": [
+        "ADTN",
+        "AEVA",
+        "AIP",
+        "ALMU",
+        "AMLX",
+        "AMN",
+        "AMPH",
+        "AORT",
+        "AOSL",
+        "ARLO"
+      ],
+      "metadata": {
+        "total_results": 75,
+        "top_k": 10,
+        "execution_time_ms": 3710,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ADTN": 0.8,
+        "AEVA": 0.8200000000000001,
+        "AIP": 0.8400000000000001,
+        "ALMU": 0.8600000000000001,
+        "AMLX": 0.88,
+        "AMN": 0.9,
+        "AMPH": 0.92,
+        "AORT": 0.9400000000000001,
+        "AOSL": 0.9600000000000001,
+        "ARLO": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:26.023537"
+    },
+    "er_gap_ups": {
+      "screener_name": "er_gap_ups",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "Gap = Up 2%"
+      ],
+      "tickers": [
+        "ADTN",
+        "AOSL",
+        "CGNT",
+        "CRVS",
+        "DXYZ",
+        "EVMN",
+        "FMC",
+        "GSIT",
+        "JBIO",
+        "MLTX"
+      ],
+      "metadata": {
+        "total_results": 26,
+        "top_k": 10,
+        "execution_time_ms": 1376,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ADTN": 0.8,
+        "AOSL": 0.8200000000000001,
+        "CGNT": 0.8400000000000001,
+        "CRVS": 0.8600000000000001,
+        "DXYZ": 0.88,
+        "EVMN": 0.9,
+        "FMC": 0.92,
+        "GSIT": 0.9400000000000001,
+        "JBIO": 0.9600000000000001,
+        "MLTX": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:27.400531"
+    },
+    "b_edge_loose_ib_obv_7_25": {
+      "screener_name": "b_edge_loose_ib_obv_7_25",
+      "filters_applied": [
+        "Average Volume = Over 500K",
+        "Price = Over $10",
+        "Relative Volume = Over 1"
+      ],
+      "tickers": [
+        "AAOI",
+        "AAON",
+        "AAOX",
+        "AAPL",
+        "AAPU",
+        "ABT",
+        "ABVX",
+        "ACM",
+        "ACMR",
+        "ADTN"
+      ],
+      "metadata": {
+        "total_results": 819,
+        "top_k": 10,
+        "execution_time_ms": 49551,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AAOI": 0.8,
+        "AAON": 0.8200000000000001,
+        "AAOX": 0.8400000000000001,
+        "AAPL": 0.8600000000000001,
+        "AAPU": 0.88,
+        "ABT": 0.9,
+        "ABVX": 0.92,
+        "ACM": 0.9400000000000001,
+        "ACMR": 0.9600000000000001,
+        "ADTN": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:39.136698"
+    },
+    "canslim_b_plus": {
+      "screener_name": "canslim_b_plus",
+      "filters_applied": [
+        "P/E = Low (<15)",
+        "Dividend Yield = Over 1%",
+        "Price = Over $10",
+        "Average Volume = Over 500K"
+      ],
+      "tickers": [
+        "ACN",
+        "AEO",
+        "AER",
+        "AES",
+        "AFG",
+        "AFL",
+        "AGCO",
+        "AGNC",
+        "AIG",
+        "ALL",
+        "ALLY",
+        "ALV",
+        "AMP",
+        "AOD",
+        "APA"
+      ],
+      "metadata": {
+        "total_results": 266,
+        "top_k": 15,
+        "execution_time_ms": 15909,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ACN": 0.8,
+        "AEO": 0.8200000000000001,
+        "AER": 0.8400000000000001,
+        "AES": 0.8600000000000001,
+        "AFG": 0.88,
+        "AFL": 0.9,
+        "AGCO": 0.92,
+        "AGNC": 0.9400000000000001,
+        "AIG": 0.9600000000000001,
+        "ALL": 0.98,
+        "ALLY": 1.0,
+        "ALV": 1.02,
+        "AMP": 1.04,
+        "AOD": 1.06,
+        "APA": 1.08
+      },
+      "timestamp": "2026-05-11T09:39:43.310380"
+    },
+    "david_ryan_core": {
+      "screener_name": "david_ryan_core",
+      "filters_applied": [
+        "Market Cap. = Small ($300mln to $2bln)",
+        "EPS growthnext 5 years = Over 25%",
+        "Return on Equity = Over +15%",
+        "Price = Over $10"
+      ],
+      "tickers": [
+        "ATLC",
+        "BWMX",
+        "GLP",
+        "PGY",
+        "PICS",
+        "QNST",
+        "TOYO",
+        "TREE",
+        "XPEL",
+        "YB"
+      ],
+      "metadata": {
+        "total_results": 10,
+        "top_k": 15,
+        "execution_time_ms": 179,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "ATLC": 0.8,
+        "BWMX": 0.8200000000000001,
+        "GLP": 0.8400000000000001,
+        "PGY": 0.8600000000000001,
+        "PICS": 0.88,
+        "QNST": 0.9,
+        "TOYO": 0.92,
+        "TREE": 0.9400000000000001,
+        "XPEL": 0.9600000000000001,
+        "YB": 0.98
+      },
+      "timestamp": "2026-05-11T09:39:43.490518"
+    },
+    "canslim_1_a_plus": {
+      "screener_name": "canslim_1_a_plus",
+      "filters_applied": [
+        "P/E = Low (<15)",
+        "Dividend Yield = Positive (>0%)",
+        "Return on Equity = Over +15%",
+        "Price = Over $10"
+      ],
+      "tickers": [
+        "AB",
+        "ACGL",
+        "ACIC",
+        "ACN",
+        "AER",
+        "AES",
+        "AFG",
+        "AFL",
+        "AFYA",
+        "AGCO",
+        "AIZ",
+        "AKO-A",
+        "AKO-B",
+        "ALL",
+        "ALV"
+      ],
+      "metadata": {
+        "total_results": 238,
+        "top_k": 15,
+        "execution_time_ms": 13227,
+        "quality_gate_applied": true,
+        "data_source": "finviz_live"
+      },
+      "quality_scores": {
+        "AB": 0.8,
+        "ACGL": 0.8200000000000001,
+        "ACIC": 0.8400000000000001,
+        "ACN": 0.8600000000000001,
+        "AER": 0.88,
+        "AES": 0.9,
+        "AFG": 0.92,
+        "AFL": 0.9400000000000001,
+        "AFYA": 0.9600000000000001,
+        "AGCO": 0.98,
+        "AIZ": 1.0,
+        "AKO-A": 1.02,
+        "AKO-B": 1.04,
+        "ALL": 1.06,
+        "ALV": 1.08
+      },
+      "timestamp": "2026-05-11T09:39:52.364772"
     }
   },
   "comparison": null,

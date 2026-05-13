@@ -274,12 +274,22 @@ class FinvizScreenerAgent:
         self.logger.debug(f"Converted {len(converted)} filters from {len(filter_codes)} codes")
         return converted
 
+    def _parse_filter_string(self, filter_str: str) -> tuple:
+        """
+        Parse filter string in format "Filter Name = Filter Value".
+        Returns (filter_name, filter_value) tuple.
+        """
+        if " = " not in filter_str:
+            return None, None
+        parts = filter_str.split(" = ", 1)
+        return parts[0].strip(), parts[1].strip()
+
     def screen_with_filters(self, filters: List[str], top_k: int = 10, screener_name: str = None) -> Dict:
         """
         Execute FinViz screen with specified filters.
 
         Args:
-            filters: List of FinViz filter codes (e.g., ["cap_large", "ta_rsi_os_30"])
+            filters: List of filter strings in format "Filter Name = Value" (e.g., ["Average Volume = Over 500K"])
             top_k: Return top K results
             screener_name: Name of screener for logging
 
@@ -300,8 +310,16 @@ class FinvizScreenerAgent:
         try:
             from finvizfinance.screener.overview import Overview
 
-            # Convert filter codes to finvizfinance filter dict
-            filters_dict = self._convert_filters_to_finvizfinance(filters)
+            # Parse filter strings into finvizfinance dict format
+            filters_dict = {}
+            for filter_str in filters:
+                filter_name, filter_value = self._parse_filter_string(filter_str)
+                if filter_name and filter_value:
+                    filters_dict[filter_name] = filter_value
+
+            if not filters_dict:
+                self.logger.warning(f"No valid filters parsed from {len(filters)} filter strings")
+                return self._generate_mock_result(filters, top_k, screener_name, start_time)
 
             foverview = Overview()
             foverview.set_filter(filters_dict=filters_dict)
@@ -333,7 +351,11 @@ class FinvizScreenerAgent:
         except Exception as e:
             self.logger.warning(f"FinViz library error: {e}, using mock data")
 
-        # Fallback to mock data (Phase A)
+        # Fallback to mock data
+        return self._generate_mock_result(filters, top_k, screener_name, start_time)
+
+    def _generate_mock_result(self, filters: List[str], top_k: int, screener_name: str, start_time: float) -> Dict:
+        """Generate fallback mock data result."""
         execution_time_ms = int((time.time() - start_time) * 1000)
         mock_tickers = ["NVDA", "MSFT", "TSLA", "AAPL", "AVGO", "ASML", "META", "GOOGL", "MU", "AMAT"][:top_k]
 

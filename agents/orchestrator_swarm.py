@@ -244,7 +244,7 @@ def _run_finviz_pipeline(pipeline_cfg: dict):
         logger.info(f"Top Discoveries: {sorted(list(total_tickers))[:10]}")
 
         output_file = Path("reports") / f"finviz_screen_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        output_file.write_text(json.dumps({
+        envelope = {
             "mode": "finviz_screen",
             "trace_id": trace_id,
             "timestamp": datetime.now().isoformat(),
@@ -252,8 +252,17 @@ def _run_finviz_pipeline(pipeline_cfg: dict):
             "finviz_results": finviz_output,
             "unique_tickers": sorted(list(total_tickers)),
             "discovery_count": len(total_tickers),
-        }, indent=2, default=str))
+        }
+        output_file.write_text(json.dumps(envelope, indent=2, default=str))
         logger.info(f"\nResults saved -> {output_file}")
+
+        try:
+            from scripts.active.reporting.finviz_screen_html import write_finviz_screen_html
+
+            html_path = write_finviz_screen_html(output_file, envelope)
+            logger.info(f"HTML report saved -> {html_path}")
+        except Exception as e:
+            logger.warning(f"FinViz HTML report skipped: {e}")
 
         return 0
 
