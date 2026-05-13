@@ -55,8 +55,7 @@
 - (none)
 
 **Modified:**
-- 🔧 agents/watchlist_watcher.py
-- 🔧 scripts/active/analysis/catalyst_analysis.py
+- (none)
 
 ---
 
