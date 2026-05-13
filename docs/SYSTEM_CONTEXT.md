@@ -43,13 +43,11 @@
 
 ## Recent Changes
 
-**Added:** 2 files
-- ✨ scripts/active/reporting/finviz_screen_html.py
-- ✨ scripts/build_daily_master_report.py
+**Added:** 0 files
+- (none)
 
-**Modified:** 2 files
-- 🔧 agents/finviz_screener_agent.py
-- 🔧 agents/orchestrator_swarm.py
+**Modified:** 0 files
+- (none)
 
 ---
 

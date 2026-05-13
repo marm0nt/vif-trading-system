@@ -52,12 +52,10 @@
 ## 4. Recent Changes
 
 **Added:**
-- ✨ scripts/active/reporting/finviz_screen_html.py
-- ✨ scripts/build_daily_master_report.py
+- (none)
 
 **Modified:**
-- 🔧 agents/finviz_screener_agent.py
-- 🔧 agents/orchestrator_swarm.py
+- (none)
 
 ---
 
