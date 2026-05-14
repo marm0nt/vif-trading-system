@@ -2,6 +2,7 @@
 
 ## 🚨 ACTIVE SESSION HANDOFF (READ FIRST)
 - [Session Handoff: Scheduler Issues + Sync Setup (2026-05-13)](session_handoff_scheduler_issues.md) — After-hours pipeline failing 3 days in a row; sentry-monitor + repair-subagent now available; full diagnostic path documented
+- [Scheduler Diagnostics — Haiku Analysis (2026-05-13)](scheduler_diagnostics_haiku.md) — Root cause analysis of 8 consecutive failures; exit code capture likely issue; 4 quick diagnostics to run
 
 ## User Preferences & Policies
 - [Operational Autonomy & Lead Orchestrator (2026-05-13)](feedback_operational_autonomy.md) — **ACTIVE:** Agents execute without approval, orchestrator leads all workflows, bypass permissions globally, don't break anything
