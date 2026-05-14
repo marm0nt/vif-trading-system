@@ -23,9 +23,21 @@ env/
 .idea/
 *.swp
 *.swo
+
+# ── Claude: machine-specific (exclude) ───────────────────────────────
+# These are machine-local and should NOT sync across devices
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
 .claude/scheduled_tasks.json
+.claude/worktrees/
+.claude/**/*.lock
+
+# ── Claude: brain (SYNC THESE) ───────────────────────────────────────
+# memory/, skills/, agents/, hooks/ are tracked intentionally.
+# This is the "claude-brain" pattern — your AI intelligence travels
+# with the repo. Every device that clones this repo gets the full brain.
+# DO NOT add .claude/memory/, .claude/skills/, .claude/agents/, or
+# .claude/hooks/ to this file.
 
 # ── Cached market data & reports (too large / sensitive for public repo)
 data/*.pkl

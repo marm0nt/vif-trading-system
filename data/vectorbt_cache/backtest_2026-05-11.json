@@ -16,5 +16,206 @@
     "flagged": false,
     "flag_reason": "Only 1 trades in 6mo (min 2)",
     "timestamp": "2026-05-11T00:34:03.757164"
+  },
+  "NYSE:ECL": {
+    "ticker": "NYSE:ECL",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:02.105264"
+  },
+  "NASDAQ:EXE": {
+    "ticker": "NASDAQ:EXE",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:03.394735"
+  },
+  "NYSE:NEE": {
+    "ticker": "NYSE:NEE",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:04.180060"
+  },
+  "EQT": {
+    "ticker": "EQT",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 2,
+    "total_return": -0.0931,
+    "sharpe_ratio": -2.471,
+    "max_drawdown": -0.0965,
+    "win_rate": 0.0,
+    "flagged": true,
+    "flag_reason": "Sharpe -2.47 < 0.5",
+    "vif_signal": "HOLD",
+    "vif_confidence": 42,
+    "timestamp": "2026-05-11T20:56:12.221919"
+  },
+  "AMEX:ASHR": {
+    "ticker": "AMEX:ASHR",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:13.040583"
+  },
+  "NASDAQ:IWM": {
+    "ticker": "NASDAQ:IWM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:13.683317"
+  },
+  "NYSE:BA": {
+    "ticker": "NYSE:BA",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:14.287392"
+  },
+  "NASDAQ:ECL": {
+    "ticker": "NASDAQ:ECL",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:15.006537"
+  },
+  "NYSE:APD": {
+    "ticker": "NYSE:APD",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:15.622823"
+  },
+  "NASDAQ:MMM": {
+    "ticker": "NASDAQ:MMM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:16.340655"
+  },
+  "NYSE:P": {
+    "ticker": "NYSE:P",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:17.000349"
+  },
+  "NASDAQ:PENG": {
+    "ticker": "NASDAQ:PENG",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:17.592429"
+  },
+  "CBOE:DRAM": {
+    "ticker": "CBOE:DRAM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:18.328951"
+  },
+  "NASDAQ:FLNC": {
+    "ticker": "NASDAQ:FLNC",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:19.170913"
+  },
+  "MTSI": {
+    "ticker": "MTSI",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 2,
+    "total_return": 0.0112,
+    "sharpe_ratio": 0.261,
+    "max_drawdown": -0.108,
+    "win_rate": 0.5,
+    "flagged": true,
+    "flag_reason": "Sharpe 0.26 < 0.5",
+    "vif_signal": "SELL",
+    "vif_confidence": 61,
+    "timestamp": "2026-05-11T20:56:19.400130"
+  },
+  "NASDAQ:NFLX": {
+    "ticker": "NASDAQ:NFLX",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:20.078985"
+  },
+  "NASDAQ:WYFI": {
+    "ticker": "NASDAQ:WYFI",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:20.714965"
+  },
+  "NASDAQ:MU": {
+    "ticker": "NASDAQ:MU",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-11T20:56:21.371946"
+  },
+  "FLEX": {
+    "ticker": "FLEX",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 4,
+    "total_return": 0.0222,
+    "sharpe_ratio": 0.391,
+    "max_drawdown": -0.1099,
+    "win_rate": 0.5,
+    "flagged": true,
+    "flag_reason": "Sharpe 0.39 < 0.5",
+    "vif_signal": "SELL",
+    "vif_confidence": 61,
+    "timestamp": "2026-05-11T20:56:21.598748"
+  },
+  "P": {
+    "ticker": "P",
+    "status": "completed",
+    "engine": "vectorbt_v1",
+    "period": "6mo",
+    "n_trades": 2,
+    "total_return": -0.1308,
+    "sharpe_ratio": -1.294,
+    "max_drawdown": -0.1446,
+    "win_rate": 0.0,
+    "flagged": true,
+    "flag_reason": "Sharpe -1.29 < 0.5",
+    "vif_signal": "SELL",
+    "vif_confidence": 63,
+    "timestamp": "2026-05-11T20:56:21.775061"
+  },
+  "KGS": {
+    "ticker": "KGS",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-11T20:56:22.278272"
   }
 }

@@ -276,7 +276,7 @@ EXPECTED SCHEMA:
         try:
             message = client.messages.create(
                 model=model_to_use,
-                max_tokens=3000,
+                max_tokens=6000,  # Increased to avoid truncation
                 system=[
                     {
                         "type": "text",
@@ -309,6 +309,33 @@ EXPECTED SCHEMA:
 
             except json.JSONDecodeError as e:
                 logger.error(f"JSON parse error in batch {batch_num}: {e}")
+                # Attempt JSON repair: close any open strings/brackets
+                try:
+                    import re
+                    repair_text = response_text.rstrip()
+
+                    # Fix unterminated strings
+                    repair_text = re.sub(r'": "[^"]*$', '": "TRUNCATED"}', repair_text)
+
+                    # Close unclosed brackets/braces
+                    open_braces = repair_text.count('{') - repair_text.count('}')
+                    open_brackets = repair_text.count('[') - repair_text.count(']')
+
+                    if open_braces > 0:
+                        repair_text += '}' * open_braces
+                    if open_brackets > 0:
+                        repair_text += ']' * open_brackets
+
+                    batch_result = json.loads(repair_text)
+                    if "signals" in batch_result:
+                        all_signals.update(batch_result["signals"])
+                    if "top_buys" in batch_result:
+                        all_buys.extend(batch_result["top_buys"])
+                    if "kill_alerts" in batch_result:
+                        all_kills.update(batch_result["kill_alerts"])
+                    logger.info(f"Recovered batch {batch_num} via JSON repair")
+                except:
+                    logger.warning(f"Batch {batch_num} skipped due to unrecoverable JSON error")
 
         except Exception as e:
             logger.error(f"Claude API error in batch {batch_num}: {e}")

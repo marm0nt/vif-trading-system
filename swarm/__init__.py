@@ -22,6 +22,8 @@ from .native_finviz_screener_agent import NativeFinVizScreenerAgent
 from .critic_agent import CriticAgent
 from .native_swing_screener_agent import NativeSwingScreenerAgent
 from .native_vectorbt_agent import NativeVectorBTAgent
+from .native_autoresearch_agent import NativeAutoResearchAgent
+from .native_signal_verifier_agent import NativeSignalVerifierAgent
 from .risk_agent import RiskAgent
 
 __all__ = [
@@ -39,5 +41,7 @@ __all__ = [
     "CriticAgent",
     "NativeSwingScreenerAgent",
     "NativeVectorBTAgent",
+    "NativeAutoResearchAgent",
+    "NativeSignalVerifierAgent",
     "RiskAgent",
 ]

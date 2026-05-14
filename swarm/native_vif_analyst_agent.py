@@ -138,6 +138,9 @@ class NativeVIFAnalystAgent(SpecialistAgent):
 
             self.logger.info(f"{self.agent_id}: VIF analysis complete, {len(all_signals)} signals generated")
 
+            # Enrich signals with ATM options Greeks + IV% (0 API tokens, 24h cached)
+            all_signals = self._enrich_with_greeks(all_signals, all_market_data)
+
             # Apply latent context adjustments (K4 override from catalyst monitor)
             all_signals = self._apply_latent_context_adjustments(all_signals, latent_context)
 
@@ -216,6 +219,26 @@ class NativeVIFAnalystAgent(SpecialistAgent):
                     market_data[ticker] = fetched
 
         return market_data
+
+    def _enrich_with_greeks(self, signals: dict, market_data: dict) -> dict:
+        """
+        Attach ATM options Greeks + IV% to each signal. Best-effort — skips on failure.
+        Uses compute_options_greeks() (Black-Scholes + yfinance, 24h cached, 0 API tokens).
+        """
+        try:
+            from agents.indicators import compute_options_greeks
+        except ImportError:
+            return signals
+
+        for ticker, signal_data in signals.items():
+            ticker_clean = ticker.split(":")[-1] if ":" in ticker else ticker
+            price = market_data.get(ticker, {}).get("price") or signal_data.get("price", 0)
+            if not price:
+                continue
+            greeks = compute_options_greeks(ticker_clean, price, signal_data.get("signal", "HOLD"))
+            if greeks:
+                signal_data.update(greeks)
+        return signals
 
     def _apply_latent_context_adjustments(self, signals: dict, latent_context: dict) -> dict:
         """

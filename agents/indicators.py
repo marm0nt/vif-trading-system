@@ -23,12 +23,145 @@ Why the `ta` library?
 import pandas as pd
 import numpy as np
 import logging
+import math
+import json
+from datetime import datetime, date
+from pathlib import Path
 
 from ta.trend import MACD, EMAIndicator, SMAIndicator
 from ta.momentum import RSIIndicator, StochasticOscillator
 from ta.volatility import BollingerBands, AverageTrueRange, KeltnerChannel
 
 logger = logging.getLogger(__name__)
+
+# ── Options Greeks Cache ───────────────────────────────────────────────────────
+_GREEKS_CACHE_PATH = Path("data/options_greeks_cache.json")
+_RISK_FREE_RATE = 0.05   # 5% risk-free rate (approximate)
+
+
+def _bs_greeks(S: float, K: float, T: float, r: float, sigma: float, option_type: str = "call") -> dict:
+    """Black-Scholes Greeks for a European option."""
+    try:
+        from scipy.stats import norm
+    except ImportError:
+        return {}
+
+    if T <= 0 or sigma <= 0 or S <= 0 or K <= 0:
+        return {}
+
+    d1 = (math.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * math.sqrt(T))
+    d2 = d1 - sigma * math.sqrt(T)
+    sqrt_T = math.sqrt(T)
+    pdf_d1 = norm.pdf(d1)
+
+    if option_type == "call":
+        delta = norm.cdf(d1)
+        theta = (-(S * pdf_d1 * sigma) / (2 * sqrt_T) - r * K * math.exp(-r * T) * norm.cdf(d2)) / 365
+    else:
+        delta = norm.cdf(d1) - 1
+        theta = (-(S * pdf_d1 * sigma) / (2 * sqrt_T) + r * K * math.exp(-r * T) * norm.cdf(-d2)) / 365
+
+    gamma = pdf_d1 / (S * sigma * sqrt_T)
+    vega  = S * pdf_d1 * sqrt_T / 100      # per 1% IV move
+    rho   = (K * T * math.exp(-r * T) * norm.cdf(d2) / 100) if option_type == "call" \
+            else (-K * T * math.exp(-r * T) * norm.cdf(-d2) / 100)
+
+    return {
+        "delta": round(delta, 4),
+        "gamma": round(gamma, 6),
+        "theta": round(theta, 4),
+        "vega":  round(vega, 4),
+        "rho":   round(rho, 4),
+    }
+
+
+def compute_options_greeks(ticker_symbol: str, current_price: float, signal: str = "HOLD") -> dict:
+    """
+    Fetch ATM options from yfinance, compute Black-Scholes Greeks + IV%.
+
+    Args:
+        ticker_symbol: Clean ticker (no exchange prefix)
+        current_price: Latest close price
+        signal:        "BUY" → use calls, "SELL" → use puts, "HOLD" → calls
+
+    Returns:
+        {iv_pct, delta, gamma, theta, vega, rho, iv_rank, expiry, strike, option_type}
+        or {} on failure (no options data, no expiries, computation error)
+
+    Cache: 24-hour TTL keyed by ticker+date (avoids redundant yfinance calls)
+    """
+    cache_key = f"{ticker_symbol}_{date.today().isoformat()}"
+
+    # Load cache
+    cache = {}
+    if _GREEKS_CACHE_PATH.exists():
+        try:
+            cache = json.loads(_GREEKS_CACHE_PATH.read_text())
+        except Exception:
+            cache = {}
+
+    if cache_key in cache:
+        return cache[cache_key]
+
+    try:
+        import yfinance as yf
+
+        tk = yf.Ticker(ticker_symbol)
+        expirations = tk.options
+        if not expirations:
+            return {}
+
+        # Pick nearest expiry between 7 and 45 days out
+        today = date.today()
+        target_expiry = None
+        for exp in expirations:
+            exp_date = date.fromisoformat(exp)
+            days_out = (exp_date - today).days
+            if 7 <= days_out <= 45:
+                target_expiry = exp
+                break
+        if not target_expiry:
+            target_expiry = expirations[0]   # fallback: nearest available
+
+        chain = tk.option_chain(target_expiry)
+        option_type = "put" if signal == "SELL" else "call"
+        df = chain.puts if option_type == "put" else chain.calls
+
+        if df is None or df.empty:
+            return {}
+
+        # ATM = strike closest to current price
+        df = df.copy()
+        df["dist"] = (df["strike"] - current_price).abs()
+        atm = df.nsmallest(1, "dist").iloc[0]
+
+        iv = float(atm.get("impliedVolatility", 0))
+        strike = float(atm["strike"])
+        exp_date = date.fromisoformat(target_expiry)
+        T = max((exp_date - today).days / 365, 1 / 365)
+
+        greeks = _bs_greeks(current_price, strike, T, _RISK_FREE_RATE, iv, option_type)
+        if not greeks:
+            return {}
+
+        result = {
+            "iv_pct":      round(iv * 100, 1),
+            "option_type": option_type,
+            "strike":      strike,
+            "expiry":      target_expiry,
+            **greeks,
+        }
+
+        # Persist cache
+        cache[cache_key] = result
+        _GREEKS_CACHE_PATH.parent.mkdir(exist_ok=True)
+        _GREEKS_CACHE_PATH.write_text(json.dumps(cache, indent=2))
+
+        return result
+
+    except Exception as e:
+        logger.debug(f"Options Greeks fetch failed for {ticker_symbol}: {e}")
+        return {}
 
 
 class IndicatorEngine:

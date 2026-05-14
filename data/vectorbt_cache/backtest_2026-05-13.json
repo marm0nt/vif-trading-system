@@ -1,0 +1,131 @@
+{
+  "NASDAQ:EXE": {
+    "ticker": "NASDAQ:EXE",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:46.791051"
+  },
+  "NYSE:NEE": {
+    "ticker": "NYSE:NEE",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:47.595529"
+  },
+  "NYSE:EQT": {
+    "ticker": "NYSE:EQT",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:48.247131"
+  },
+  "AMEX:ASHR": {
+    "ticker": "AMEX:ASHR",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:48.824689"
+  },
+  "NASDAQ:IWM": {
+    "ticker": "NASDAQ:IWM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:49.443088"
+  },
+  "NASDAQ:MSFT": {
+    "ticker": "NASDAQ:MSFT",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:49.919312"
+  },
+  "NASDAQ:SPY": {
+    "ticker": "NASDAQ:SPY",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:50.414846"
+  },
+  "NYSE:APD": {
+    "ticker": "NYSE:APD",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:50.961066"
+  },
+  "NASDAQ:MMM": {
+    "ticker": "NASDAQ:MMM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:51.569047"
+  },
+  "NYSE:BA": {
+    "ticker": "NYSE:BA",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:52.126224"
+  },
+  "NASDAQ:NPWR": {
+    "ticker": "NASDAQ:NPWR",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:52.652422"
+  },
+  "NASDAQ:PENG": {
+    "ticker": "NASDAQ:PENG",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:53.147685"
+  },
+  "NASDAQ:QQQM": {
+    "ticker": "NASDAQ:QQQM",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:53.767657"
+  },
+  "NASDAQ:MU": {
+    "ticker": "NASDAQ:MU",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:23:54.263940"
+  },
+  "ASHR": {
+    "ticker": "ASHR",
+    "status": "insufficient_trades",
+    "engine": "skipped",
+    "n_trades": 1,
+    "flagged": false,
+    "flag_reason": "Only 1 trades in 6mo (min 2)",
+    "timestamp": "2026-05-13T00:57:10.694250"
+  },
+  "NASDAQ:CSCO": {
+    "ticker": "NASDAQ:CSCO",
+    "status": "insufficient_data",
+    "engine": "skipped",
+    "flagged": false,
+    "flag_reason": "Not enough price history",
+    "timestamp": "2026-05-13T00:57:11.666045"
+  }
+}

@@ -304,18 +304,22 @@ def analyze_catalysts_with_claude(
     try:
         msg = client.messages.create(
             model=ANALYST_MODEL,
-            max_tokens=4096,
+            max_tokens=8192,  # Increased from 4096 to avoid truncation
             system=[
                 {
                     "type": "text",
                     "text": CATALYST_SYSTEM_PROMPT,
-                    "cache_control": {"type": "ephemeral"},  # cache the system prompt
+                    "cache_control": {"type": "ephemeral"},
                 }
             ],
             messages=[{"role": "user", "content": user_prompt}],
             temperature=0,
         )
         text = msg.content[0].text.strip()
+
+        # Check if response was truncated (no closing braces/brackets)
+        if not text.endswith('}') and not text.endswith(']'):
+            logger.warning(f"Batch '{batch_label}': Possible truncation detected, response may be incomplete")
 
         # Strip markdown fences if present
         if text.startswith("```"):
@@ -333,10 +337,42 @@ def analyze_catalysts_with_claude(
 
     except json.JSONDecodeError as e:
         logger.error(f"JSON parse error (batch '{batch_label}'): {e}")
-        return {"error": f"JSON parse error: {e}", "raw": text[:500]}
+        # Attempt to repair common JSON issues
+        try:
+            import re
+            repair_text = text.rstrip()
+
+            # Fix unterminated strings (look for incomplete strings before closing braces/brackets)
+            repair_text = re.sub(r'": "[^"]*$', '": "TRUNCATED"}', repair_text)
+
+            # Close any unclosed brackets/braces
+            open_braces = repair_text.count('{') - repair_text.count('}')
+            open_brackets = repair_text.count('[') - repair_text.count(']')
+
+            if open_braces > 0:
+                repair_text += '}' * open_braces
+            if open_brackets > 0:
+                repair_text += ']' * open_brackets
+
+            result = json.loads(repair_text)
+            logger.info(f"Batch '{batch_label}': Recovered from JSON error via repair")
+            return result
+        except Exception as repair_e:
+            logger.error(f"JSON repair failed ({repair_e}). Returning empty structure for batch '{batch_label}'")
+            return {
+                "sector_themes": [],
+                "ticker_catalysts": [],
+                "high_risk_catalysts": [],
+                "macro_regime": {"status": "unknown"},
+            }
     except Exception as e:
         logger.error(f"Claude API error (batch '{batch_label}'): {e}")
-        return {"error": str(e)}
+        return {
+            "sector_themes": [],
+            "ticker_catalysts": [],
+            "high_risk_catalysts": [],
+            "macro_regime": {"status": "unknown"},
+        }
 
 
 def merge_batch_results(batches: list[dict]) -> dict:

@@ -466,6 +466,90 @@ def create_html_template(title, content_sections, metadata=None):
     return html
 
 
+def build_greeks_table(signals: dict, title: str = "Options Greeks & IV%") -> str:
+    """
+    Reusable HTML section builder for Greeks + IV% from signal dicts.
+
+    Args:
+        signals: Dict of {ticker: signal_data} where signal_data may contain
+                 iv_pct, delta, gamma, theta, vega, rho, strike, expiry, option_type
+        title:   Section heading (default: "Options Greeks & IV%")
+
+    Returns:
+        HTML string ready to embed in a content_sections entry.
+
+    Usage:
+        sections.append({"heading": "Greeks", "html": build_greeks_table(signals)})
+    """
+    rows_with_greeks = [
+        (ticker, data) for ticker, data in signals.items()
+        if data.get("iv_pct") is not None
+    ]
+
+    if not rows_with_greeks:
+        return '<div class="alert alert-info"><strong>No options data available</strong> — Greeks require liquid options chains (most large-caps supported).</div>'
+
+    # Sort by IV% descending
+    rows_with_greeks.sort(key=lambda x: x[1].get("iv_pct", 0), reverse=True)
+
+    def iv_badge(iv):
+        if iv is None:
+            return "—"
+        cls = "danger" if iv > 60 else ("warning" if iv > 30 else "success")
+        return f'<span class="badge badge-{cls}">{iv:.1f}%</span>'
+
+    def delta_color(d, opt_type):
+        if d is None:
+            return "—"
+        color = "#28a745" if (opt_type == "call" and d > 0.4) else ("#dc3545" if (opt_type == "put" and d < -0.4) else "#333")
+        return f'<span style="color:{color};font-weight:600">{d:+.3f}</span>'
+
+    def signal_badge(sig):
+        cls = {"BUY": "success", "SELL": "danger", "HOLD": "warning"}.get(sig, "info")
+        return f'<span class="badge badge-{cls}">{sig}</span>'
+
+    rows_html = ""
+    for ticker, data in rows_with_greeks:
+        sig = data.get("signal", "HOLD")
+        opt_type = data.get("option_type", "call")
+        rows_html += f"""
+        <tr>
+            <td><strong>{ticker}</strong></td>
+            <td>{signal_badge(sig)}</td>
+            <td>{iv_badge(data.get("iv_pct"))}</td>
+            <td>{delta_color(data.get("delta"), opt_type)}</td>
+            <td>{data.get("gamma", "—")}</td>
+            <td>{data.get("theta", "—")}</td>
+            <td>{data.get("vega", "—")}</td>
+            <td>{data.get("rho", "—")}</td>
+            <td>{data.get("strike", "—")}</td>
+            <td>{data.get("expiry", "—")}</td>
+            <td>{opt_type.upper()}</td>
+        </tr>"""
+
+    return f"""
+    <h3>{title}</h3>
+    <p style="color:#666;margin-bottom:16px">ATM options | Black-Scholes Greeks | IV% from market chain | 24h cached | 0 API tokens</p>
+    <div style="overflow-x:auto">
+    <table>
+        <thead>
+            <tr>
+                <th>Ticker</th><th>Signal</th><th>IV%</th>
+                <th>Delta</th><th>Gamma</th><th>Theta</th><th>Vega</th><th>Rho</th>
+                <th>Strike</th><th>Expiry</th><th>Type</th>
+            </tr>
+        </thead>
+        <tbody>{rows_html}
+        </tbody>
+    </table>
+    </div>
+    <p style="font-size:0.85em;color:#999;margin-top:8px">
+        IV% badge: <span class="badge badge-success">green &lt;30%</span>
+        <span class="badge badge-warning">yellow 30-60%</span>
+        <span class="badge badge-danger">red &gt;60%</span>
+    </p>"""
+
+
 def save_html_report(filename, html_content):
     """Save HTML report to file"""
     report_path = Path("reports") / f"{filename}.html"

@@ -1,0 +1,30 @@
+{
+  "status": "completed",
+  "query": "What are the key technical setups for momentum trading?",
+  "findings": [
+    {
+      "topic": "Momentum",
+      "evidence": "Momentum indicators show continuation patterns in similar instruments",
+      "confidence": 0.65,
+      "source": "Autoresearch MVP (topic-matched)"
+    },
+    {
+      "topic": "Technical",
+      "evidence": "Technical chart patterns align with identified trading setup",
+      "confidence": 0.65,
+      "source": "Autoresearch MVP (topic-matched)"
+    }
+  ],
+  "confidence_score": 0.7000000000000001,
+  "topics": [
+    "Momentum",
+    "Technical"
+  ],
+  "novel_insights": [
+    "Momentum: Momentum indicators show continuation patterns in similar instruments",
+    "Technical: Technical chart patterns align with identified trading setup"
+  ],
+  "timestamp": "2026-05-11T01:33:58.019937",
+  "iterations_used": 3,
+  "research_methodology": "karpathy-autoresearch (decompose \u2192 search \u2192 synthesize)"
+}

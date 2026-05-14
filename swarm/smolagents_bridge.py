@@ -29,14 +29,24 @@ logger = logging.getLogger(__name__)
 
 try:
     from smolagents import tool, ToolCallingAgent, CodeAgent, ManagedAgent, AnthropicModel
+    SMOLAGENTS_AVAILABLE = True
 except ImportError:
-    # graceful degradation: orchestrator_swarm.py catches this
-    raise ImportError("smolagents not installed. Install with: pip install smolagents")
+    SMOLAGENTS_AVAILABLE = False
+    # Define dummy tool decorator and classes for graceful degradation
+    def tool(func):
+        return func
+    ToolCallingAgent = None
+    CodeAgent = None
+    ManagedAgent = None
+    AnthropicModel = None
 
-
-# Initialize Claude model (Sonnet 4.6 for production, Opus 4.7 for research)
-MODEL_PROD = AnthropicModel(model_id="claude-sonnet-4-6", temperature=0)
-MODEL_RESEARCH = AnthropicModel(model_id="claude-opus-4-7", temperature=0.2)
+# Initialize Claude model only if smolagents is available
+if SMOLAGENTS_AVAILABLE:
+    MODEL_PROD = AnthropicModel(model_id="claude-sonnet-4-6", temperature=0)
+    MODEL_RESEARCH = AnthropicModel(model_id="claude-opus-4-7", temperature=0.2)
+else:
+    MODEL_PROD = None
+    MODEL_RESEARCH = None
 
 
 # ── Shared Tools (both production and research use these) ──────────────────────
@@ -245,6 +255,50 @@ def get_kv_cache_metrics() -> str:
         return json.dumps({"error": str(e)})
 
 
+@tool
+def run_autoresearch(research_query: str = "", context_signals_json: str = "{}") -> str:
+    """
+    Run iterative research synthesis to validate trading signals and explore macro context.
+
+    Implements Karpathy/autoresearch framework:
+    1. Decompose query into sub-questions
+    2. Search for evidence and insights
+    3. Synthesize findings into confidence-scored conclusions
+    4. Cross-validate against prior VIF context
+
+    Uses 24-hour caching per query; falls back to cached results if query was
+    researched earlier today. Max 3 iterations per query (~500 tokens).
+
+    Args:
+        research_query: Research question (e.g., "What drives NVDA momentum?")
+        context_signals_json: Optional JSON string of prior signals for cross-validation
+
+    Returns:
+        JSON string with findings, confidence score, topics, novel insights, execution time
+    """
+    try:
+        from swarm.native_autoresearch_agent import execute_autoresearch
+        import json as _json
+
+        context_signals = _json.loads(context_signals_json) if context_signals_json.strip() != "{}" else {}
+        result = execute_autoresearch(research_query=research_query, context_signals=context_signals)
+
+        return _json.dumps({
+            "status": result.get("status", "unknown"),
+            "query": result.get("query", ""),
+            "findings": result.get("findings", []),
+            "confidence_score": result.get("confidence_score", 0.0),
+            "topics": result.get("topics", []),
+            "novel_insights": result.get("novel_insights", []),
+            "execution_time_ms": result.get("execution_time_ms", 0),
+            "cache_hit": result.get("cache_hit", False),
+            "iterations_used": result.get("iterations_used", 0),
+            "token_cost": 500 if not result.get("cache_hit") else 0,
+        })
+    except Exception as e:
+        return json.dumps({"error": str(e), "tool": "run_autoresearch"})
+
+
 # ── Production Path: ToolCallingAgent ─────────────────────────────────────────
 
 class ProductionSwarmBridge:
@@ -257,6 +311,8 @@ class ProductionSwarmBridge:
 
     def __init__(self):
         """Initialize production swarm with ToolCallingAgent agents."""
+        if not SMOLAGENTS_AVAILABLE:
+            raise ImportError("ProductionSwarmBridge requires smolagents. Install with: pip install smolagents")
         logger.info("Initializing ProductionSwarmBridge (ToolCallingAgent mode)")
 
         # Create individual tool-calling agents
@@ -295,6 +351,13 @@ class ProductionSwarmBridge:
             description="Validates VIF signals via 6-month historical backtest (Sharpe, drawdown, win rate). Flags underperforming signals before execution."
         )
 
+        self.autoresearch_agent = ToolCallingAgent(
+            tools=[run_autoresearch],
+            model=MODEL_PROD,
+            name="autoresearch",
+            description="Iterative research synthesis for signal validation and macro context"
+        )
+
         # Create orchestrator that delegates to sub-agents
         self.orchestrator = ToolCallingAgent(
             tools=[
@@ -303,6 +366,7 @@ class ProductionSwarmBridge:
                 ManagedAgent(self.backtest_agent, name="vectorbt_backtester", description="Run signal backtest third — validates Sharpe/drawdown before acting on signals"),
                 ManagedAgent(self.swing_agent, name="swing_screener", description="Run swing screener fourth"),
                 ManagedAgent(self.finviz_agent, name="finviz_screener", description="Run FinViz discovery fifth"),
+                ManagedAgent(self.autoresearch_agent, name="autoresearch", description="Run autoresearch sixth — iterative validation and macro synthesis"),
                 get_kv_cache_metrics,
             ],
             model=MODEL_PROD,
@@ -341,6 +405,8 @@ class ResearchSwarmBridge:
 
     def __init__(self):
         """Initialize research agent with CodeAgent (code execution enabled)."""
+        if not SMOLAGENTS_AVAILABLE:
+            raise ImportError("ResearchSwarmBridge requires smolagents. Install with: pip install smolagents")
         logger.info("Initializing ResearchSwarmBridge (CodeAgent mode)")
 
         self.agent = CodeAgent(
@@ -350,6 +416,7 @@ class ResearchSwarmBridge:
                 screen_swing_setups,
                 run_finviz_discovery,
                 run_signal_backtest,
+                run_autoresearch,
                 get_kv_cache_metrics,
             ],
             model=MODEL_RESEARCH,

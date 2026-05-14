@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "query": "What drives NVDA price momentum?",
+  "findings": [
+    {
+      "topic": "General Research",
+      "evidence": "Query analyzed: What drives NVDA price momentum?",
+      "confidence": 0.5,
+      "source": "Autoresearch MVP (fallback)"
+    }
+  ],
+  "confidence_score": 0.5,
+  "topics": [
+    "General Research"
+  ],
+  "novel_insights": [
+    "General Research: Query analyzed: What drives NVDA price momentum?"
+  ],
+  "timestamp": "2026-05-11T01:31:23.131965",
+  "iterations_used": 3,
+  "research_methodology": "karpathy-autoresearch (decompose \u2192 search \u2192 synthesize)"
+}

@@ -61,6 +61,8 @@ try:
         CriticAgent,
         NativeSwingScreenerAgent,
         NativeVectorBTAgent,
+        NativeAutoResearchAgent,
+        NativeSignalVerifierAgent,
         RiskAgent,
     )
 except ImportError as e:
@@ -158,27 +160,31 @@ def initialize_swarm():
 
     # Create framework components
     kv_cache = KVCacheManager(max_cache_mb=500, max_recompute_layers=3)
-    latent_memory = LatentWorkingMemory(layers_to_share=[8, 16, 24])
+    latent_memory = LatentWorkingMemory(layers_to_share=[8, 16, 24, 32, 40])
     gossip_router = GossipRouter(gossip_timeout_ms=500, max_agents_per_subtask=2)
     consensus = ConfidenceWeightedConsensus(
         signal_priority={"BUY": 3, "SELL": 2, "HOLD": 1}
     )
 
-    # Create agent pool (CRITICAL: order matters for latent context propagation)
+    # Create agent pool (order defined in SwarmOrchestrator.AGENT_EXECUTION_ORDER)
     # 1. Catalyst monitor — writes K4 tickers to layer-2 LoRA cache
-    # 2. VIF analyst — reads K4 from catalyst's LoRA cache
-    # 3. Critic agent — vetoes/downgrades via latent context + Munger audit
+    # 2. VIF analyst — reads K4, outputs signals → task_context["vif_signals"]
+    # 3. Critic agent — vetoes/downgrades → task_context["critic_signals"]
     # 4. VectorBT backtester — validates post-critic signals via 6mo Sharpe/drawdown (layer 32)
-    # 5. Swing screener — reuses market data from VIF's KV cache layer-1
-    # 6. FinViz screener — local discovery (0 tokens), compares with VIF signals
-    # 7. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
+    # 5. Signal verifier — 4-gate PUBLISH/DOWNGRADE/REJECT → task_context["verified_signals"]
+    # 6. Swing screener — reuses market data from VIF's KV cache layer-1
+    # 7. FinViz screener — local discovery (0 tokens), compares with VIF signals
+    # 8. Autoresearch agent — iterative research synthesis (layer 40), signal validation
+    # 9. Risk agent (final) — circuit breaker (-5% drawdown) + risk mitigation
     agent_pool = {
         "catalyst-monitor": NativeCatalystMonitorAgent("catalyst-monitor"),
         "vif-analyst-1": NativeVIFAnalystAgent("vif-analyst-1"),
         "critic": CriticAgent("critic"),
         "vectorbt-backtester": NativeVectorBTAgent("vectorbt-backtester"),
+        "signal-verifier": NativeSignalVerifierAgent("signal-verifier"),
         "swing-screener": NativeSwingScreenerAgent("swing-screener"),
         "finviz-screener": NativeFinVizScreenerAgent("finviz-screener"),
+        "autoresearch": NativeAutoResearchAgent("autoresearch"),
         "risk-agent": RiskAgent("risk-agent"),
     }
 
@@ -192,13 +198,13 @@ def initialize_swarm():
     )
 
     logger.info(f"  ✓ KV Cache Manager initialized (500MB, 3-layer recomputation)")
-    logger.info(f"  ✓ Latent Working Memory initialized (layers: 8, 16, 24)")
+    logger.info(f"  ✓ Latent Working Memory initialized (layers: 8, 16, 24, 32, 40)")
     logger.info(f"  ✓ Gossip Router initialized (500ms timeout, 2 agents/subtask)")
     logger.info(f"  ✓ Consensus Resolver initialized (BUY=3, SELL=2, HOLD=1)")
     logger.info(f"  ✓ Agent Pool initialized ({len(agent_pool)} native specialist agents)")
     logger.info(f"    Phase 1: Catalyst → VIF → Critic (Planner-Critic-Executor)")
-    logger.info(f"    Phase 2: VectorBT (signal validation, layer 32) → SwingScreener → FinViz")
-    logger.info(f"    Phase 3: Risk (Circuit Breaker + LATS mitigation)")
+    logger.info(f"    Phase 2: VectorBT → SignalVerifier (4-gate: Vol/Fund/Sent/Macro) → SwingScreener → FinViz")
+    logger.info(f"    Phase 3: Autoresearch (iterative synthesis, layer 40) → Risk (Circuit Breaker)")
 
     return orchestrator, kv_cache, latent_memory, consensus
 
@@ -238,7 +244,7 @@ def _run_finviz_pipeline(pipeline_cfg: dict):
         logger.info(f"Top Discoveries: {sorted(list(total_tickers))[:10]}")
 
         output_file = Path("reports") / f"finviz_screen_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        output_file.write_text(json.dumps({
+        envelope = {
             "mode": "finviz_screen",
             "trace_id": trace_id,
             "timestamp": datetime.now().isoformat(),
@@ -246,8 +252,17 @@ def _run_finviz_pipeline(pipeline_cfg: dict):
             "finviz_results": finviz_output,
             "unique_tickers": sorted(list(total_tickers)),
             "discovery_count": len(total_tickers),
-        }, indent=2, default=str))
+        }
+        output_file.write_text(json.dumps(envelope, indent=2, default=str))
         logger.info(f"\nResults saved -> {output_file}")
+
+        try:
+            from scripts.active.reporting.finviz_screen_html import write_finviz_screen_html
+
+            html_path = write_finviz_screen_html(output_file, envelope)
+            logger.info(f"HTML report saved -> {html_path}")
+        except Exception as e:
+            logger.warning(f"FinViz HTML report skipped: {e}")
 
         return 0
 
@@ -343,8 +358,9 @@ def run_pipeline(mode: str):
 
         logger.info(f"Signals: {buy_count} BUY, {sell_count} SELL, {hold_count} HOLD")
 
-        # Save results
-        output_file = Path("reports") / f"swarm_result_{mode}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        # Save results (JSON)
+        ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+        output_file = Path("reports") / f"swarm_result_{mode}_{ts}.json"
         output_file.write_text(json.dumps({
             "mode": mode,
             "trace_id": trace_id,
@@ -354,6 +370,51 @@ def run_pipeline(mode: str):
             "metrics": metrics,
         }, indent=2))
         logger.info(f"\nResults saved -> {output_file}")
+
+        # Save HTML report (includes Greeks/IV% table if options data available)
+        try:
+            from scripts.active.reporting.html_report_generator import (
+                create_html_template, build_greeks_table, save_html_report
+            )
+
+            buy_signals  = {t: s for t, s in consensus_signals.items() if s.get("signal") == "BUY"}
+            sell_signals = {t: s for t, s in consensus_signals.items() if s.get("signal") == "SELL"}
+            hold_signals = {t: s for t, s in consensus_signals.items() if s.get("signal") == "HOLD"}
+
+            def _signal_table(sigs):
+                if not sigs:
+                    return "<p>No signals.</p>"
+                rows = "".join(
+                    f"<tr><td><strong>{t}</strong></td>"
+                    f"<td>{s.get('signal','—')}</td>"
+                    f"<td>{s.get('confidence','—')}%</td>"
+                    f"<td>{s.get('iv_pct','—')}</td>"
+                    f"<td>{s.get('delta','—')}</td>"
+                    f"<td>{s.get('gamma_regime','—')}</td>"
+                    f"<td>{s.get('verifier_verdict', s.get('note','—'))}</td></tr>"
+                    for t, s in sorted(sigs.items(), key=lambda x: x[1].get("confidence", 0), reverse=True)
+                )
+                return f"""<table><thead><tr>
+                    <th>Ticker</th><th>Signal</th><th>Confidence</th>
+                    <th>IV%</th><th>Delta</th><th>Gamma Regime</th><th>Note</th>
+                </tr></thead><tbody>{rows}</tbody></table>"""
+
+            sections = [
+                {"heading": f"SELL Signals ({sell_count})", "html": _signal_table(sell_signals)},
+                {"heading": f"BUY Signals ({buy_count})",  "html": _signal_table(buy_signals)},
+                {"heading": f"HOLD ({hold_count})",        "html": _signal_table(hold_signals)},
+                {"heading": "Options Greeks & IV%",         "html": build_greeks_table(consensus_signals)},
+            ]
+
+            html = create_html_template(
+                title=f"VIF Swarm Report — {mode.upper()} — {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+                content_sections=sections,
+                metadata={"author": "VIF Swarm Orchestrator", "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+            )
+            html_path = save_html_report(f"swarm_{mode}_{ts}", html)
+            logger.info(f"HTML report saved -> {html_path}")
+        except Exception as e:
+            logger.warning(f"HTML report generation skipped: {e}")
 
         return 0 if metrics.get("agents_executed", 0) == metrics.get("agents_total", 0) else 1
 

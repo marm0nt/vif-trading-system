@@ -1,6 +1,6 @@
 # VIF Trading System — Complete Architecture Map
 
-**Last updated:** 2026-05-09 13:44:27
+**Last updated:** 2026-05-13 01:36:57
 **Status:** All systems operational
 
 ---
@@ -10,6 +10,9 @@
 | Agent | File | Status |
 |-------|------|--------|
 | claude_research_agent | agents\claude_research_agent.py | ✅ Active |
+| external_alpha_auditor | agents\external_alpha_auditor.py | ✅ Active |
+| finviz_orchestrator_coordinator | agents\finviz_orchestrator_coordinator.py | ✅ Active |
+| finviz_screener_agent | agents\finviz_screener_agent.py | ✅ Active |
 | indicators | agents\indicators.py | ✅ Active |
 | orchestrator | agents\orchestrator.py | ✅ Active |
 | orchestrator_swarm | agents\orchestrator_swarm.py | ✅ Active |
@@ -24,7 +27,7 @@
 |-------|---------|--------------|
 | TEMPLATE_SKILL | Core framework reference | 2026-04-29 14:44 |
 | agent-design-principles | Core framework reference | 2026-05-02 16:49 |
-| analyzing-vif-signals | Core framework reference | 2026-04-29 01:21 |
+| analyzing-vif-signals | Core framework reference | 2026-05-09 17:58 |
 | briefing-weekend-macro | Core framework reference | 2026-04-29 01:22 |
 | computing-indicators | Core framework reference | 2026-04-29 01:21 |
 | fetching-market-data | Core framework reference | 2026-04-29 01:23 |
