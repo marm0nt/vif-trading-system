@@ -1,8 +1,9 @@
 # VIF Trading System Memory Index
 
 ## 🚨 ACTIVE SESSION HANDOFF (READ FIRST)
-- [Session Handoff: Scheduler Issues + Sync Setup (2026-05-13)](session_handoff_scheduler_issues.md) — After-hours pipeline failing 3 days in a row; sentry-monitor + repair-subagent now available; full diagnostic path documented
-- [Scheduler Diagnostics — Haiku Analysis (2026-05-13)](scheduler_diagnostics_haiku.md) — Root cause analysis of 8 consecutive failures; exit code capture likely issue; 4 quick diagnostics to run
+- [Scheduler Path Errors — HAIKU DIAGNOSTIC (2026-05-14)](scheduler_path_errors_haiku_diagnostic.md) — **ROOT CAUSE FOUND:** venv path lookup is wrong. `.claude\venv\` doesn't exist. Folder name is `vif-trading-system` not `vif_trading_system`. Fix: 2-3 lines in schedule_daily.py
+- [Session Handoff: Scheduler Issues + Sync Setup (2026-05-13)](session_handoff_scheduler_issues.md) — After-hours pipeline failing 3 days in a row; sentry-monitor + repair-subagent now available
+- [Scheduler Diagnostics — Haiku Analysis (2026-05-13)](scheduler_diagnostics_haiku.md) — Exit code capture investigation
 
 ## User Preferences & Policies
 - [Operational Autonomy & Lead Orchestrator (2026-05-13)](feedback_operational_autonomy.md) — **ACTIVE:** Agents execute without approval, orchestrator leads all workflows, bypass permissions globally, don't break anything
