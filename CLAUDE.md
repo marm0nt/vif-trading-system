@@ -9,6 +9,43 @@ Master development guide for VIF Trading System. For new LLM instances (Claude.a
 
 **Note:** At the start of every session, Claude reads all files in `.claude/memory/` for project context continuity. This enables memory and conversation history to sync across desktop and laptop.
 
+## Cross-Device Brain Sync (May 13, 2026)
+
+This repo implements the **claude-brain + atxtechbro "Spilled Coffee Principle"** pattern:
+> Destroy any device → pull this repo on a new machine → be fully operational with complete AI context in under 15 minutes.
+
+**What syncs via GitHub (tracked in git):**
+- All project code (`agents/`, `scripts/`, `config/`, `watchlists/`)
+- `.claude/memory/` — all AI learned context and preferences
+- `.claude/skills/` — custom skill definitions
+- `.claude/agents/` — agent configurations
+- `.claude/hooks/` — automation hooks
+- `.claude/settings.json` — shared Claude settings
+- `CLAUDE.md` — this file
+
+**What stays machine-local (gitignored):**
+- `.env` — your API key (copy manually between devices)
+- `.claude/settings.local.json` — machine-specific overrides
+- `.claude/worktrees/` — ephemeral worktree state
+- `data/`, `logs/`, `reports/` — regenerated automatically
+- `venv/` — reinstall with `pip install -r requirements.txt`
+
+**Sync commands:**
+```bash
+# On any device, any time — syncs everything:
+brain-sync.bat          # Windows (double-click or run from terminal)
+
+# On the OTHER device after someone else synced:
+git pull origin main    # That's it — full brain transferred
+```
+
+**First-time setup on a new device:**
+1. `git clone https://github.com/marm0nt/vif-trading-system.git`
+2. Copy `.env` from your other machine (or recreate it with your API key)
+3. `pip install -r requirements.txt`
+4. `powershell scripts\install-brain-sync-hook.ps1` — installs auto-push on commit
+5. All memory, skills, agents, and context are already there from git.
+
 ## Project Overview
 
 **VIF Trading System** is an AI-powered watchlist monitoring engine that applies the Volatility Imbalance Framework (v4.0) to analyze stock setups and generate trading signals. The system runs on a daily schedule (via `schedule_daily.py`) and outputs structured analysis for swing trade opportunities, macro themes, and catalyst-driven setups.
