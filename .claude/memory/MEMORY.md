@@ -1,5 +1,8 @@
 # VIF Trading System Memory Index
 
+## 🚨 ACTIVE SESSION HANDOFF (READ FIRST)
+- [Session Handoff: Scheduler Issues + Sync Setup (2026-05-13)](session_handoff_scheduler_issues.md) — After-hours pipeline failing 3 days in a row; sentry-monitor + repair-subagent now available; full diagnostic path documented
+
 ## User Preferences & Policies
 - [Public Submission Protocol](feedback_public_submissions.md) — All public repos/skills require Martin's permission; Martin is sole author, never "Agent"
 - [Autonomy & Decision-Making](feedback_autonomy.md) — Execute autonomously; only escalate irreversible/genuinely ambiguous decisions
