@@ -1,6 +1,7 @@
 # VIF Trading System Memory Index
 
 ## 🚨 ACTIVE SESSION HANDOFF (READ FIRST)
+- [Laptop Session Ready (2026-05-14)](laptop_session_ready.md) — **Desktop sync complete.** All frameworks, agents, and memory files pushed to GitHub. Laptop pull checklist included.
 - [Scheduler Path Errors — HAIKU DIAGNOSTIC (2026-05-14)](scheduler_path_errors_haiku_diagnostic.md) — **ROOT CAUSE FOUND:** venv path lookup is wrong. `.claude\venv\` doesn't exist. Folder name is `vif-trading-system` not `vif_trading_system`. Fix: 2-3 lines in schedule_daily.py
 - [Session Handoff: Scheduler Issues + Sync Setup (2026-05-13)](session_handoff_scheduler_issues.md) — After-hours pipeline failing 3 days in a row; sentry-monitor + repair-subagent now available
 - [Scheduler Diagnostics — Haiku Analysis (2026-05-13)](scheduler_diagnostics_haiku.md) — Exit code capture investigation
