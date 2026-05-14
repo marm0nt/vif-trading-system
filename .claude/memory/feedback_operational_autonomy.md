@@ -18,6 +18,14 @@ type: feedback
 
 **Why:** Trading signals have time-sensitive value. Delay = lost opportunity.
 
+### Rule 1b: Scheduled Tasks Use Sonnet 4.6 Only
+- **Daily scans** → Sonnet 4.6 (analysis quality matters for trading signals)
+- **Scheduled workflows** → Sonnet 4.6 (consistent decision-making)
+- **Sentry-monitor** (diagnostic agent) → Still Haiku (pattern matching is cheap)
+- **Repair-subagent** (code fixes) → Still Sonnet 4.6 (complex logic)
+
+**Why:** Trading signal quality = revenue impact. Use the best model, always. Haiku is only for parsing/diagnostics that don't feed trading decisions.
+
 ### Rule 2: Lead Swarm Orchestrator is Entry Point
 - **orchestrator_lead.py** or **orchestrator-coordinator** agent is the master controller
 - ALL multi-agent work flows through it
