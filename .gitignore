@@ -17,6 +17,7 @@ build/
 venv/
 env/
 .venv/
+venv_old_locked/
 
 # ── IDE / Editor ──────────────────────────────────────────────────────
 .vscode/
@@ -26,6 +27,7 @@ env/
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
 .claude/scheduled_tasks.json
+.claude/*.lock
 
 # ── Cached market data & reports (too large / sensitive for public repo)
 data/*.pkl
