@@ -42,16 +42,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ── Venv-aware python path ────────────────────────────────────────────────────
+# ── Python path ──────────────────────────────────────────────────────────────
+# Use system python directly (dependencies installed globally)
 SCRIPT_DIR = Path(__file__).parent.resolve()
-# Try venv first (absolute path for subprocess), fallback to system python
-VENV_PYTHON_PATH = SCRIPT_DIR / "venv" / "Scripts" / "python.exe"
-if VENV_PYTHON_PATH.exists():
-    PYTHON = str(VENV_PYTHON_PATH)
-else:
-    # Use system python as fallback
-    PYTHON = "python"
-    logger.info(f"Venv not found at {VENV_PYTHON_PATH}, using system python instead")
+PYTHON = "python"
+logger.info(f"Using system Python: {PYTHON}")
 
 
 # ── Job runner ────────────────────────────────────────────────────────────────

@@ -1,0 +1,117 @@
+[build-system]
+requires = ["poetry-core>=1.7.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "vif-trading-system"
+version = "4.0.0"
+description = "AI-powered watchlist monitoring engine using Volatility Imbalance Framework (v4.0)"
+authors = [{name = "Martin Adadey", email = "martinadadey47@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[tool.poetry]
+name = "vif-trading-system"
+version = "4.0.0"
+description = "AI-powered watchlist monitoring engine using Volatility Imbalance Framework (v4.0)"
+authors = ["Martin Adadey <martinadadey47@gmail.com>"]
+readme = "README.md"
+packages = [{include = "agents"}, {include = "scripts"}, {include = "tests"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+# ── Core AI / API ──────────────────────────────────────────────────────────────
+anthropic = ">=0.97.0"
+python-dotenv = ">=1.0.0"
+
+# ── Market Data ────────────────────────────────────────────────────────────────
+yfinance = ">=1.0.0"
+finvizfinance = ">=1.3.0"
+requests = ">=2.31.0"
+requests-cache = ">=1.2.0"
+beautifulsoup4 = ">=4.12.0"
+
+# ── Data Processing ────────────────────────────────────────────────────────────
+pandas = ">=2.0.0"
+numpy = ">=1.24.0"
+scipy = ">=1.11.0"
+PyYAML = ">=6.0"
+
+# ── Technical Indicators ───────────────────────────────────────────────────────
+# NOTE: pandas-ta and TA-Lib require numba/C extensions incompatible with Py 3.14.
+# 'ta' is pure-Python and implements the same indicators (RSI, MACD, BB, ATR, etc.)
+ta = ">=0.11.0"
+
+# ── Scheduling / Automation ────────────────────────────────────────────────────
+schedule = ">=1.2.0"
+
+# ── Output / Reporting ─────────────────────────────────────────────────────────
+rich = ">=13.0.0"
+
+# ── Agentic Frameworks ──────────────────────────────────────────────────────────
+dspy-ai = ">=2.5.0"
+smolagents = ">=1.10.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.4.0"
+pytest-cov = ">=4.1.0"
+black = ">=23.7.0"
+isort = ">=5.12.0"
+mypy = ">=1.4.0"
+flake8 = ">=6.0.0"
+
+[tool.poetry.scripts]
+vif = "agents.orchestrator_swarm:main"
+
+[tool.poetry.urls]
+Homepage = "https://github.com/marm0nt/vif-trading-system"
+Documentation = "https://github.com/marm0nt/vif-trading-system#readme"
+Repository = "https://github.com/marm0nt/vif-trading-system.git"
+
+# ── Poetry Configuration ───────────────────────────────────────────────────────
+[tool.poetry.config]
+virtualenvs.in-project = true
+virtualenvs.path = ".venv"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_mode = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 100
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short --cov=agents --cov=scripts --cov-report=html"
