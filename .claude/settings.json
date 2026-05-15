@@ -6,10 +6,6 @@
       "Bash(python -c *)",
       "Bash(python -m *)",
 
-      "Bash(venv/Scripts/python.exe *)",
-      "Bash(venv\\Scripts\\python.exe *)",
-      "Bash(source venv/bin/activate *)",
-
       "Bash(pip install *)",
       "Bash(pip list *)",
 

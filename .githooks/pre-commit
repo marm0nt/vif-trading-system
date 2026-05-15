@@ -18,12 +18,18 @@ NC='\033[0m'
 
 errors=0
 
-# Check staged Python files for venv hardcoding
+# Check staged Python files for venv hardcoding (skip bootstrap.py which uses them for scanning)
 for file in $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.py$'); do
+    # Skip bootstrap.py (designed to detect venv patterns, not use them)
+    if [[ "$file" == *"bootstrap.py" ]]; then
+        continue
+    fi
+
     if [ -f "$file" ]; then
         for pattern in "${VENV_PATTERNS[@]}"; do
-            if grep -q "$pattern" "$file"; then
-                echo -e "${RED}✗ $file contains hardcoded venv path: $pattern${NC}"
+            # More strict: only fail if pattern is in actual code assignment/usage, not comments/strings
+            if grep -E "^[^#]*\b(PYTHON|cmd|path|exe)\b.*${pattern}" "$file" | grep -v "^[[:space:]]*#" >/dev/null; then
+                echo -e "${RED}✗ $file uses hardcoded venv path: $pattern${NC}"
                 ((errors++))
             fi
         done

@@ -23,6 +23,9 @@ import time
 import logging
 import json
 import os
+import re
+import hashlib
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -54,6 +57,20 @@ logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).parent.resolve()
 PYTHON = "python"
 logger.info(f"Using system Python: {PYTHON}")
+
+# ── Claude CLI path (Windows-safe: resolves .cmd extension) ──────────────────
+CLAUDE_BIN = shutil.which("claude") or shutil.which("claude.cmd") or "claude"
+
+# ── Sentry daemon config ──────────────────────────────────────────────────────
+LOG_FILES_TO_WATCH = [
+    "logs/orchestrator_swarm.log",
+    "logs/orchestrator.log",
+    "logs/catalyst_analysis.log",
+    "logs/scheduler.log",
+    "logs/system_context_update.log",
+]
+_sentry_scan_offsets: dict = {}   # {log_path_str: last_byte_offset}
+_sentry_seen_errors: dict = {}    # {error_fingerprint: last_dispatch_epoch}
 
 
 # ── Job runner ────────────────────────────────────────────────────────────────
@@ -195,6 +212,89 @@ def job_friday_close():
     )
 
 
+# ── Sentry daemon ─────────────────────────────────────────────────────────────
+
+def _classify_error(line: str) -> str:
+    for etype in ["ImportError", "APIError", "FileNotFoundError", "TimeoutError",
+                  "ConnectionError", "JSONDecodeError", "KeyError", "AssertionError",
+                  "ModuleNotFoundError", "AttributeError", "TypeError", "ValueError"]:
+        if etype in line:
+            return etype
+    return "UnknownError"
+
+
+def job_sentry_scan():
+    """Every 5 min — Scan logs for new ERROR/CRITICAL lines; dispatch sentry-monitor if found."""
+    Path("logs/sentry_handoffs").mkdir(exist_ok=True)
+    now = time.time()
+    new_errors = []
+
+    for log_path_str in LOG_FILES_TO_WATCH:
+        log_path = SCRIPT_DIR / log_path_str
+        if not log_path.exists():
+            continue
+        offset = _sentry_scan_offsets.get(log_path_str, 0)
+        try:
+            with open(log_path, "r", encoding="utf-8", errors="ignore") as f:
+                f.seek(offset)
+                lines = f.readlines()
+                _sentry_scan_offsets[log_path_str] = f.tell()
+        except Exception as e:
+            logger.debug(f"[SENTRY] Could not read {log_path_str}: {e}")
+            continue
+
+        for i, line in enumerate(lines):
+            if not re.search(r'\b(ERROR|CRITICAL)\b', line):
+                continue
+            fingerprint = hashlib.md5(line.strip().encode()).hexdigest()[:16]
+            if now - _sentry_seen_errors.get(fingerprint, 0) < 300:
+                continue
+            _sentry_seen_errors[fingerprint] = now
+
+            context_lines = "".join(lines[max(0, i - 3):i + 4]).strip()
+            handoff = {
+                "error_id": f"sentry-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{i}",
+                "severity": "CRITICAL" if "CRITICAL" in line else "HIGH",
+                "error_type": _classify_error(line),
+                "error_message": line.strip(),
+                "source_log": log_path_str,
+                "detected_at": datetime.now().isoformat(),
+                "lines_context": context_lines,
+            }
+            new_errors.append(handoff)
+            handoff_path = (
+                SCRIPT_DIR / "logs" / "sentry_handoffs" / f"{handoff['error_id']}.json"
+            )
+            try:
+                handoff_path.write_text(json.dumps(handoff, indent=2))
+            except Exception as e:
+                logger.warning(f"[SENTRY] Could not write handoff: {e}")
+
+    if not new_errors:
+        logger.debug("[SENTRY] No new errors detected.")
+        return
+
+    logger.warning(f"[SENTRY] {len(new_errors)} new error(s) — dispatching sentry-monitor")
+    prompt = (
+        f"VIF scheduler detected {len(new_errors)} new ERROR/CRITICAL log line(s). "
+        f"Handoff JSON files are in logs/sentry_handoffs/. "
+        f"Error types: {', '.join(sorted(set(e['error_type'] for e in new_errors)))}. "
+        f"First error: {new_errors[0]['error_message'][:150]}"
+    )
+    try:
+        subprocess.Popen(
+            [CLAUDE_BIN, "-p", prompt, "--dangerously-skip-permissions"],
+            cwd=SCRIPT_DIR,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        logger.info("[SENTRY] sentry-monitor dispatched (async).")
+    except FileNotFoundError:
+        logger.error(f"[SENTRY] claude CLI not found at '{CLAUDE_BIN}' — check PATH.")
+    except Exception as e:
+        logger.error(f"[SENTRY] Dispatch failed: {e}")
+
+
 # ── Schedule builder ──────────────────────────────────────────────────────────
 
 def build_schedule():
@@ -215,6 +315,9 @@ def build_schedule():
     schedule.every().saturday.at("08:00").do(job_weekend_catalyst)
     schedule.every().sunday.at("18:00").do(job_weekend_catalyst)
 
+    # ── Sentry daemon — every 5 min, 24/7 ───────────────────────────────────
+    schedule.every(5).minutes.do(job_sentry_scan)
+
     logger.info("Schedule registered (Swarm Intelligence Framework + FinViz Discovery):")
     logger.info("  Weekdays  07:00  Premarket Pipeline [Swarm] – Catalyst + VIF + Swing")
     logger.info("  Weekdays  07:30  FinViz Discovery [Independent] – 19 institutional screeners")
@@ -224,6 +327,7 @@ def build_schedule():
     logger.info("  Fridays   16:30  Friday Full Pipeline [Swarm] – Complete end-of-week")
     logger.info("  Saturday  08:00  Weekend Pipeline [Swarm] – Macro catalyst briefing")
     logger.info("  Sunday    18:00  Weekend Pipeline [Swarm] – Monday morning prep")
+    logger.info("  Every 5min       Sentry Daemon [AUTO] – ERROR/CRITICAL detection + repair dispatch")
     logger.info("\n  Architecture: Multi-agent swarm with KV cache sharing + latent collaboration")
     logger.info("  FinViz runs independently at 07:30 (before VIF watchlist analysis at 08:45)")
     logger.info("  Expected improvements: 45-50% cache hit rate, 40-50% latency reduction, 50% cost savings")
@@ -236,6 +340,12 @@ def main():
     logger.info("  VIF TRADING SYSTEM – INTELLIGENT SCHEDULER")
     logger.info(f"  Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info("=" * 60)
+
+    # Initialize sentry offsets to current EOF — skip historical errors on startup
+    for _log_path_str in LOG_FILES_TO_WATCH:
+        _lp = SCRIPT_DIR / _log_path_str
+        if _lp.exists():
+            _sentry_scan_offsets[_log_path_str] = _lp.stat().st_size
 
     build_schedule()
 
