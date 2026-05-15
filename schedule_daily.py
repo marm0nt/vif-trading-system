@@ -28,6 +28,13 @@ from pathlib import Path
 
 import schedule
 
+# Bootstrap guard: prevent venv path failures
+try:
+    from bootstrap import ensure_environment_ready
+    ensure_environment_ready("schedule_daily.py")
+except ImportError:
+    pass  # Bootstrap not critical, continue anyway
+
 # ── Setup ─────────────────────────────────────────────────────────────────────
 Path("logs").mkdir(exist_ok=True)
 Path("reports").mkdir(exist_ok=True)

@@ -28,7 +28,37 @@ This repo implements the **claude-brain + atxtechbro "Spilled Coffee Principle"*
 - `.claude/settings.local.json` — machine-specific overrides
 - `.claude/worktrees/` — ephemeral worktree state
 - `data/`, `logs/`, `reports/` — regenerated automatically
-- `venv/` — reinstall with `pip install -r requirements.txt`
+- `venv/` / `.venv/` — NOT used anymore (see venv-free architecture below)
+
+### CRITICAL: Venv-Free Architecture (May 15, 2026)
+
+**All scheduled task failures before May 15 were caused by hardcoded venv paths.** This has been permanently fixed.
+
+**New policy: No venv activation, no path lookups, ever.**
+
+**How it works:**
+- Dependencies installed **globally** via `pip install -r requirements.txt`
+- `pyproject.toml` declares all dependencies (Poetry standard)
+- All agents use `python` command directly (or `sys.executable`)
+- No subprocess should ever reference `venv/Scripts` or `.venv/bin`
+
+**On a new device:**
+```bash
+git clone ...
+pip install -r requirements.txt  # Install all deps to system Python
+python schedule_daily.py        # Works immediately, no venv needed
+```
+
+**If you accidentally create a venv:**
+- Delete it: `rm -rf venv .venv`
+- Pre-commit hook prevents hardcoded venv paths from entering git
+- `bootstrap.py` guards all agents at startup
+
+**Why this prevents failures:**
+- Venv paths are machine-specific, always break when moving branches/devices
+- System Python is portable, works everywhere
+- No path resolution needed = no `[WinError 3]` failures
+- See `bootstrap.py` for automatic environment validation
 
 **Sync commands:**
 ```bash
