@@ -244,7 +244,7 @@ def job_sentry_scan():
             continue
 
         for i, line in enumerate(lines):
-            if not re.search(r'\b(ERROR|CRITICAL)\b', line):
+            if not re.search(r'\]\s*(ERROR|CRITICAL)\b', line):
                 continue
             fingerprint = hashlib.md5(line.strip().encode()).hexdigest()[:16]
             if now - _sentry_seen_errors.get(fingerprint, 0) < 300:
