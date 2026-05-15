@@ -91,6 +91,13 @@ class SpecialistAgent:
         self.latent_memory = None
         self.task_context = {}
 
+        # Anthropic client for agents that call Claude directly (e.g., Munger inversion audit)
+        try:
+            import anthropic
+            self.client = anthropic.Anthropic()
+        except Exception:
+            self.client = None
+
         # Metrics
         self.execution_count = 0
         self.last_execution_time = None

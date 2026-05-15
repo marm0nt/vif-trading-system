@@ -202,7 +202,8 @@ class RiskAgent(SpecialistAgent):
 
     def _calculate_drawdown(self, portfolio_state: dict) -> float:
         """
-        Calculate current portfolio drawdown from peak or entry prices.
+        Calculate current portfolio drawdown using live prices from yfinance cache.
+        Falls back to 0.0 if price data unavailable (safe mode — never blocks circuit breaker).
 
         Returns: negative float (e.g., -0.05 = -5% drawdown)
         """
@@ -212,13 +213,33 @@ class RiskAgent(SpecialistAgent):
         if not positions or not entry_prices:
             return 0.0
 
-        # Simulate current prices (in real system, fetch live prices)
-        # For testing: assume random -2% to +3% move from entry
+        try:
+            from agents.indicators import fetch_and_compute
+        except ImportError:
+            self.logger.warning(f"{self.agent_id}: Cannot import fetch_and_compute, drawdown defaulting to 0.0")
+            return 0.0
+
         realized_pnl = 0.0
         for ticker, qty in positions.items():
-            entry = entry_prices.get(ticker, 100.0)
-            current = entry * (1 + np.random.uniform(-0.02, 0.03))
-            realized_pnl += qty * (current - entry)
+            entry = entry_prices.get(ticker)
+            if entry is None:
+                continue
+
+            # Fetch current price via cached yfinance (5d data, last close)
+            try:
+                indicators = fetch_and_compute(ticker, period="5d")
+                if indicators is None:
+                    self.logger.debug(f"{self.agent_id}: No price data for {ticker}, skipping")
+                    continue
+
+                current_price = indicators.get("price")
+                if current_price is None:
+                    continue
+
+                realized_pnl += qty * (current_price - entry)
+            except Exception as e:
+                self.logger.debug(f"{self.agent_id}: Price fetch error for {ticker}: {e}")
+                continue
 
         total_value = portfolio_state.get("total_value", 100000.0)
         drawdown = realized_pnl / total_value if total_value > 0 else 0.0

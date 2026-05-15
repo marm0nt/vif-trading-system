@@ -255,26 +255,62 @@ class FinVizOrchestratorCoordinator:
     def _get_critic_analysis(self, finviz_results: Dict, vif_signals: Optional[Dict] = None) -> Dict:
         """Get critic agent analysis of FinViz vs VIF discrepancies."""
         try:
-            # Import critic agent (placeholder - would call actual critic agent)
-            # from swarm.critic_agent import CriticAgent
-            # critic = CriticAgent()
+            from swarm.critic_agent import CriticAgent
+
+            critic = CriticAgent()
+
+            # Prepare critic context: FinViz discovery set vs VIF signals
+            critic_context = {
+                "finviz_screener_count": len(finviz_results),
+                "vif_signal_count": len(vif_signals) if vif_signals else 0,
+                "overlap_pct": self._compute_overlap(finviz_results, vif_signals),
+            }
+
+            # Critic veto analysis (uses munger inversion audit)
+            subtasks = [{
+                "type": "veto_analysis",
+                "data": {
+                    "finviz_tickers": list(set(t for r in finviz_results.values() for t in r.get("tickers", []))),
+                    "vif_signals": vif_signals or {},
+                }
+            }]
+
+            result = critic.execute(
+                subtasks=subtasks,
+                kv_cache_binding=None,
+                latent_memory=None,
+                task_context=critic_context
+            )
 
             analysis = {
-                "recommendation": "Run shadow test for 3-5 days before Phase C integration",
+                "recommendation": "Phase C integration approved" if result.get("status") == "success" else "review required",
                 "high_confidence_screeners": list(finviz_results.keys())[:3],
                 "low_confidence_screeners": list(finviz_results.keys())[-3:],
-                "overlap_threshold_met": True if vif_signals else None,
+                "overlap_threshold_met": critic_context.get("overlap_pct", 0) > 0.4,
                 "next_steps": [
                     "Monitor daily overlap metrics (target > 50%)",
                     "Track novel discoveries that later appear in VIF signals",
                     "Validate no systematic downside from FinViz-only tickers",
                 ],
+                "critic_status": result.get("status"),
             }
 
             return analysis
         except Exception as e:
             self.logger.warning(f"Critic analysis failed: {e}, returning placeholder")
             return {"status": "pending", "reason": "critic agent not available"}
+
+    def _compute_overlap(self, finviz_results: Dict, vif_signals: Optional[Dict] = None) -> float:
+        """Compute overlap percentage: tickers in both FinViz and VIF signals."""
+        finviz_tickers = set(t for r in finviz_results.values() for t in r.get("tickers", []))
+        vif_tickers = set(vif_signals.keys()) if vif_signals else set()
+
+        if not finviz_tickers and not vif_tickers:
+            return 0.0
+
+        overlap = len(finviz_tickers & vif_tickers)
+        union = len(finviz_tickers | vif_tickers)
+        return (overlap / union) if union > 0 else 0.0
 
     def _extract_novel_discoveries(self, finviz_results: Dict, vif_signals: Optional[Dict] = None) -> List[str]:
         """Extract tickers found ONLY in FinViz, not in VIF signals."""
