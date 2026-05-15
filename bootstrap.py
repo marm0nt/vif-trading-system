@@ -44,7 +44,7 @@ def _check_venv_references():
         SCRIPT_ROOT / "scripts" / "*.py",
         SCRIPT_ROOT / "schedule_daily.py",
     ]:
-        for py_file in SCRIPT_ROOT.glob(pattern.name) if "*" in pattern.name else [pattern]:
+        for py_file in pattern.parent.glob(pattern.name) if "*" in pattern.name else [pattern]:
             if not py_file.exists():
                 continue
 
