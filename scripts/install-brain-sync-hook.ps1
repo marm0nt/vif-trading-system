@@ -5,9 +5,6 @@
 # ============================================================
 
 $repoRoot = Split-Path $PSScriptRoot -Parent
-$hooksDir = Join-Path $repoRoot ".git\hooks"
-$hookSource = Join-Path $repoRoot ".claude\hooks\post-commit-sync.sh"
-$hookDest = Join-Path $hooksDir "post-commit"
 
 Write-Host ""
 Write-Host "VIF Brain Sync — Hook Installer" -ForegroundColor Cyan
@@ -20,17 +17,15 @@ if (-not (Test-Path (Join-Path $repoRoot ".git"))) {
     exit 1
 }
 
-# Copy hook into place
-Copy-Item $hookSource $hookDest -Force
-Write-Host "[OK] post-commit hook installed at: $hookDest" -ForegroundColor Green
+# As of Phase 1 fix (May 15, 2026), post-commit is already wired in .githooks/post-commit
+# which is the active hook path (core.hooksPath=.githooks). This script is now a no-op.
+# It remains for historical reference and to document the migration from .git/hooks to .githooks.
 
-# On Windows, git hooks need to be executable — set via git config
-& git -C $repoRoot config core.hooksPath ".git/hooks"
-Write-Host "[OK] Git hooks path configured." -ForegroundColor Green
-
+Write-Host "[INFO] post-commit auto-push is already configured in .githooks/" -ForegroundColor Green
+Write-Host "[INFO] Active hook path: core.hooksPath=.githooks" -ForegroundColor Green
 Write-Host ""
-Write-Host "From now on, every 'git commit' will automatically push" -ForegroundColor Yellow
-Write-Host "to GitHub in the background. Your brain stays in sync."  -ForegroundColor Yellow
+Write-Host "To sync hooks to a new device:" -ForegroundColor Yellow
+Write-Host "  git pull origin main" -ForegroundColor White
 Write-Host ""
-Write-Host "Run this script on BOTH devices to complete setup." -ForegroundColor White
+Write-Host "No further action needed. Every 'git commit' will auto-push." -ForegroundColor Green
 Write-Host ""
