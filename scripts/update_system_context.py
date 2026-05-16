@@ -31,7 +31,7 @@ class SystemContextUpdater:
             )
             return result.stdout.strip().split('\n') if result.stdout.strip() else []
         except Exception as e:
-            print(f"⚠️  Error getting commit files: {e}")
+            print(f"[WARN] Error getting commit files: {e}")
             return []
 
     def scan_agents(self) -> Dict[str, dict]:
@@ -288,7 +288,7 @@ See **docs/system/CHANGELOG.md** for detailed history.
                 cwd=self.repo_root, capture_output=True, text=True
             )
             if not status.stdout.strip():
-                print("ℹ️  No changes staged for commit")
+                print("[INFO] No changes staged for commit")
                 return True
 
             # Commit with --no-verify to skip pre-commit hooks (avoid recursion)
@@ -297,10 +297,10 @@ See **docs/system/CHANGELOG.md** for detailed history.
                  "docs(auto): Update system_context + SYSTEM_CONTEXT after commit"],
                 cwd=self.repo_root, check=True, capture_output=True
             )
-            print("✅ Auto-committed docs update")
+            print("[OK] Auto-committed docs update")
             return True
         except subprocess.CalledProcessError as e:
-            print(f"⚠️  Could not auto-commit: {e}")
+            print(f"[WARN] Could not auto-commit: {e}")
             return False
 
     def update(self) -> bool:
@@ -311,23 +311,23 @@ See **docs/system/CHANGELOG.md** for detailed history.
 
             # Generate and save system context (docs/system/system_context.md)
             context = self.generate_system_context()
-            self.system_context_path.write_text(context)
-            print(f"✅ Updated {self.system_context_path.relative_to(self.repo_root)}")
+            self.system_context_path.write_text(context, encoding='utf-8')
+            print(f"[OK] Updated {self.system_context_path.relative_to(self.repo_root)}")
 
             # Generate and save primary context (docs/SYSTEM_CONTEXT.md)
             primary_context = self.generate_primary_context()
             primary_path = self.repo_root / "docs" / "SYSTEM_CONTEXT.md"
-            primary_path.write_text(primary_context)
-            print(f"✅ Updated {primary_path.relative_to(self.repo_root)}")
+            primary_path.write_text(primary_context, encoding='utf-8')
+            print(f"[OK] Updated {primary_path.relative_to(self.repo_root)}")
 
             # Generate and save changelog
             changelog = self.generate_changelog()
-            self.changelog_path.write_text(changelog)
-            print(f"✅ Updated {self.changelog_path.relative_to(self.repo_root)}")
+            self.changelog_path.write_text(changelog, encoding='utf-8')
+            print(f"[OK] Updated {self.changelog_path.relative_to(self.repo_root)}")
 
             return True
         except Exception as e:
-            print(f"❌ Error updating system context: {e}", file=sys.stderr)
+            print(f"[ERROR] Error updating system context: {e}", file=sys.stderr)
             return False
 
 def main():
@@ -348,14 +348,14 @@ def main():
                  "docs/SYSTEM_CONTEXT.md"],
                 cwd=repo_root, capture_output=True, timeout=5, check=True
             )
-            print("✅ Documentation files staged")
+            print("[OK] Documentation files staged")
 
             # Auto-commit the staged changes
             updater.commit_updates()
         except subprocess.CalledProcessError as e:
-            print(f"⚠️  Could not stage files: {e}")
+            print(f"[WARN] Could not stage files: {e}")
         except Exception as e:
-            print(f"⚠️  Error during commit: {e}")
+            print(f"[WARN] Error during commit: {e}")
 
     sys.exit(0 if success else 1)
 
