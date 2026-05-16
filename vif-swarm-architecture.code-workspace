@@ -1,0 +1,88 @@
+{
+  "folders": [
+    {
+      "name": "🎯 ORCHESTRATOR (Lead)",
+      "path": "agents",
+      "patterns": [
+        "orchestrator_swarm.py",
+        "orchestrator.py"
+      ]
+    },
+    {
+      "name": "🔍 CATALYST MONITOR",
+      "path": "agents",
+      "patterns": ["*catalyst*"]
+    },
+    {
+      "name": "📊 VIF ANALYST",
+      "path": "agents",
+      "patterns": ["watchlist_watcher.py"]
+    },
+    {
+      "name": "🔎 FINVIZ SCREENER",
+      "path": "agents",
+      "patterns": ["*finviz*"]
+    },
+    {
+      "name": "⚡ SWING SCREENER",
+      "path": "scripts",
+      "patterns": ["*swing*"]
+    },
+    {
+      "name": "✅ SIGNAL VERIFIER",
+      "path": "agents",
+      "patterns": ["*verif*"]
+    },
+    {
+      "name": "🤖 CRITIC AGENT",
+      "path": "agents",
+      "patterns": ["*critic*", "*external*"]
+    },
+    {
+      "name": "⚖️ RISK AGENT",
+      "path": "agents",
+      "patterns": ["*risk*", "*position*"]
+    },
+    {
+      "name": "📈 VECTORBT ANALYST",
+      "path": "agents",
+      "patterns": ["*backtest*", "*vectorbt*"]
+    },
+    {
+      "name": "🔬 AUTORESEARCH",
+      "path": "agents",
+      "patterns": ["*research*"]
+    },
+    {
+      "name": "⚙️ CONFIG & DATA",
+      "path": "config"
+    },
+    {
+      "name": "📋 REPORTS",
+      "path": "reports"
+    },
+    {
+      "name": "📚 DOCS & MEMORY",
+      "path": "docs"
+    }
+  ],
+  "settings": {
+    "explorer.sortOrder": "type",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "*.py": "${base}.json, ${base}.txt",
+      "orchestrator_swarm.py": "*.log",
+      "schedule_daily.py": "logs/**"
+    },
+    "editor.fontSize": 12,
+    "editor.fontFamily": "Fira Code, Consolas",
+    "editor.formatOnSave": true,
+    "workbench.colorTheme": "One Dark Pro",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.python",
+      "editor.formatOnSave": true
+    }
+  }
+}
